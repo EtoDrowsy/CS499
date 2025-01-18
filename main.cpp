@@ -36,7 +36,7 @@ void readCSV(std::string filepath){
 }
 
 int main() {
-	std::string path = "PrestonLumberInventory.csv";
-	readCSV(path);
+	//std::string path = "PrestonLumberInventory.csv";
+	//readCSV(path);
 	return 0;
 }
