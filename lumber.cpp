@@ -72,4 +72,8 @@ class Bulk : Lumber {
             description = d;
             price = p;
         }
+        float getPriceTotal(int q) {
+            if(q <= quantity) {return q * price;}
+            return -1;
+        }
 };
