@@ -1,0 +1,18 @@
+Catalog Number;Location;Quanity;Units;Species;Description;Length;Width;Thickness;Price Each
+9001;Bin 01;100;Each;Sycamore;Bowl Blank;"8""";"8""";"3""";$52,00
+9011;Rack-A;200;Each;Popular;Shiplap;12';"5 -3/8""";"3/4""";$15,50
+9010;Rack-B;100;Each;Popular;Shiplap;8';"5 -3/8""";"3/4""";$9,20
+9020;Rack-C;50;Each;Pine;Shiplap;8';"5 -3/8""";"3/4""";$13,48
+9021;Rack-D;50;Each;Pine;Shiplap;12';"5 -3/8""";"3/4""";$9,00
+9100;Rack-Z;10;Each;Red Cedar;Project Boards;"2' 6""";"8""";"1""";$15,00
+9101;Rack-Y;9;Each;Red Cedar;Project Boards;8';"8""";"1""";$50,00
+9201;Rack-W;4;Each;Sassafras;Chair Seat Blanks;2';2';"8/4""";$42,00
+9301;Rack-V;1000;Square Feet;Red Oak;Toung and Grove Flooring;Various;"2-1/4""";"3/4""";$3,52
+9302;Rack-X;500;Square Feet;White Oak;Toung and Grove Flooring;Various;"2-1/4""";"3/4""";$4,99
+9401;Rack-U;5;Each;Walnut;Fireplace Mantel;8';"8""";"5""";$350,00
+9402;Rack-U;1;Each;Red Oak;Fireplace Mantel;8';"8""";"5""";$175,00
+9403;Rack-U;2;Each;White Oak;Fireplace Mantel;8';"8""";"5""";$225,00
+9404;Rack-U;0;Each;Cherry;Fireplace Mantel;8';"8""";"5""";$250,00
+9405;Rack-U;1;Each;Hickory;Fireplace Mantel;8';"8""";"5""";$250,00
+9406;Rack-U;3;Each;Maple;Fireplace Mantel;8';"8""";"5""";$325,00
+9407;Rack-U;1;Each;Cypress;Fireplace Mantel;8';"8""";"5""";$325,00
