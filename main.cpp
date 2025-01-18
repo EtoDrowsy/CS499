@@ -1,5 +1,5 @@
 #include <iostream>
-#include "lumber.cpp"
+#include "Lumber.cpp"
 
 int main() {
 	return 0;
