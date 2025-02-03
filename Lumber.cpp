@@ -1,26 +1,25 @@
 #include <string>
+#include <vector>
 
 class Lumber {
     private:
-        std::string location;
-        std::string species;
         float length;
         float width;
         float thickness;
+        std::vector <std::string> attributes;
+        std::vector <std::string> attributeValues;
     public:
         Lumber() {
-            location = "NULL";
-            species = "NULL";
             length = 0;
             width = 0;
             thickness = 0;
         }
-        Lumber(std::string l, std::string s, float le, float w, float t) {
-            location = l;
-            species = s;
-            length = le;
+        Lumber(float l, float w, float t, std::vector <std::string> a, std::vector <std::string> aV) {
+            length = l;
             width = w;
             thickness = t;
+            attributes = a;
+            attributeValues = aV;
         }
         float* getDimensions() {
             float dimensions[3] = {length, width, thickness};
@@ -28,52 +27,30 @@ class Lumber {
         }
 };
 
-class Piece : Lumber {
-    private:
-        std::string serialNumber;
-        std::string surface;
-        std::string dried;
+class Piece : public Lumber {
     public:
         Piece() 
-        : Lumber() {
-            serialNumber = "0000";
-            surface = "NULL";
-            dried = "NULL";
-        }
-        Piece(std::string l, std::string s, float le, float w, float t, std::string se, std::string su, std::string d) 
-        : Lumber(l, s, le, w, t) {
-            serialNumber = se;
-            surface = su;
-            dried = d;
-        }
+        : Lumber() {}
+        Piece(float l, float w, float t, std::vector <std::string> a, std::vector <std::string> aV) 
+        : Lumber(l, w, t, a, aV) {}
 };
 
-class Bulk : Lumber {
+class Bulk : public Lumber {
     private:
-        std::string catalogNumber;
         int quantity;
-        std::string units;
-        std::string description;
         float price;
     public:
         Bulk() 
         : Lumber() {
-            catalogNumber = "0000";
             quantity = 0;
-            units = "NULL";
-            description = "NULL";
             price = 0;
         }
-        Bulk(std::string l, std::string s, float le, float w, float t, std::string c, int q, std::string u, std::string d, float p) 
-        : Lumber(l, s, le, w, t) {
-            catalogNumber = c;
+        Bulk(float l, float w, float t, std::vector <std::string> a, std::vector <std::string> aV, int q, float p) 
+        : Lumber(l, w, t, a, aV) {
             quantity = q;
-            units = u;
-            description = d;
             price = p;
         }
         float getPriceTotal(int q) {
-            if(q <= quantity) {return q * price;}
-            return -1;
+            return (q <= quantity) ? q * price : -1;
         }
 };
