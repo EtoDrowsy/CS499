@@ -54,3 +54,17 @@ class Bulk : public Lumber {
             return (q <= quantity) ? q * price : -1;
         }
 };
+
+class Log : public Lumber {
+    private:
+        std::string date;
+    public:
+        Log()
+        : Lumber() {
+            date = "NULL";
+        }
+        Log(float l, float w, float t, std::vector <std::string> a, std::vector <std::string> aV, std::string d)
+        : Lumber(l, w, t, a, aV) {
+            date = d;
+        }
+};
