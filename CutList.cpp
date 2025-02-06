@@ -12,8 +12,8 @@ class CutListItem : public Lumber {
             name = "NULL";
             quantity = 0;
         }
-        CutListItem(float l, float w, float t, std::vector <std::string> a, std::vector <std::string> aV, std::string n, int q)
-        : Lumber(l, w, t, a, aV) {
+        CutListItem(float l, float w, float t, std::string s, int g, std::vector <std::string> a, std::vector <std::string> aV, std::string n, int q)
+        : Lumber(l, w, t, s, g, a, aV) {
             name = n;
             quantity = q;
         }

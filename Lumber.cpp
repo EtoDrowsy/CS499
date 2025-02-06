@@ -6,6 +6,8 @@ class Lumber {
         float length;
         float width;
         float thickness;
+        std::string species;
+        int grade;
         std::vector <std::string> attributes;
         std::vector <std::string> attributeValues;
     public:
@@ -13,11 +15,15 @@ class Lumber {
             length = 0;
             width = 0;
             thickness = 0;
+            species = "NULL";
+            grade = 0;
         }
-        Lumber(float l, float w, float t, std::vector <std::string> a, std::vector <std::string> aV) {
+        Lumber(float l, float w, float t, std::string s, int g, std::vector <std::string> a, std::vector <std::string> aV) {
             length = l;
             width = w;
             thickness = t;
+            species = s;
+            grade = g;
             attributes = a;
             attributeValues = aV;
         }
@@ -31,8 +37,8 @@ class Piece : public Lumber {
     public:
         Piece() 
         : Lumber() {}
-        Piece(float l, float w, float t, std::vector <std::string> a, std::vector <std::string> aV) 
-        : Lumber(l, w, t, a, aV) {}
+        Piece(float l, float w, float t, std::string s, int g, std::vector <std::string> a, std::vector <std::string> aV) 
+        : Lumber(l, w, t, s, g, a, aV) {}
 };
 
 class Bulk : public Lumber {
@@ -45,8 +51,8 @@ class Bulk : public Lumber {
             quantity = 0;
             price = 0;
         }
-        Bulk(float l, float w, float t, std::vector <std::string> a, std::vector <std::string> aV, int q, float p) 
-        : Lumber(l, w, t, a, aV) {
+        Bulk(float l, float w, float t, std::string s, int g, std::vector <std::string> a, std::vector <std::string> aV, int q, float p) 
+        : Lumber(l, w, t, s, g, a, aV) {
             quantity = q;
             price = p;
         }
@@ -63,8 +69,8 @@ class Log : public Lumber {
         : Lumber() {
             date = "NULL";
         }
-        Log(float l, float w, float t, std::vector <std::string> a, std::vector <std::string> aV, std::string d)
-        : Lumber(l, w, t, a, aV) {
+        Log(float l, float w, float t, std::string s, int g, std::vector <std::string> a, std::vector <std::string> aV, std::string d)
+        : Lumber(l, w, t, s, g, a, aV) {
             date = d;
         }
 };
