@@ -1,5 +1,14 @@
-#include <iostream>
+#include "inventorywindow.h"
 
-int main() {
-	return 0;
+#include <QApplication>
+
+int main(int argc, char *argv[])
+{
+    QApplication a(argc, argv);
+
+    InventoryWindow w;
+
+    w.show();
+
+    return a.exec();
 }
