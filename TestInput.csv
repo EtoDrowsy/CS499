@@ -1,0 +1,5 @@
+ID;Location;Quantity;Species;Description;Length;Width;Thickness;Price
+1;Yard;5;Birch;Logs;8'-0";5-1/2";10/4;$12
+2;Yard;3;Oak;Logs;10'-0";6-1/2";12/4;$16
+3;Shed;10;Acadia;Plank;4'-4";7-1/2";8/4;$20
+4;Shed;12;Spruce;Plank;3'-2";7-1/2";5/4;$25

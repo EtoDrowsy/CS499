@@ -1,3 +1,7 @@
+#include "inventorywindow.h"
+
+#include <QApplication>
+
 #include "Lumber.cpp"
 #include "CutList.cpp"
 #include <fstream>
@@ -39,5 +43,11 @@ void readCSV(std::string filepath){
 int main() {
 	//std::string path = "PrestonLumberInventory.csv";
 	//readCSV(path);
-	return 0;
+  QApplication a(argc, argv);
+
+  InventoryWindow w;
+
+  w.show();
+
+  return a.exec();
 }
