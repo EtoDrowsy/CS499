@@ -22,7 +22,15 @@ private slots:
 
     void on_addObjectButton_clicked();
 
+    void on_deleteObjectButton_clicked();
+
+    void writeCSV(const std::string &filePath);
+
+    bool deleteRowId(int idDelete);
+
 private:
     Ui::InventoryWindow *ui;
+
+    bool csvLoaded = false;
 };
 #endif // INVENTORYWINDOW_H
