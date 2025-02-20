@@ -1,0 +1,36 @@
+#include "additemdialog.h"
+#include "ui_additemdialog.h"
+
+AddItemDialog::AddItemDialog(std::vector<std::string> attributes, QWidget *parent)
+    : QDialog(parent)
+    , ui(new Ui::AddItemDialog)
+{
+    ui->setupUi(this);
+    ui->attributetable->setRowCount(attributes.size());
+    ui->attributetable->setColumnCount(1);
+    ui->inputtable->setRowCount(attributes.size());
+    ui->inputtable->setColumnCount(1);
+    for (int i = 0; i < attributes.size(); i++) {
+        QString att = QString::fromStdString(attributes[i]);
+        QTableWidgetItem *attq = new QTableWidgetItem(att);
+        ui->attributetable->setItem(i, 0, attq);
+    }
+}
+
+std::vector<std::string> AddItemDialog::getNewItemData() const {
+    std::vector<std::string> newItem;
+    for (int i = 0; i < ui->inputtable->rowCount(); i++) {
+        QTableWidgetItem *item = ui->inputtable->item(i, 0);
+        if (item) {
+            newItem.push_back(item->text().toStdString());
+        } else {
+            newItem.push_back("");
+        }
+    }
+    return newItem;
+}
+
+AddItemDialog::~AddItemDialog()
+{
+    delete ui;
+}
