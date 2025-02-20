@@ -15,6 +15,8 @@ public:
     explicit AddItemDialog(std::vector<std::string> attributes, QWidget *parent = nullptr);
     ~AddItemDialog();
 
+    std::vector<std::string> getNewItemData() const;
+
 private:
     Ui::AddItemDialog *ui;
 };
