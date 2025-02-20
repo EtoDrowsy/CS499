@@ -1,6 +1,8 @@
 #include <string>
 #include <vector>
 
+#pragma once
+
 class Lumber {
     protected:
         float length;

@@ -2,14 +2,13 @@
 
 #include <QApplication>
 
-#include "Lumber.cpp"
 #include "CutList.cpp"
 #include <fstream>
 #include <string>
 #include <sstream>
 #include <vector>
 
-void readCSV(std::string filepath){
+void testreadCSV(std::string filepath){
 	std::fstream inputcsv;
 	inputcsv.open(filepath);
 	std::string line;
@@ -30,17 +29,17 @@ void readCSV(std::string filepath){
 	}
 	inputcsv.close();
 
-	for (it1 = array.begin(); it1 != array.end(); it1++){
-		for (it2 = it1->begin(); it2 != it1->end(); it2++){
-			std::cout << *it2;
-		}
-		std::cout << std::endl;
-	}
+    // for (it1 = array.begin(); it1 != array.end(); it1++){
+    // 	for (it2 = it1->begin(); it2 != it1->end(); it2++){
+    // 		std::cout << *it2;
+    // 	}
+    // 	std::cout << std::endl;
+    // }
 
 	return;
 }
 
-int main() {
+int main(int argc, char* argv[]) {
 	//std::string path = "PrestonLumberInventory.csv";
 	//readCSV(path);
   QApplication a(argc, argv);
