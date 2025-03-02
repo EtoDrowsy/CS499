@@ -8,9 +8,12 @@
 #include <string>
 #include <vector>
 #include <QMessageBox>
+#include <QFileDialog>
 
 std::vector<std::string> CSVattributes;
 std::vector<std::vector<std::string>> dataArray;
+
+std::string csvfilepath;
 
 void readCSV(std::string filepath)
 {
@@ -59,32 +62,44 @@ InventoryWindow::~InventoryWindow()
 void InventoryWindow::on_csvLoadButton_clicked()
 {
     if(csvLoaded){
-        QMessageBox::information(this, "CSV Loaded", "The CSV has already been loaded");
+        QMessageBox::information(this, "CSV Loaded", "The CSV has already been loaded.");
         return;
     }
 
-    readCSV("S:\\Homework\\CS499\\projectGUI\\CS499\\TestInput.csv");
+    csvfilepath = (QFileDialog::getOpenFileName(nullptr, "Select a file", "", "All Files (*.*)")).toStdString();
 
-    ui->dataViewer->setEditTriggers(QAbstractItemView::NoEditTriggers);
-
-    ui->dataViewer->setColumnCount(CSVattributes.size());
-    ui->dataViewer->setRowCount(dataArray.size() + 1);
-
-    for (int k = 0; k < CSVattributes.size(); k++) {
-        QString att = QString::fromStdString(CSVattributes[k]);
-        QTableWidgetItem *attq = new QTableWidgetItem(att);
-        ui->dataViewer->setItem(0, k, attq);
+    if(csvfilepath.empty()){
+        QMessageBox::information(this, "No File Selected", "Please select a file.");
+        return;
     }
+    else if(csvfilepath.find(".csv") == std::string::npos){
+        QMessageBox::information(this, "Wrong File Type", "Please select a .csv file.");
+        return;
+    }
+    else{
+        readCSV(csvfilepath);
 
-    for (int i = 0; i < dataArray.size(); i++) {
-        for (int j = 0; j < dataArray[i].size(); j++) {
-            QString qstr = QString::fromStdString(dataArray[i][j]);
-            QTableWidgetItem *newitem = new QTableWidgetItem(qstr);
-            ui->dataViewer->setItem(i + 1, j, newitem);
+        ui->dataViewer->setEditTriggers(QAbstractItemView::NoEditTriggers);
+
+        ui->dataViewer->setColumnCount(CSVattributes.size());
+        ui->dataViewer->setRowCount(dataArray.size() + 1);
+
+        for (int k = 0; k < CSVattributes.size(); k++) {
+            QString att = QString::fromStdString(CSVattributes[k]);
+            QTableWidgetItem *attq = new QTableWidgetItem(att);
+            ui->dataViewer->setItem(0, k, attq);
         }
-    }
 
-    csvLoaded = true;
+        for (int i = 0; i < dataArray.size(); i++) {
+            for (int j = 0; j < dataArray[i].size(); j++) {
+                QString qstr = QString::fromStdString(dataArray[i][j]);
+                QTableWidgetItem *newitem = new QTableWidgetItem(qstr);
+                ui->dataViewer->setItem(i + 1, j, newitem);
+            }
+        }
+
+        csvLoaded = true;
+    }
     return;
 }
 
@@ -106,7 +121,7 @@ void InventoryWindow::on_addObjectButton_clicked()
 
             dataArray.push_back(newItem);
 
-            writeCSV("S:\\Homework\\CS499\\projectGUI\\CS499\\TestInput.csv");
+            writeCSV(csvfilepath);
         }
     }
 }
@@ -160,7 +175,7 @@ void InventoryWindow::on_deleteObjectButton_clicked()
         int idDelete = deleteDialog->getInputId();
 
         if (deleteRowId(idDelete)) {
-            writeCSV("S:\\Homework\\CS499\\projectGUI\\CS499\\TestInput.csv");
+            writeCSV(csvfilepath);
         }
     }
 
