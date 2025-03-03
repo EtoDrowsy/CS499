@@ -51,7 +51,7 @@
      <rect>
       <x>230</x>
       <y>10</y>
-      <width>81</width>
+      <width>91</width>
       <height>41</height>
      </rect>
     </property>
@@ -72,6 +72,19 @@
      <locale language="English" country="UnitedStates"/>
     </property>
    </widget>
+   <widget class="QPushButton" name="createCSVButton">
+    <property name="geometry">
+     <rect>
+      <x>930</x>
+      <y>10</y>
+      <width>91</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Create CSV</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -79,7 +92,7 @@
      <x>0</x>
      <y>0</y>
      <width>1032</width>
-     <height>21</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuWood_Manager">
