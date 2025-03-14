@@ -256,3 +256,9 @@ void InventoryWindow::on_createCSVButton_clicked()
     }
 }
 
+
+void InventoryWindow::on_pushButton_clicked()
+{
+
+}
+
