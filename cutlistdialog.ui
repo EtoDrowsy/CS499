@@ -41,14 +41,58 @@
    <property name="locale">
     <locale language="English" country="UnitedStates"/>
    </property>
+   <property name="showGrid">
+    <bool>true</bool>
+   </property>
+   <property name="rowCount">
+    <number>1</number>
+   </property>
    <property name="columnCount">
     <number>5</number>
    </property>
+   <attribute name="horizontalHeaderVisible">
+    <bool>false</bool>
+   </attribute>
+   <attribute name="verticalHeaderVisible">
+    <bool>false</bool>
+   </attribute>
+   <attribute name="verticalHeaderHighlightSections">
+    <bool>true</bool>
+   </attribute>
+   <row/>
    <column/>
    <column/>
    <column/>
    <column/>
    <column/>
+   <item row="0" column="0">
+    <property name="text">
+     <string>Species</string>
+    </property>
+    <property name="flags">
+     <set>ItemIsSelectable|ItemIsEditable|ItemIsEnabled</set>
+    </property>
+   </item>
+   <item row="0" column="1">
+    <property name="text">
+     <string>Length</string>
+    </property>
+   </item>
+   <item row="0" column="2">
+    <property name="text">
+     <string>Width</string>
+    </property>
+   </item>
+   <item row="0" column="3">
+    <property name="text">
+     <string>Thickness</string>
+    </property>
+   </item>
+   <item row="0" column="4">
+    <property name="text">
+     <string>Quantity</string>
+    </property>
+   </item>
   </widget>
   <widget class="QPushButton" name="rowsetbutton">
    <property name="geometry">

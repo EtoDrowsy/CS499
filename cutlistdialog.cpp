@@ -12,3 +12,8 @@ cutlistdialog::~cutlistdialog()
 {
     delete ui;
 }
+
+void cutlistdialog::on_rowsetbutton_clicked()
+{
+    ui->cuttable->setRowCount(ui->numberCutList->text().toInt() + 1);
+}

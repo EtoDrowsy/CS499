@@ -15,6 +15,9 @@ public:
     explicit cutlistdialog(QWidget *parent = nullptr);
     ~cutlistdialog();
 
+private slots:
+    void on_rowsetbutton_clicked();
+
 private:
     Ui::cutlistdialog *ui;
 };
