@@ -33,6 +33,7 @@ public:
     QPushButton *deleteObjectButton;
     QTableWidget *dataViewer;
     QPushButton *createCSVButton;
+    QPushButton *sortObjectButton;
     QMenuBar *menubar;
     QMenu *menuWood_Manager;
     QStatusBar *statusbar;
@@ -41,7 +42,7 @@ public:
     {
         if (InventoryWindow->objectName().isEmpty())
             InventoryWindow->setObjectName("InventoryWindow");
-        InventoryWindow->resize(1032, 600);
+        InventoryWindow->resize(963, 600);
         InventoryWindow->setLocale(QLocale(QLocale::English, QLocale::UnitedStates));
         centralwidget = new QWidget(InventoryWindow);
         centralwidget->setObjectName("centralwidget");
@@ -50,22 +51,25 @@ public:
         csvLoadButton->setGeometry(QRect(10, 10, 91, 41));
         addObjectButton = new QPushButton(centralwidget);
         addObjectButton->setObjectName("addObjectButton");
-        addObjectButton->setGeometry(QRect(120, 10, 91, 41));
+        addObjectButton->setGeometry(QRect(120, 10, 101, 41));
         addObjectButton->setCursor(QCursor(Qt::CursorShape::ArrowCursor));
         deleteObjectButton = new QPushButton(centralwidget);
         deleteObjectButton->setObjectName("deleteObjectButton");
-        deleteObjectButton->setGeometry(QRect(230, 10, 91, 41));
+        deleteObjectButton->setGeometry(QRect(240, 10, 101, 41));
         dataViewer = new QTableWidget(centralwidget);
         dataViewer->setObjectName("dataViewer");
-        dataViewer->setGeometry(QRect(10, 60, 1011, 481));
+        dataViewer->setGeometry(QRect(10, 60, 931, 481));
         dataViewer->setLocale(QLocale(QLocale::English, QLocale::UnitedStates));
         createCSVButton = new QPushButton(centralwidget);
         createCSVButton->setObjectName("createCSVButton");
-        createCSVButton->setGeometry(QRect(930, 10, 91, 41));
+        createCSVButton->setGeometry(QRect(850, 10, 91, 41));
+        sortObjectButton = new QPushButton(centralwidget);
+        sortObjectButton->setObjectName("sortObjectButton");
+        sortObjectButton->setGeometry(QRect(360, 10, 101, 41));
         InventoryWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(InventoryWindow);
         menubar->setObjectName("menubar");
-        menubar->setGeometry(QRect(0, 0, 1032, 22));
+        menubar->setGeometry(QRect(0, 0, 963, 21));
         menuWood_Manager = new QMenu(menubar);
         menuWood_Manager->setObjectName("menuWood_Manager");
         InventoryWindow->setMenuBar(menubar);
@@ -84,9 +88,10 @@ public:
     {
         InventoryWindow->setWindowTitle(QCoreApplication::translate("InventoryWindow", "InventoryWindow", nullptr));
         csvLoadButton->setText(QCoreApplication::translate("InventoryWindow", "Load CSV", nullptr));
-        addObjectButton->setText(QCoreApplication::translate("InventoryWindow", "Add Object", nullptr));
-        deleteObjectButton->setText(QCoreApplication::translate("InventoryWindow", "Delete Object", nullptr));
+        addObjectButton->setText(QCoreApplication::translate("InventoryWindow", "Add to Inventory", nullptr));
+        deleteObjectButton->setText(QCoreApplication::translate("InventoryWindow", "Delete Item", nullptr));
         createCSVButton->setText(QCoreApplication::translate("InventoryWindow", "Create CSV", nullptr));
+        sortObjectButton->setText(QCoreApplication::translate("InventoryWindow", "Sort List", nullptr));
         menuWood_Manager->setTitle(QCoreApplication::translate("InventoryWindow", "Wood Manager", nullptr));
     } // retranslateUi
 

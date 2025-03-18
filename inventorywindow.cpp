@@ -2,6 +2,7 @@
 #include "./ui_inventorywindow.h"
 #include "additemdialog.h"
 #include "deleteitemdialog.h"
+#include "sortitemdialog.h"
 
 #include <iostream>
 #include <fstream>
@@ -22,7 +23,6 @@ void readCSV(std::string filepath)
     inputcsv.open(filepath);
     std::string line;
 
-    //Read first line to get attributes
     std::getline(inputcsv, line);
     std::stringstream ss(line);
     while (ss.good()) {
@@ -63,8 +63,13 @@ InventoryWindow::~InventoryWindow()
 void InventoryWindow::on_csvLoadButton_clicked()
 {
     if(csvLoaded){
-        QMessageBox::information(this, "CSV Loaded", "The CSV has already been loaded.");
-        return;
+        QMessageBox::StandardButton reply;
+        reply = QMessageBox::question(this, "CSV Loaded",
+                                      "The CSV has already been loaded. Do you want to load in a new file?",
+                                        QMessageBox::Yes | QMessageBox::No);
+        if(reply == QMessageBox::No){
+            return;
+        }
     }
 
     csvfilepath = (QFileDialog::getOpenFileName(nullptr, "Select a file", "", "CSV Files (*.csv)")).toStdString();
@@ -78,6 +83,10 @@ void InventoryWindow::on_csvLoadButton_clicked()
         return;
     }
     else{
+        ui->dataViewer->clear();
+        CSVattributes.clear();
+        dataArray.clear();
+
         readCSV(csvfilepath);
 
         ui->dataViewer->setEditTriggers(QAbstractItemView::NoEditTriggers);
@@ -175,8 +184,15 @@ void InventoryWindow::on_deleteObjectButton_clicked()
     if (deleteDialog->exec() == QDialog::Accepted) {
         int idDelete = deleteDialog->getInputId();
 
-        if (deleteRowId(idDelete)) {
+        if (idDelete <= -1){
+            QMessageBox::warning(this,"Invalid Input","Please enter a valid ID number.");
+        }
+        else if (!deleteRowId(idDelete)){
+            QMessageBox::warning(this,"ID Not Found","The ID number does not exist. Please select an existing ID.");
+        }
+        else {
             writeCSV(csvfilepath);
+            QMessageBox::information(this,"Item Deleted","The selected item has been deleted.");
         }
     }
 
@@ -254,5 +270,40 @@ void InventoryWindow::on_createCSVButton_clicked()
         newcsv.close();
         return;
     }
+}
+
+void InventoryWindow::on_sortObjectButton_clicked()
+{
+    sortitemdialog *sortDialog = new sortitemdialog(CSVattributes, this);
+
+    if (sortDialog->exec() == QDialog::Accepted) {
+        QString selectedColumn = sortDialog->getSelectedColumn();
+
+        int columnIndex = -1;
+        if (selectedColumn == "Species") {
+            columnIndex = 3;
+        } else if (selectedColumn == "Location") {
+            columnIndex = 1;
+        }
+
+        if (columnIndex != -1) {
+            std::sort(dataArray.begin(), dataArray.end(), [columnIndex](const std::vector<std::string>& a, const std::vector<std::string>& b) {
+                return a[columnIndex] < b[columnIndex];
+            });
+
+            ui->dataViewer->setRowCount(dataArray.size() + 1);
+            for (int i = 0; i < dataArray.size(); i++) {
+                for (int j = 0; j < dataArray[i].size(); j++) {
+                    QString qstr = QString::fromStdString(dataArray[i][j]);
+                    QTableWidgetItem *newitem = new QTableWidgetItem(qstr);
+                    ui->dataViewer->setItem(i + 1, j, newitem);
+                }
+            }
+
+            writeCSV(csvfilepath);
+        }
+    }
+
+    delete sortDialog;
 }
 

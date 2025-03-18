@@ -47,7 +47,8 @@ static constexpr auto qt_meta_stringdata_ZN15InventoryWindowE = QtMocHelpers::st
     "filePath",
     "deleteRowId",
     "idDelete",
-    "on_createCSVButton_clicked"
+    "on_createCSVButton_clicked",
+    "on_sortObjectButton_clicked"
 );
 #else  // !QT_MOC_HAS_STRINGDATA
 #error "qtmochelpers.h not found or too old."
@@ -59,7 +60,7 @@ Q_CONSTINIT static const uint qt_meta_data_ZN15InventoryWindowE[] = {
       12,       // revision
        0,       // classname
        0,    0, // classinfo
-       6,   14, // methods
+       7,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -67,12 +68,13 @@ Q_CONSTINIT static const uint qt_meta_data_ZN15InventoryWindowE[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags, initial metatype offsets
-       1,    0,   50,    2, 0x08,    1 /* Private */,
-       3,    0,   51,    2, 0x08,    2 /* Private */,
-       4,    0,   52,    2, 0x08,    3 /* Private */,
-       5,    1,   53,    2, 0x08,    4 /* Private */,
-       8,    1,   56,    2, 0x08,    6 /* Private */,
-      10,    0,   59,    2, 0x08,    8 /* Private */,
+       1,    0,   56,    2, 0x08,    1 /* Private */,
+       3,    0,   57,    2, 0x08,    2 /* Private */,
+       4,    0,   58,    2, 0x08,    3 /* Private */,
+       5,    1,   59,    2, 0x08,    4 /* Private */,
+       8,    1,   62,    2, 0x08,    6 /* Private */,
+      10,    0,   65,    2, 0x08,    8 /* Private */,
+      11,    0,   66,    2, 0x08,    9 /* Private */,
 
  // slots: parameters
     QMetaType::Void,
@@ -80,6 +82,7 @@ Q_CONSTINIT static const uint qt_meta_data_ZN15InventoryWindowE[] = {
     QMetaType::Void,
     QMetaType::Void, 0x80000000 | 6,    7,
     QMetaType::Bool, QMetaType::Int,    9,
+    QMetaType::Void,
     QMetaType::Void,
 
        0        // eod
@@ -107,6 +110,8 @@ Q_CONSTINIT const QMetaObject InventoryWindow::staticMetaObject = { {
         QtPrivate::TypeAndForceComplete<bool, std::false_type>,
         QtPrivate::TypeAndForceComplete<int, std::false_type>,
         // method 'on_createCSVButton_clicked'
+        QtPrivate::TypeAndForceComplete<void, std::false_type>,
+        // method 'on_sortObjectButton_clicked'
         QtPrivate::TypeAndForceComplete<void, std::false_type>
     >,
     nullptr
@@ -124,6 +129,7 @@ void InventoryWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int 
         case 4: { bool _r = _t->deleteRowId((*reinterpret_cast< std::add_pointer_t<int>>(_a[1])));
             if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = std::move(_r); }  break;
         case 5: _t->on_createCSVButton_clicked(); break;
+        case 6: _t->on_sortObjectButton_clicked(); break;
         default: ;
         }
     }
@@ -148,14 +154,14 @@ int InventoryWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 6)
+        if (_id < 7)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 6;
+        _id -= 7;
     }
     if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 6)
+        if (_id < 7)
             *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
-        _id -= 6;
+        _id -= 7;
     }
     return _id;
 }

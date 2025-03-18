@@ -2,3 +2,4 @@
 #include "EWIEGA46WW/moc_additemdialog.cpp"
 #include "EWIEGA46WW/moc_deleteitemdialog.cpp"
 #include "EWIEGA46WW/moc_inventorywindow.cpp"
+#include "EWIEGA46WW/moc_sortitemdialog.cpp"

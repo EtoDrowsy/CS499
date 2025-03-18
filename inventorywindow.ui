@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1032</width>
+    <width>963</width>
     <height>600</height>
    </rect>
   </property>
@@ -35,7 +35,7 @@
      <rect>
       <x>120</x>
       <y>10</y>
-      <width>91</width>
+      <width>101</width>
       <height>41</height>
      </rect>
     </property>
@@ -43,20 +43,20 @@
      <cursorShape>ArrowCursor</cursorShape>
     </property>
     <property name="text">
-     <string>Add Object</string>
+     <string>Add to Inventory</string>
     </property>
    </widget>
    <widget class="QPushButton" name="deleteObjectButton">
     <property name="geometry">
      <rect>
-      <x>230</x>
+      <x>240</x>
       <y>10</y>
-      <width>91</width>
+      <width>101</width>
       <height>41</height>
      </rect>
     </property>
     <property name="text">
-     <string>Delete Object</string>
+     <string>Delete Item</string>
     </property>
    </widget>
    <widget class="QTableWidget" name="dataViewer">
@@ -64,7 +64,7 @@
      <rect>
       <x>10</x>
       <y>60</y>
-      <width>1011</width>
+      <width>931</width>
       <height>481</height>
      </rect>
     </property>
@@ -75,7 +75,7 @@
    <widget class="QPushButton" name="createCSVButton">
     <property name="geometry">
      <rect>
-      <x>930</x>
+      <x>850</x>
       <y>10</y>
       <width>91</width>
       <height>41</height>
@@ -85,14 +85,27 @@
      <string>Create CSV</string>
     </property>
    </widget>
+   <widget class="QPushButton" name="sortObjectButton">
+    <property name="geometry">
+     <rect>
+      <x>360</x>
+      <y>10</y>
+      <width>101</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Sort List</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1032</width>
-     <height>22</height>
+     <width>963</width>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuWood_Manager">

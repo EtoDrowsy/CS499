@@ -30,6 +30,8 @@ private slots:
 
     void on_createCSVButton_clicked();
 
+    void on_sortObjectButton_clicked();
+
 private:
     Ui::InventoryWindow *ui;
 
