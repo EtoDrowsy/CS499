@@ -1,10 +1,17 @@
 body {
     font-family: Arial, sans-serif;
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* Three columns */
+    grid-template-columns: repeat(3, 1fr);
     gap: 20px;
     padding: 20px;
     justify-content: center;
+}
+
+.page-title {
+    grid-column: 1 / -1;
+    text-align: center;
+    font-size: 2em;
+    margin-bottom: 20px;
 }
 
 .wood-item {
@@ -16,15 +23,27 @@ body {
     text-align: center;
 }
 
-/* Responsive behavior for smaller screens */
+.wood-image {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 6px;
+    margin-bottom: 10px;
+}
+
+h3 {
+    margin-top: 0;
+    color: #333;
+}
+
 @media (max-width: 900px) {
     body {
-        grid-template-columns: repeat(2, 1fr); /* Two per row */
+        grid-template-columns: repeat(2, 1fr);
     }
 }
 
 @media (max-width: 600px) {
     body {
-        grid-template-columns: repeat(1, 1fr); /* One per row */
+        grid-template-columns: repeat(1, 1fr);
     }
 }
