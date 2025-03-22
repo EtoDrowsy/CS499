@@ -15,7 +15,7 @@ DeleteItemDialog::~DeleteItemDialog()
 
 void DeleteItemDialog::updateDeleteSpinBox(int rowCount)
 {
-    ui->inputTextEdit->setPlaceholderText(QString("Enter a number between 1 and %1").arg(rowCount));
+    ui->inputTextEdit->setPlaceholderText(QString("Enter a Valid ID Number"));
 }
 
 int DeleteItemDialog::getInputId() const

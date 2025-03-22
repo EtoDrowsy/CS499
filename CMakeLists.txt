@@ -27,6 +27,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         deleteitemdialog.h deleteitemdialog.cpp deleteitemdialog.ui
         Lumber.cpp
         CutList.cpp
+        sortitemdialog.h sortitemdialog.cpp sortitemdialog.ui
         cutlistdialog.h cutlistdialog.cpp cutlistdialog.ui
     )
 # Define target properties for Android with Qt 6 as:
