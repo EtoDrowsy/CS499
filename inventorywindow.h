@@ -32,6 +32,8 @@ private slots:
 
     void on_sortObjectButton_clicked();
 
+    void on_pushButton_clicked();
+
 private:
     Ui::InventoryWindow *ui;
 

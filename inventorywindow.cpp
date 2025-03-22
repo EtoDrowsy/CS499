@@ -1,8 +1,9 @@
 #include "inventorywindow.h"
-#include "./ui_inventorywindow.h"
 #include "additemdialog.h"
 #include "deleteitemdialog.h"
 #include "sortitemdialog.h"
+#include "cutlistdialog.h"
+#include "ui_inventorywindow.h"
 
 #include <iostream>
 #include <fstream>
@@ -305,5 +306,12 @@ void InventoryWindow::on_sortObjectButton_clicked()
     }
 
     delete sortDialog;
+}
+
+void InventoryWindow::on_pushButton_clicked(){
+    cutlistdialog cutwindow(this);
+    if (cutwindow.exec() == QDialog::Accepted) {
+
+    }
 }
 
