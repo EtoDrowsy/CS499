@@ -71,6 +71,12 @@
     <property name="locale">
      <locale language="English" country="UnitedStates"/>
     </property>
+    <attribute name="horizontalHeaderVisible">
+     <bool>false</bool>
+    </attribute>
+    <attribute name="verticalHeaderVisible">
+     <bool>false</bool>
+    </attribute>
    </widget>
    <widget class="QPushButton" name="createCSVButton">
     <property name="geometry">
@@ -83,6 +89,19 @@
     </property>
     <property name="text">
      <string>Create CSV</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton">
+    <property name="geometry">
+     <rect>
+      <x>830</x>
+      <y>10</y>
+      <width>91</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Cut List</string>
     </property>
    </widget>
   </widget>

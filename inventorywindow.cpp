@@ -2,6 +2,7 @@
 #include "./ui_inventorywindow.h"
 #include "additemdialog.h"
 #include "deleteitemdialog.h"
+#include "cutlistdialog.h"
 
 #include <iostream>
 #include <fstream>
@@ -253,6 +254,15 @@ void InventoryWindow::on_createCSVButton_clicked()
 
         newcsv.close();
         return;
+    }
+}
+
+
+void InventoryWindow::on_pushButton_clicked()
+{
+    cutlistdialog cutwindow(this);
+    if (cutwindow.exec() == QDialog::Accepted) {
+
     }
 }
 
