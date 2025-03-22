@@ -20,7 +20,7 @@
    <widget class="QPushButton" name="csvLoadButton">
     <property name="geometry">
      <rect>
-      <x>10</x>
+      <x>120</x>
       <y>10</y>
       <width>91</width>
       <height>41</height>
@@ -33,7 +33,7 @@
    <widget class="QPushButton" name="addObjectButton">
     <property name="geometry">
      <rect>
-      <x>120</x>
+      <x>230</x>
       <y>10</y>
       <width>91</width>
       <height>41</height>
@@ -49,9 +49,9 @@
    <widget class="QPushButton" name="deleteObjectButton">
     <property name="geometry">
      <rect>
-      <x>230</x>
+      <x>340</x>
       <y>10</y>
-      <width>81</width>
+      <width>91</width>
       <height>41</height>
      </rect>
     </property>
@@ -71,6 +71,38 @@
     <property name="locale">
      <locale language="English" country="UnitedStates"/>
     </property>
+    <attribute name="horizontalHeaderVisible">
+     <bool>false</bool>
+    </attribute>
+    <attribute name="verticalHeaderVisible">
+     <bool>false</bool>
+    </attribute>
+   </widget>
+   <widget class="QPushButton" name="createCSVButton">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>10</y>
+      <width>91</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Create CSV</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton">
+    <property name="geometry">
+     <rect>
+      <x>930</x>
+      <y>10</y>
+      <width>91</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Cut List</string>
+    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -79,7 +111,7 @@
      <x>0</x>
      <y>0</y>
      <width>1032</width>
-     <height>21</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuWood_Manager">

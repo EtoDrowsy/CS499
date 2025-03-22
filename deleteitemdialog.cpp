@@ -15,10 +15,18 @@ DeleteItemDialog::~DeleteItemDialog()
 
 void DeleteItemDialog::updateDeleteSpinBox(int rowCount)
 {
-    ui->inputBox->setRange(1, rowCount);  // The valid range is from 1 to rowCount
+    ui->inputTextEdit->setPlaceholderText(QString("Enter a number between 1 and %1").arg(rowCount));
 }
 
 int DeleteItemDialog::getInputId() const
 {
-    return ui->inputBox->value();  // Return the value selected in the spin box
+    bool checkValid = false;
+    int value = ui->inputTextEdit->toPlainText().toInt(&checkValid);
+
+    if(checkValid){
+        return value;
+    }
+    else{
+        return -1;
+    }
 }

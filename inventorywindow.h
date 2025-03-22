@@ -28,6 +28,10 @@ private slots:
 
     bool deleteRowId(int idDelete);
 
+    void on_createCSVButton_clicked();
+
+    void on_pushButton_clicked();
+
 private:
     Ui::InventoryWindow *ui;
 
