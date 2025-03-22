@@ -20,7 +20,7 @@
    <widget class="QPushButton" name="csvLoadButton">
     <property name="geometry">
      <rect>
-      <x>10</x>
+      <x>120</x>
       <y>10</y>
       <width>91</width>
       <height>41</height>
@@ -33,7 +33,7 @@
    <widget class="QPushButton" name="addObjectButton">
     <property name="geometry">
      <rect>
-      <x>120</x>
+      <x>230</x>
       <y>10</y>
       <width>91</width>
       <height>41</height>
@@ -49,7 +49,7 @@
    <widget class="QPushButton" name="deleteObjectButton">
     <property name="geometry">
      <rect>
-      <x>230</x>
+      <x>340</x>
       <y>10</y>
       <width>91</width>
       <height>41</height>
@@ -81,7 +81,7 @@
    <widget class="QPushButton" name="createCSVButton">
     <property name="geometry">
      <rect>
-      <x>930</x>
+      <x>10</x>
       <y>10</y>
       <width>91</width>
       <height>41</height>
@@ -94,7 +94,7 @@
    <widget class="QPushButton" name="pushButton">
     <property name="geometry">
      <rect>
-      <x>830</x>
+      <x>930</x>
       <y>10</y>
       <width>91</width>
       <height>41</height>
