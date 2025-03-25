@@ -4,6 +4,7 @@
 #include "sortitemdialog.h"
 #include "cutlistdialog.h"
 #include "ui_inventorywindow.h"
+#include "Lumber.cpp"
 
 #include <iostream>
 #include <fstream>
@@ -17,6 +18,8 @@ std::vector<std::string> CSVattributes;
 std::vector<std::vector<std::string>> dataArray;
 
 std::string csvfilepath;
+
+std::vector<Lumber*> inventory;
 
 void readCSV(std::string filepath)
 {
@@ -43,6 +46,7 @@ void readCSV(std::string filepath)
             row.push_back(substr);
         }
         dataArray.push_back(row);
+        inventory.push_back(new Lumber(row,CSVattributes));
     }
     inputcsv.close();
 
@@ -59,6 +63,7 @@ InventoryWindow::InventoryWindow(QWidget *parent)
 InventoryWindow::~InventoryWindow()
 {
     delete ui;
+    inventory.clear();
 }
 
 void InventoryWindow::on_csvLoadButton_clicked()

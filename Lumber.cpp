@@ -20,27 +20,27 @@ class Lumber {
             species = "NULL";
             grade = 0;
         }
-        Lumber(std::vector <std::string> a, std::vector <std::string> aV) {
+        Lumber(std::vector <std::string> a, std::vector <std::string> aV) : Lumber() {
             attributes = a;
             attributeValues = aV;
             for(int i = 0; i < aV.size(); i++){
-                if (a[i] == "Length")
+                if (aV[i] == "Length")
                 {
                     length = std::stof(a[i]);
                 }
-                else if (a[i] == "Width")
+                else if (aV[i] == "Width")
                 {
                     width = std::stof(a[i]);
                 }
-                else if (a[i] == "Thickness")
+                else if (aV[i] == "Thickness")
                 {
                     thickness = std::stof(a[i]);
                 }
-                else if (a[i] == "Species")
+                else if (aV[i] == "Species")
                 {
                     species = a[i];
                 }
-                else if (a[i] == "Grade")
+                else if (aV[i] == "Grade")
                 {
                     grade = std::stoi(a[i]);
                 }
@@ -91,23 +91,23 @@ class Piece : public Lumber {
             attributes = a;
             attributeValues = aV;
             for(int i = 0; i < aV.size(); i++){
-                if (a[i] == "Length")
+                if (aV[i] == "Length")
                 {
                     length = std::stof(a[i]);
                 }
-                else if (a[i] == "Width")
+                else if (aV[i] == "Width")
                 {
                     width = std::stof(a[i]);
                 }
-                else if (a[i] == "Thickness")
+                else if (aV[i] == "Thickness")
                 {
                     thickness = std::stof(a[i]);
                 }
-                else if (a[i] == "Species")
+                else if (aV[i] == "Species")
                 {
                     species = a[i];
                 }
-                else if (a[i] == "Grade")
+                else if (aV[i] == "Grade")
                 {
                     grade = std::stoi(a[i]);
                 }
@@ -129,31 +129,31 @@ class Bulk : public Lumber {
             attributes = a;
             attributeValues = aV;
             for(int i = 0; i < aV.size(); i++){
-                if (a[i] == "Length")
+                if (aV[i] == "Length")
                 {
                     length = std::stof(a[i]);
                 }
-                else if (a[i] == "Width")
+                else if (aV[i] == "Width")
                 {
                     width = std::stof(a[i]);
                 }
-                else if (a[i] == "Thickness")
+                else if (aV[i] == "Thickness")
                 {
                     thickness = std::stof(a[i]);
                 }
-                else if (a[i] == "Species")
+                else if (aV[i] == "Species")
                 {
                     species = a[i];
                 }
-                else if (a[i] == "Grade")
+                else if (aV[i] == "Grade")
                 {
                     grade = std::stoi(a[i]);
                 }
-                else if (a[i] == "Quantity")
+                else if (aV[i] == "Quantity")
                 {
                     quantity = std::stoi(a[i]);
                 }
-                else if (a[i] == "Price")
+                else if (aV[i] == "Price")
                 {
                     price = std::stof(a[i]);
                 }
@@ -181,27 +181,27 @@ class Log : public Lumber {
         }
         Log(std::vector <std::string> a, std::vector <std::string> aV) : Lumber() {
             for(int i = 0; i < aV.size(); i++){
-                if (a[i] == "Length")
+                if (aV[i] == "Length")
                 {
                     length = std::stof(a[i]);
                 }
-                else if (a[i] == "Width")
+                else if (aV[i] == "Width")
                 {
                     width = std::stof(a[i]);
                 }
-                else if (a[i] == "Thickness")
+                else if (aV[i] == "Thickness")
                 {
                     thickness = std::stof(a[i]);
                 }
-                else if (a[i] == "Species")
+                else if (aV[i] == "Species")
                 {
                     species = a[i];
                 }
-                else if (a[i] == "Grade")
+                else if (aV[i] == "Grade")
                 {
                     grade = std::stoi(a[i]);
                 }
-                else if (a[i] == "Date")
+                else if (aV[i] == "Date")
                 {
                     date = a[i];
                 }
