@@ -17,8 +17,12 @@ public:
 
     std::vector<std::string> getNewItemData() const;
 
+    bool validate();
+
 private:
     Ui::AddItemDialog *ui;
+
+    void resetStyles();
 };
 
 #endif // ADDITEMDIALOG_H
