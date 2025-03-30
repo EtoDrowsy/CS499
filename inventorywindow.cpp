@@ -53,6 +53,35 @@ void readCSV(std::string filepath)
     return;
 }
 
+void generateHTML(std::vector<Lumber*> woodList, std::string filename) {
+    std::ofstream file(filename);
+
+    if (!file) {
+        std::cerr << "Error opening file for writing.\n";
+        return;
+    }
+
+    file << "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n";
+    file << "    <meta charset=\"UTF-8\">\n";
+    file << "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n";
+    file << "    <title>Your Wood Order</title>\n";
+    file << "    <link rel=\"stylesheet\" type=\"text/css\" href=\"style.css\">\n";
+    file << "</head>\n<body>\n";
+
+    for (int i = 0; i < woodList.size(); i++) {
+        file << "    <div class=\"wood-item\">\n";
+        file << "        <h3>Species: " << woodList[i]->getSpecies() << "</h3>\n";
+        file << "        <p>Dimensions: " << woodList[i]->getLength() << woodList[i]->getWidth() << woodList[i]->getThickness() << " <br>\n";
+        file << "        Quantity: " << "0" << " <br>\n";
+        file << "        Price: $" << "0" << "</p>\n";
+        file << "    </div>\n";
+    }
+
+    file << "</body>\n</html>\n";
+    file.close();
+    std::cout << "HTML file generated successfully: " << filename << std::endl;
+}
+
 InventoryWindow::InventoryWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::InventoryWindow)
@@ -320,3 +349,8 @@ void InventoryWindow::on_pushButton_clicked(){
     }
 }
 
+
+void InventoryWindow::on_HTMLGenButton_clicked()
+{
+    generateHTML(inventory, "index.html");
+}

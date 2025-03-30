@@ -50,6 +50,18 @@ class Lumber {
             float dimensions[3] = {length, width, thickness};
             return dimensions;
         }
+        std::string getSpecies(){
+            return species;
+        }
+        float getLength(){
+            return length;
+        }
+        float getWidth(){
+            return width;
+        }
+        float getThickness(){
+            return thickness;
+        }
 
         void setLength(float l){
             length = l;
