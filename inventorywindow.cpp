@@ -21,7 +21,8 @@ std::vector<std::vector<std::string>> dataArray;
 std::string csvfilepath;
 
 std::vector<Lumber*> inventory;
-QStringList selectedItems;
+QStringList potentialItems;
+std::vector<Lumber*> selectedInventory;
 
 void readCSV(std::string filepath)
 {
@@ -354,12 +355,19 @@ void InventoryWindow::on_pushButton_clicked(){
 
 void InventoryWindow::on_HTMLGenButton_clicked()
 {
-    selectedItems.push_back("1");
-    selectedItems.push_back("2");
-    selectedItems.push_back("3");
-    htmlgendialog htmlwindow(this, selectedItems);
-    if (htmlwindow.exec() == QDialog::Accepted){
-        std::cout << "AYOOOOOOOOO";
+    for(int i = 0; i < inventory.size(); i++){
+        potentialItems.push_back(QString::fromStdString(inventory[i]->getID()));
     }
-    // generateHTML(inventory, "index.html");
+    htmlgendialog htmlwindow(this, potentialItems);
+    if (htmlwindow.exec() == QDialog::Accepted){
+        std::vector<std::string> selectedItems = htmlwindow.getCheckedItems();
+        for(int i = 0; i < selectedItems.size(); i++){
+            for(int j = 0; j < inventory.size(); j++){
+                if(inventory[j]->getID() == selectedItems[i]){
+                    selectedInventory.push_back(inventory[j]);
+                }
+            }
+        }
+    }
+    generateHTML(selectedInventory, "index.html");
 }

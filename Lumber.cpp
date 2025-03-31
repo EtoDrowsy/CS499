@@ -47,7 +47,7 @@ class Lumber {
                 }
                 else if (aV[i] == "ID")
                 {
-                    species = a[i];
+                    id = a[i];
                 }
             }
         }

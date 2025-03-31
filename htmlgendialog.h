@@ -14,6 +14,7 @@ class htmlgendialog : public QDialog
 public:
     explicit htmlgendialog(QWidget *parent = nullptr, QStringList idList = {});
     ~htmlgendialog();
+    std::vector<std::string> getCheckedItems();
 
 private:
     Ui::htmlgendialog *ui;

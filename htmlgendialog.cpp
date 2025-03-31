@@ -20,3 +20,13 @@ htmlgendialog::~htmlgendialog()
 {
     delete ui;
 }
+
+std::vector<std::string> htmlgendialog::getCheckedItems(){
+    std::vector<std::string> selectedItems;
+    for(int i = 0; i < ui->listWidget->count(); ++i){
+        if(ui->listWidget->item(i)->checkState() == Qt::Checked){
+            selectedItems.push_back(ui->listWidget->item(i)->text().toStdString());
+        }
+    }
+    return selectedItems;
+}
