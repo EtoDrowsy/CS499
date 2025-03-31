@@ -46,10 +46,17 @@ class Lumber {
                 }
             }
         }
-        float* getDimensions() {
-            float dimensions[3] = {length, width, thickness};
+        std::vector <float> getDimensions() {
+            std::vector <float> dimensions;
+            dimensions.push_back(length);
+            dimensions.push_back(width);
+            dimensions.push_back(thickness);
             return dimensions;
         }
+        std::vector <std::string> getAttributes() {return attributes;}
+        std::vector <std::string> getAttributeValues() {return attributeValues;}
+        std::string getSpecies() {return species;}
+        int getGrade() {return grade;}
 
         void setLength(float l){
             length = l;
@@ -84,6 +91,8 @@ class Lumber {
 };
 
 class Piece : public Lumber {
+    private:
+        float price;
     public:
         Piece() 
         : Lumber() {}
@@ -111,8 +120,13 @@ class Piece : public Lumber {
                 {
                     grade = std::stoi(a[i]);
                 }
+                else if (a[i] == "Price")
+                {
+                    price = std::stof(a[i]);
+                }
             }
         }
+        float getPrice() {return price;}
 };
 
 class Bulk : public Lumber {
@@ -159,9 +173,8 @@ class Bulk : public Lumber {
                 }
             }
         }
-        float getPriceTotal(int q) {
-            return (q <= quantity) ? q * price : -1;
-        }
+        float getPrice() {return price;}
+        float getQuantity() {return quantity;}
 
         void setQuantity(int q){
             quantity = q;
