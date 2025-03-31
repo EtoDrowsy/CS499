@@ -5,6 +5,7 @@
 #include "cutlistdialog.h"
 #include "ui_inventorywindow.h"
 #include "Lumber.cpp"
+#include "htmlgendialog.h"
 
 #include <iostream>
 #include <fstream>
@@ -20,6 +21,7 @@ std::vector<std::vector<std::string>> dataArray;
 std::string csvfilepath;
 
 std::vector<Lumber*> inventory;
+QStringList selectedItems;
 
 void readCSV(std::string filepath)
 {
@@ -352,5 +354,12 @@ void InventoryWindow::on_pushButton_clicked(){
 
 void InventoryWindow::on_HTMLGenButton_clicked()
 {
-    generateHTML(inventory, "index.html");
+    selectedItems.push_back("1");
+    selectedItems.push_back("2");
+    selectedItems.push_back("3");
+    htmlgendialog htmlwindow(this, selectedItems);
+    if (htmlwindow.exec() == QDialog::Accepted){
+        std::cout << "AYOOOOOOOOO";
+    }
+    // generateHTML(inventory, "index.html");
 }

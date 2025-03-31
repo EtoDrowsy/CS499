@@ -10,6 +10,7 @@ class Lumber {
         float thickness;
         std::string species;
         int grade;
+        std::string id;
         std::vector <std::string> attributes;
         std::vector <std::string> attributeValues;
     public:
@@ -44,6 +45,10 @@ class Lumber {
                 {
                     grade = std::stoi(a[i]);
                 }
+                else if (aV[i] == "ID")
+                {
+                    species = a[i];
+                }
             }
         }
         float* getDimensions() {
@@ -61,6 +66,9 @@ class Lumber {
         }
         float getThickness(){
             return thickness;
+        }
+        std::string getID(){
+            return id;
         }
 
         void setLength(float l){
