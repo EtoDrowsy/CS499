@@ -12,7 +12,7 @@ class CutListItem : public Lumber {
         std::string name;
         int quantity;
     public:
-        CutListItem() 
+        CutListItem()
         : Lumber() {
             name = "NULL";
             quantity = 0;
@@ -123,7 +123,7 @@ float calculateCost(std::vector <CutListItem> cutList, std::vector <int> cutList
     if (sum == item.getDimensions().at(0))
         return item.getPrice();
     else
-        return item.getPrice() * item.getDimensions().at(0) / ceil(sum + SAW_KERF); 
+        return item.getPrice() * item.getDimensions().at(0) / ceil(sum + SAW_KERF);
 }
 float calculateCost(std::vector <CutListItem> cutList, std::vector <int> cutListIndexes, Bulk item) {
     float sum = 0;
@@ -134,7 +134,7 @@ float calculateCost(std::vector <CutListItem> cutList, std::vector <int> cutList
     if (sum == item.getDimensions().at(0))
         return item.getPrice();
     else
-        return item.getPrice() * item.getDimensions().at(0) / ceil(sum + SAW_KERF); 
+        return item.getPrice() * item.getDimensions().at(0) / ceil(sum + SAW_KERF);
 }
 struct knapsack {
     float cost;
@@ -157,7 +157,7 @@ std::vector <std::vector <int>> recursiveBulkQuantity(int i, int count, std::vec
     return sets;
 }
 
-std::vector <knapsack> recursiveKnapsack(int i, std::vector <int> bulkQuantities, std::vector <std::vector <std::vector <int>>> pieceConfigs, std::vector <std::vector <std::vector <int>>> bulkConfigs, std::vector <std::vector <float>> pieceCost, std::vector <std::vector <float>> bulkCost) {   
+std::vector <knapsack> recursiveKnapsack(int i, std::vector <int> bulkQuantities, std::vector <std::vector <std::vector <int>>> pieceConfigs, std::vector <std::vector <std::vector <int>>> bulkConfigs, std::vector <std::vector <float>> pieceCost, std::vector <std::vector <float>> bulkCost) {
     if (i >= pieceConfigs.size() + bulkConfigs.size()) {
         std::vector <knapsack> empty;
         knapsack zero;
@@ -273,7 +273,7 @@ lumberList cutListToLumberList(std::vector <Bulk> bulkList, std::vector <Piece> 
                 }
                 for (int i = 0; i < k.bulks.size(); i++) {
                     for (int j = 0; j < k.bulks.at(i).size(); j++) {
-                        int bulkIndex = k.bulks.size() - i - 1; 
+                        int bulkIndex = k.bulks.size() - i - 1;
                         for (int l = 0; l < bulkConfigurations.at(bulkIndex).at(j).size(); l++) {
                             // knapsack and bulk configs have inverted first index ranges
                             knapsackCount.at(bulkConfigurations.at(bulkIndex).at(j).at(l)) += k.bulks.at(i).at(j);
