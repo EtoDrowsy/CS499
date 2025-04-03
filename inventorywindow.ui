@@ -98,7 +98,7 @@
      <string>Sort List</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QPushButton" name="cutlistButton">
     <property name="geometry">
      <rect>
       <x>620</x>

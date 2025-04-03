@@ -2,7 +2,7 @@
 
 #include <QApplication>
 
-#include "CutList.cpp"
+#include "CutList.h"
 #include <fstream>
 #include <string>
 #include <sstream>
