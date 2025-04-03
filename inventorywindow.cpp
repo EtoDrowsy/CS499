@@ -62,7 +62,7 @@ std::vector <int> findMatching(Lumber* item, std::vector <CutListItem> cutList) 
 
         bool sameDims = iDimensions.at(1) == cDimensions.at(1) && iDimensions.at(2) == cDimensions.at(2);
         bool smallEnough = iDimensions[0] >= cDimensions[0];
-        bool sameSpecies = item->getSpecies() == c.getSpecies();
+        bool sameSpecies = item->getSpecies()== c.getSpecies();
         bool gradeMatch = item->getGrade() <= c.getGrade();
         int matchingAttributes = 0;
         for (int k = 0; k < cAttributes.size(); k++) {
@@ -733,10 +733,10 @@ void InventoryWindow::on_cutlistButton_clicked()
     std::vector <std::string> empty;
 
     std::vector <CutListItem> cutList;
-    CutListItem item1("0'-10\"","0'-5\"","1/1","cherry",1,empty,empty,"item1",1);
-    CutListItem item2("1'-4\"","0'-5\"","1/1","cherry",1,empty,empty,"item2",1);
-    CutListItem item3("0'-10\"","0'-5\"","1/1","cherry",1,empty,empty,"item3",1);
-    CutListItem item4("1'-3\"","0'-5\"","1/1","cherry",1,empty,empty,"item4",1);
+    CutListItem item1("0'-10\"","0'-5\"","1/1","Cherry",1,empty,empty,"item1",1);
+    CutListItem item2("1'-4\"","0'-5\"","1/1","Cherry",1,empty,empty,"item2",1);
+    CutListItem item3("0'-10\"","0'-5\"","1/1","Cherry",1,empty,empty,"item3",1);
+    CutListItem item4("1'-3\"","0'-5\"","1/1","Cherry",1,empty,empty,"item4",1);
     cutList.push_back(item1);
     cutList.push_back(item2);
     cutList.push_back(item3);
