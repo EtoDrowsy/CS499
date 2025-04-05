@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>963</width>
+    <width>939</width>
     <height>600</height>
    </rect>
   </property>
@@ -64,7 +64,7 @@
      <rect>
       <x>10</x>
       <y>60</y>
-      <width>931</width>
+      <width>911</width>
       <height>481</height>
      </rect>
     </property>
@@ -75,7 +75,7 @@
    <widget class="QPushButton" name="createCSVButton">
     <property name="geometry">
      <rect>
-      <x>730</x>
+      <x>720</x>
       <y>10</y>
       <width>91</width>
       <height>41</height>
@@ -114,7 +114,7 @@
    <widget class="QPushButton" name="HTMLGenButton">
     <property name="geometry">
      <rect>
-      <x>840</x>
+      <x>820</x>
       <y>10</y>
       <width>101</width>
       <height>41</height>
@@ -130,7 +130,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>963</width>
+     <width>939</width>
      <height>22</height>
     </rect>
    </property>

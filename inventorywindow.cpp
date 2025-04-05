@@ -157,60 +157,79 @@ void InventoryWindow::on_addObjectButton_clicked()
     if (addwindow.exec() == QDialog::Accepted) {
         std::vector<std::string> newItem = addwindow.getNewItemData();
 
-        if (newItem.size() == CSVattributes.size()) {
+        bool isComplete = true;
+        for (size_t i = 0; i < newItem.size(); i++) {
+            if (newItem[i].empty()) {
+                isComplete = false;
+                break;
+            }
+        }
+
+        if (isComplete && newItem.size() == CSVattributes.size()) {
+            dataArray.push_back(newItem);
+
             int newRow = ui->dataViewer->rowCount();
             ui->dataViewer->insertRow(newRow);
 
             for (int j = 0; j < newItem.size(); j++) {
-                QString qstr = QString::fromStdString(newItem[j]);
-                QTableWidgetItem *newItemCell = new QTableWidgetItem(qstr);
-                ui->dataViewer->setItem(newRow, j, newItemCell);
+                QTableWidgetItem* item = new QTableWidgetItem(
+                    QString::fromStdString(newItem[j]));
+                ui->dataViewer->setItem(newRow, j, item);
             }
-
-            dataArray.push_back(newItem);
 
             writeCSV(csvfilepath);
         }
     }
 }
 
-void InventoryWindow::writeCSV(const std::string &filePath)
-{
-    std::ofstream file(filePath);
+void InventoryWindow::writeCSV(const std::string &filePath) {
+    qDebug() << "Saving to CSV file:" << QString::fromStdString(filePath);
+
+    std::ofstream file(filePath, std::ios::out | std::ios::trunc);
     if (!file.is_open()) {
-        QMessageBox::warning(this, "File Error", "Could not open CSV file for writing.");
+        QMessageBox::warning(this, "File Error", "Could not open CSV file for writing: " + QString::fromStdString(filePath));
         return;
     }
 
     for (size_t i = 0; i < CSVattributes.size(); i++) {
         file << CSVattributes[i];
-        if (i < CSVattributes.size() - 1)
-            file << ";";
+        if (i < CSVattributes.size() - 1) file << ";";
     }
     file << "\n";
 
     bool isFirstRow = true;
-    for (const auto &row : dataArray) {
+    for (auto &row : dataArray) {
         if (std::all_of(row.begin(), row.end(), [](const std::string& str) { return str.empty(); })) {
             continue;
         }
 
-        if (!isFirstRow) {
-            file << "\n";
-        }
+        if (!isFirstRow) file << "\n";
 
         for (size_t j = 0; j < row.size(); j++) {
-            file << row[j];
-            if (j < row.size() - 1) {
-                file << ";";
+            std::string value = row[j];
+            qDebug() << "Processing field:" << CSVattributes[j] << "Value:" << QString::fromStdString(value);
+
+            if (CSVattributes[j] == "Length" && !value.empty()) {
+                if (value.back() != '\"') value += "\"";
             }
+            else if (CSVattributes[j] == "Width" && !value.empty()) {
+                if (value.back() != '\"') value += "\"";
+            }
+            else if (CSVattributes[j] == "Price" && !value.empty() && value[0] != '$') {
+                value = "$" + value;
+            }
+
+            file << value;
+            if (j < row.size() - 1) file << ";";
         }
 
         isFirstRow = false;
     }
 
     file.close();
+    qDebug() << "CSV file saved successfully.";
 }
+
 
 void InventoryWindow::on_deleteObjectButton_clicked()
 {
