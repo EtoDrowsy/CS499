@@ -773,7 +773,7 @@ void InventoryWindow::on_cutlistButton_clicked()
         }
     }
     for (int i = 0; i < returnList.bulks.size(); i++) {
-        std::cout << returnList.bulkQuantities.at(i) << " of Bulk #" << returnList.pieces.at(i) + 1 << " fulfills:" << std::endl;
+        std::cout << returnList.bulkQuantities.at(i) << " of Bulk #" << returnList.bulks.at(i) + 1 << " fulfills:" << std::endl;
         for (int j : returnList.bulkFulfillment.at(i))  {
             std::cout << "\tCut List Item #" << j + 1 << std::endl;
         }

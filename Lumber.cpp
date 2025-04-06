@@ -71,12 +71,12 @@ class Lumber {
             return dimensions;
         }
         float getLength(){
-            float lengthnum = std::stof(length.substr(0, length.find('\''))) + std::stof(length.substr(length.find('\'') + 2, length.size() - 1));
+            float lengthnum = std::stof(length.substr(0, length.find('\''))) * 12 + std::stof(length.substr(length.find('\'') + 2, length.size() - 1));
 
             return lengthnum;
         }
         float getWidth(){
-            float widthnum = std::stof(width.substr(0, width.find('\''))) + std::stof(width.substr(width.find('\'') + 2, width.size() - 1));
+            float widthnum = std::stof(width.substr(0, width.find('\''))) * 12 + std::stof(width.substr(width.find('\'') + 2, width.size() - 1));
 
             return widthnum;
         }
