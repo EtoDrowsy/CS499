@@ -11,6 +11,7 @@ class Lumber {
         std::string species;
         int grade;
         std::string id;
+        std::string photoPath;
         std::vector <std::string> attributes;
         std::vector <std::string> attributeValues;
     public:
@@ -49,6 +50,10 @@ class Lumber {
                 {
                     id = a[i];
                 }
+                else if (aV[i] == "Photo")
+                {
+                    photoPath = a[i];
+                }
             }
         }
         std::vector <float> getDimensions() {
@@ -74,6 +79,7 @@ class Lumber {
         std::vector <std::string> getAttributeValues() {return attributeValues;}
         std::string getSpecies() {return species;}
         int getGrade() {return grade;}
+        std::string getPhotoPath() {return photoPath;}
 
         void setLength(float l){
             length = l;
@@ -95,6 +101,9 @@ class Lumber {
         }
         void setAttributeValues(std::vector <std::string> aV){
             attributeValues = aV;
+        }
+        void setPhotoPath(std::string p){
+            photoPath = p;
         }
 
         std::string toString(){
