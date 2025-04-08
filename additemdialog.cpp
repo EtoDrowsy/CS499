@@ -165,7 +165,7 @@ std::vector<std::string> AddItemDialog::getNewItemData() const {
 
                 QString widthStr;
                 if (!wholePart.isEmpty()) {
-                    widthStr = wholePart;
+                    widthStr = wholePart + "'";
                     if (!fractionPart.isEmpty()) {
                         widthStr += "-" + fractionPart;
                     }
@@ -192,7 +192,6 @@ std::vector<std::string> AddItemDialog::getNewItemData() const {
             }
         }
     }
-
     qDebug() << "Final newItem size:" << newItem.size();
     return newItem;
 }

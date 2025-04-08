@@ -167,6 +167,7 @@ void InventoryWindow::on_addObjectButton_clicked()
 
         if (isComplete && newItem.size() == CSVattributes.size()) {
             dataArray.push_back(newItem);
+            inventory.push_back(new Lumber(newItem,CSVattributes));
 
             int newRow = ui->dataViewer->rowCount();
             ui->dataViewer->insertRow(newRow);
@@ -249,6 +250,12 @@ void InventoryWindow::on_deleteObjectButton_clicked()
         }
         else {
             writeCSV(csvfilepath);
+            for (int i = 0; i < inventory.size(); i++){
+                if (inventory[i]->getID() == std::to_string(idDelete)){
+                    delete inventory[i];
+                    inventory.erase(inventory.begin()+i);
+                }
+            }
             QMessageBox::information(this,"Item Deleted","The selected item has been deleted.");
         }
     }
