@@ -6,6 +6,7 @@
 #include "ui_inventorywindow.h"
 #include "Lumber.cpp"
 #include "htmlgendialog.h"
+#include "photodialog.h"
 
 #include <iostream>
 #include <fstream>
@@ -277,6 +278,25 @@ bool InventoryWindow::deleteRowId(int idDelete)
     return false;
 }
 
+bool InventoryWindow::checkInInv(int photoid){
+    for (int row = 1; row < ui->dataViewer->rowCount(); ++row) {
+        QString id = ui->dataViewer->item(row, 0)->text();
+        if (id.toInt() == photoid) {
+            return true;
+        }
+    }
+    return false;
+}
+
+int InventoryWindow::getIndex(int searchid){
+    for (int row = 1; row < ui->dataViewer->rowCount(); ++row) {
+        QString id = ui->dataViewer->item(row, 0)->text();
+        if (id.toInt() == searchid) {
+            return row;
+        }
+    }
+}
+
 void InventoryWindow::on_createCSVButton_clicked()
 {
     if(csvLoaded){
@@ -397,3 +417,51 @@ void InventoryWindow::on_HTMLGenButton_clicked()
     }
     generateHTML(selectedInventory, "index.html");
 }
+
+void InventoryWindow::on_photoButton_clicked()
+{
+    photodialog photowindow(this);
+    if (photowindow.exec() == QDialog::Accepted){
+        if (!photowindow.getImageUpStatus()){
+            QMessageBox::information(this, "Error", "No image selected.");
+        }
+        else if (!checkInInv(photowindow.getIDValue())){
+            QMessageBox::information(this, "Error", "ID not in inventory.");
+        }
+        else{
+            int testval = getIndex(photowindow.getIDValue());
+            std::cout << testval;
+
+            int photoindex;
+            for (int i = 0; i < CSVattributes.size(); i++){
+                if (CSVattributes[i] == "Photo"){
+                    photoindex = i;
+                }
+            }
+
+            for (int i = 0; i < dataArray.size(); i++) {
+                if(QString::fromStdString(dataArray[i][0]) == QString::number(photowindow.getIDValue())){
+
+                    dataArray[i][photoindex] = photowindow.getFileName();
+
+                    QTableWidgetItem *photoItem = new QTableWidgetItem(QString::fromStdString(photowindow.getFileName()));
+                    ui->dataViewer->setItem(i + 1, photoindex, photoItem);
+                    for (int j = 0; j < inventory.size(); j++){
+                        if (inventory[j]->getID() == std::to_string(photowindow.getIDValue())){
+                            inventory[j]->setPhotoPath(photowindow.getFileName());
+                            break;
+                        }
+                    }
+                    break;
+
+                }
+            }
+
+            writeCSV(csvfilepath);
+
+            // returns row index
+            // write to table and then write to object
+        }
+    }
+}
+

@@ -36,6 +36,12 @@ private slots:
 
     void on_HTMLGenButton_clicked();
 
+    void on_photoButton_clicked();
+
+    bool checkInInv(int photoid);
+
+    int getIndex(int searchid);
+
 private:
     Ui::InventoryWindow *ui;
 
