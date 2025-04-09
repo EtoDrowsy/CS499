@@ -203,7 +203,7 @@
    <widget class="QPushButton" name="photoButton">
     <property name="geometry">
      <rect>
-      <x>950</x>
+      <x>1090</x>
       <y>20</y>
       <width>131</width>
       <height>71</height>
@@ -226,7 +226,7 @@
      <x>0</x>
      <y>0</y>
      <width>1920</width>
-     <height>21</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuWood_Manager">
