@@ -5,22 +5,26 @@
 
 class Lumber {
     protected:
-        float length;
-        float width;
-        float thickness;
+        std::string length;
+        std::string width;
+        std::string thickness;
         std::string species;
         int grade;
+        int quantity;
         std::string id;
+        std::string description;
         std::string photoPath;
         std::vector <std::string> attributes;
         std::vector <std::string> attributeValues;
     public:
         Lumber() {
-            length = 0;
-            width = 0;
-            thickness = 0;
+            length = "NULL";
+            width = "NULL";
+            thickness = "NULL";
             species = "NULL";
+            description = "NULL";
             grade = 0;
+            quantity = 0;
         }
         Lumber(std::vector <std::string> a, std::vector <std::string> aV) : Lumber() {
             attributes = a;
@@ -28,15 +32,15 @@ class Lumber {
             for(int i = 0; i < aV.size(); i++){
                 if (aV[i] == "Length")
                 {
-                    length = std::stof(a[i]);
+                    length = a[i];
                 }
                 else if (aV[i] == "Width")
                 {
-                    width = std::stof(a[i]);
+                    width = a[i];
                 }
                 else if (aV[i] == "Thickness")
                 {
-                    thickness = std::stof(a[i]);
+                    thickness = a[i];
                 }
                 else if (aV[i] == "Species")
                 {
@@ -46,9 +50,17 @@ class Lumber {
                 {
                     grade = std::stoi(a[i]);
                 }
+                else if (aV[i] == "Quantity")
+                {
+                    quantity = std::stoi(a[i]);
+                }
                 else if (aV[i] == "ID")
                 {
                     id = a[i];
+                }
+                else if (aV[i] == "Description")
+                {
+                    description = a[i];
                 }
                 else if (aV[i] == "Photo")
                 {
@@ -58,27 +70,46 @@ class Lumber {
         }
         std::vector <float> getDimensions() {
             std::vector <float> dimensions;
-            dimensions.push_back(length);
-            dimensions.push_back(width);
-            dimensions.push_back(thickness);
+            dimensions.push_back(getLength());
+            dimensions.push_back(getWidth());
+            dimensions.push_back(getThickness());
             return dimensions;
         }
         float getLength(){
-            return length;
+            float lengthnum = std::stof(length.substr(0, length.find('\''))) * 12 + std::stof(length.substr(length.find('\'') + 2, length.size() - 1));
+
+            return lengthnum;
         }
         float getWidth(){
-            return width;
+            float widthnum = std::stof(width.substr(0, width.find('\''))) * 12 + std::stof(width.substr(width.find('\'') + 2, width.size() - 1));
+
+            return widthnum;
         }
         float getThickness(){
+            float thicknessnum = std::stof(thickness.substr(0, thickness.find('/'))) / std::stof(thickness.substr(thickness.find('/') + 1, thickness.size() - 1));
+
+            return thicknessnum;
+        }
+        std::string getLengthDisplay(){
+            return length;
+        }
+        std::string getWidthDisplay(){
+            return width;
+        }
+        std::string getThicknessDisplay(){
             return thickness;
         }
         std::string getID(){
             return id;
         }
+        std::string getDescription(){
+            return description;
+        }
         std::vector <std::string> getAttributes() {return attributes;}
         std::vector <std::string> getAttributeValues() {return attributeValues;}
         std::string getSpecies() {return species;}
         int getGrade() {return grade;}
+        int getQuantity() {return quantity;}
         std::string getPhotoPath() {return photoPath;}
 
         void setLength(float l){
@@ -102,6 +133,9 @@ class Lumber {
         void setAttributeValues(std::vector <std::string> aV){
             attributeValues = aV;
         }
+        void setQuantity(int q){
+            quantity = q;
+        }
         void setPhotoPath(std::string p){
             photoPath = p;
         }
@@ -122,31 +156,11 @@ class Piece : public Lumber {
     public:
         Piece() 
         : Lumber() {}
-        Piece(std::vector <std::string> a, std::vector <std::string> aV) : Lumber(){
+        Piece(std::vector <std::string> a, std::vector <std::string> aV) : Lumber(a, aV){
             attributes = a;
             attributeValues = aV;
             for(int i = 0; i < aV.size(); i++){
-                if (aV[i] == "Length")
-                {
-                    length = std::stof(a[i]);
-                }
-                else if (aV[i] == "Width")
-                {
-                    width = std::stof(a[i]);
-                }
-                else if (aV[i] == "Thickness")
-                {
-                    thickness = std::stof(a[i]);
-                }
-                else if (aV[i] == "Species")
-                {
-                    species = a[i];
-                }
-                else if (aV[i] == "Grade")
-                {
-                    grade = std::stoi(a[i]);
-                }
-                else if (a[i] == "Price")
+                if (aV[i] == "Price")
                 {
                     price = std::stof(a[i]);
                 }
@@ -157,54 +171,24 @@ class Piece : public Lumber {
 
 class Bulk : public Lumber {
     private:
-        int quantity;
         float price;
     public:
         Bulk() 
         : Lumber() {
-            quantity = 0;
             price = 0;
         }
-        Bulk(std::vector <std::string> a, std::vector <std::string> aV) : Lumber() {
+        Bulk(std::vector <std::string> a, std::vector <std::string> aV) : Lumber(a, aV) {
             attributes = a;
             attributeValues = aV;
             for(int i = 0; i < aV.size(); i++){
-                if (aV[i] == "Length")
-                {
-                    length = std::stof(a[i]);
-                }
-                else if (aV[i] == "Width")
-                {
-                    width = std::stof(a[i]);
-                }
-                else if (aV[i] == "Thickness")
-                {
-                    thickness = std::stof(a[i]);
-                }
-                else if (aV[i] == "Species")
-                {
-                    species = a[i];
-                }
-                else if (aV[i] == "Grade")
-                {
-                    grade = std::stoi(a[i]);
-                }
-                else if (aV[i] == "Quantity")
-                {
-                    quantity = std::stoi(a[i]);
-                }
-                else if (aV[i] == "Price")
+                if (aV[i] == "Price")
                 {
                     price = std::stof(a[i]);
                 }
             }
         }
         float getPrice() {return price;}
-        float getQuantity() {return quantity;}
 
-        void setQuantity(int q){
-            quantity = q;
-        }
         void setPrice(float p){
             price = p;
         }
@@ -218,29 +202,9 @@ class Log : public Lumber {
         : Lumber() {
             date = "NULL";
         }
-        Log(std::vector <std::string> a, std::vector <std::string> aV) : Lumber() {
+        Log(std::vector <std::string> a, std::vector <std::string> aV) : Lumber(a, aV) {
             for(int i = 0; i < aV.size(); i++){
-                if (aV[i] == "Length")
-                {
-                    length = std::stof(a[i]);
-                }
-                else if (aV[i] == "Width")
-                {
-                    width = std::stof(a[i]);
-                }
-                else if (aV[i] == "Thickness")
-                {
-                    thickness = std::stof(a[i]);
-                }
-                else if (aV[i] == "Species")
-                {
-                    species = a[i];
-                }
-                else if (aV[i] == "Grade")
-                {
-                    grade = std::stoi(a[i]);
-                }
-                else if (aV[i] == "Date")
+                if (aV[i] == "Date")
                 {
                     date = a[i];
                 }
