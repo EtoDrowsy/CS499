@@ -7,6 +7,8 @@
 #include "Lumber.cpp"
 #include "htmlgendialog.h"
 
+#include "modifyitemdialog.h"
+
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -530,6 +532,7 @@ void InventoryWindow::on_addObjectButton_clicked()
 
         if (isComplete && newItem.size() == CSVattributes.size()) {
             dataArray.push_back(newItem);
+            inventory.push_back(new Lumber(newItem,CSVattributes));
 
             int newRow = ui->dataViewer->rowCount();
             ui->dataViewer->insertRow(newRow);
@@ -581,6 +584,9 @@ void InventoryWindow::writeCSV(const std::string &filePath) {
             else if (CSVattributes[j] == "Price" && !value.empty() && value[0] != '$') {
                 value = "$" + value;
             }
+            else if  (CSVattributes[j] == "Notes" && !value.empty()) {
+
+            }
 
             file << value;
             if (j < row.size() - 1) file << ";";
@@ -612,6 +618,12 @@ void InventoryWindow::on_deleteObjectButton_clicked()
         }
         else {
             writeCSV(csvfilepath);
+            for (int i = 0; i < inventory.size(); i++){
+                if (inventory[i]->getID() == std::to_string(idDelete)){
+                    delete inventory[i];
+                    inventory.erase(inventory.begin()+i);
+                }
+            }
             QMessageBox::information(this,"Item Deleted","The selected item has been deleted.");
         }
     }
@@ -689,6 +701,45 @@ void InventoryWindow::on_createCSVButton_clicked()
 
         newcsv.close();
         return;
+    }
+}
+
+void InventoryWindow::on_modifyObjectButton_clicked()
+{
+    bool idFound = false;
+
+    modifyitemdialog modifyDialog(this);
+    if(modifyDialog.exec() == QDialog::Accepted){
+        QString inputID = modifyDialog.getEnteredID();
+        QString newNote = modifyDialog.getNoteText();
+
+        if (inputID.isEmpty() || newNote.isEmpty()){
+            QMessageBox::warning(this, "Incomplete Input", "Make sure ID and note box are filled.");
+            return;
+        }
+
+        for (int i = 0; i < dataArray.size(); i++) {
+            if(QString::fromStdString(dataArray[i][0]) == inputID){
+
+            dataArray[i][12] = newNote.toStdString();
+
+            QTableWidgetItem *noteItem = new QTableWidgetItem(newNote);
+            ui->dataViewer->setItem(i + 1, 12, noteItem);
+
+            idFound = true;
+            break;
+
+            }
+        }
+
+        if(!idFound) {
+            QMessageBox::warning(this, "ID Not Found", "The inputted ID is not in the current file.");
+        }
+        else{
+            QMessageBox::warning(this, "Item Updated", "The note was added to the selected ID.");
+        }
+
+        writeCSV(csvfilepath);
     }
 }
 
