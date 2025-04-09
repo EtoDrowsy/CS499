@@ -143,7 +143,7 @@
      <string>Sort List</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QPushButton" name="cutlistButton">
     <property name="geometry">
      <rect>
       <x>670</x>
@@ -181,6 +181,25 @@
      <string>Create Store</string>
     </property>
    </widget>
+   <widget class="QPushButton" name="modifyObjectButton">
+    <property name="geometry">
+     <rect>
+      <x>950</x>
+      <y>20</y>
+      <width>131</width>
+      <height>71</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>16</pointsize>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>Modify</string>
+    </property>
+   </widget>
    <widget class="QPushButton" name="photoButton">
     <property name="geometry">
      <rect>
@@ -207,7 +226,7 @@
      <x>0</x>
      <y>0</y>
      <width>1920</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuWood_Manager">

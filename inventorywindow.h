@@ -30,12 +30,14 @@ private slots:
 
     void on_createCSVButton_clicked();
 
-    void on_sortObjectButton_clicked();
+    void on_modifyObjectButton_clicked();
 
-    void on_pushButton_clicked();
+    void on_sortObjectButton_clicked();
 
     void on_HTMLGenButton_clicked();
 
+    void on_cutlistButton_clicked();
+    
     void on_photoButton_clicked();
 
     bool checkInInv(int photoid);
