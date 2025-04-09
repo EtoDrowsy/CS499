@@ -429,9 +429,6 @@ void InventoryWindow::on_photoButton_clicked()
             QMessageBox::information(this, "Error", "ID not in inventory.");
         }
         else{
-            int testval = getIndex(photowindow.getIDValue());
-            std::cout << testval;
-
             int photoindex;
             for (int i = 0; i < CSVattributes.size(); i++){
                 if (CSVattributes[i] == "Photo"){
