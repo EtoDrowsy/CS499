@@ -355,13 +355,20 @@ void InventoryWindow::on_modifyObjectButton_clicked()
             return;
         }
 
+        int noteIndex;
+        for (int i = 0; i < CSVattributes.size(); i++){
+            if (CSVattributes[i] == "Notes"){
+                noteIndex = i;
+            }
+        }
+
         for (int i = 0; i < dataArray.size(); i++) {
             if(QString::fromStdString(dataArray[i][0]) == inputID){
 
-            dataArray[i][12] = newNote.toStdString();
+            dataArray[i][noteIndex] = newNote.toStdString();
 
             QTableWidgetItem *noteItem = new QTableWidgetItem(newNote);
-            ui->dataViewer->setItem(i + 1, 12, noteItem);
+            ui->dataViewer->setItem(i + 1, noteIndex, noteItem);
 
             idFound = true;
             break;
