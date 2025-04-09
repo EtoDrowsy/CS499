@@ -30,6 +30,8 @@ private slots:
 
     void on_createCSVButton_clicked();
 
+    void on_modifyObjectButton_clicked();
+
     void on_sortObjectButton_clicked();
 
     void on_pushButton_clicked();

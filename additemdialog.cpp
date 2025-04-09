@@ -24,10 +24,17 @@ AddItemDialog::AddItemDialog(std::vector<std::string> attributes, QWidget *paren
 
     connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
 
+    int rowIndex = 0;
+
     for (int i = 0; i < attributes.size(); i++) {
         QString att = QString::fromStdString(attributes[i]);
+
+        if(att.toLower() == "photo" || att.toLower() == "notes") {
+            continue;
+        }
+
         QTableWidgetItem *attq = new QTableWidgetItem(att);
-        ui->attributetable->setItem(i, 0, attq);
+        ui->attributetable->setItem(rowIndex, 0, attq);
 
         // Input field widget
         QWidget *container = new QWidget(this);
@@ -38,7 +45,7 @@ AddItemDialog::AddItemDialog(std::vector<std::string> attributes, QWidget *paren
             lineEdit->setPlaceholderText(att);
             lineEdit->setGeometry(0, 0, 80, 25);
             container->setFixedSize(80, 25);
-            ui->inputtable->setCellWidget(i, 0, lineEdit);
+            ui->inputtable->setCellWidget(rowIndex, 0, lineEdit);
         }
         else if (att.toLower() == "location") {
             QLineEdit *lineEdit = new QLineEdit(container);
@@ -48,7 +55,7 @@ AddItemDialog::AddItemDialog(std::vector<std::string> attributes, QWidget *paren
             lineEdit->setPlaceholderText("Location");
             lineEdit->setGeometry(0, 0, 100, 25);
             container->setFixedSize(100, 25);
-            ui->inputtable->setCellWidget(i, 0, lineEdit);
+            ui->inputtable->setCellWidget(rowIndex, 0, lineEdit);
         }
         else if (att.toLower() == "length") {
             QLineEdit *feetLineEdit = new QLineEdit(container);
@@ -65,7 +72,7 @@ AddItemDialog::AddItemDialog(std::vector<std::string> attributes, QWidget *paren
             inchesLineEdit->setGeometry(60, 0, 40, 25);
 
             container->setFixedSize(100, 25);
-            ui->inputtable->setCellWidget(i, 0, container);
+            ui->inputtable->setCellWidget(rowIndex, 0, container);
         }
         else if (att.toLower() == "width") {
             QLineEdit *wholeNumberEdit = new QLineEdit(container);
@@ -84,7 +91,7 @@ AddItemDialog::AddItemDialog(std::vector<std::string> attributes, QWidget *paren
             fractionEdit->setGeometry(60, 0, 40, 25);
 
             container->setFixedSize(100, 25);
-            ui->inputtable->setCellWidget(i, 0, container);
+            ui->inputtable->setCellWidget(rowIndex, 0, container);
         }
         else if (att.toLower() == "thickness") {
             QLineEdit *lineEdit = new QLineEdit(container);
@@ -95,7 +102,7 @@ AddItemDialog::AddItemDialog(std::vector<std::string> attributes, QWidget *paren
 
             lineEdit->setGeometry(0, 0, 80, 25);
             container->setFixedSize(80, 25);
-            ui->inputtable->setCellWidget(i, 0, lineEdit);
+            ui->inputtable->setCellWidget(rowIndex, 0, lineEdit);
 
         }
         else if (att.toLower() == "price") {
@@ -114,15 +121,17 @@ AddItemDialog::AddItemDialog(std::vector<std::string> attributes, QWidget *paren
 
             lineEdit->setGeometry(0, 0, 80, 25);
             container->setFixedSize(80, 25);
-            ui->inputtable->setCellWidget(i, 0, lineEdit);
+            ui->inputtable->setCellWidget(rowIndex, 0, lineEdit);
         }
         else {
             QLineEdit *lineEdit = new QLineEdit(container);
             lineEdit->setPlaceholderText(att);
             lineEdit->setGeometry(0, 0, 100, 25);
             container->setFixedSize(100, 25);
-            ui->inputtable->setCellWidget(i, 0, lineEdit);
+            ui->inputtable->setCellWidget(rowIndex, 0, lineEdit);
         }
+
+        rowIndex++;
     }
 }
 
@@ -136,6 +145,15 @@ std::vector<std::string> AddItemDialog::getNewItemData() const {
 
         if (!widget) {
             newItem.push_back("");
+            continue;
+        }
+
+        if(attribute == "photo") {
+            newItem.push_back("EmptyString");
+            continue;
+        }
+        if(attribute == "notes") {
+            newItem.push_back("N/A");
             continue;
         }
 
@@ -192,6 +210,7 @@ std::vector<std::string> AddItemDialog::getNewItemData() const {
             }
         }
     }
+
     qDebug() << "Final newItem size:" << newItem.size();
     return newItem;
 }
