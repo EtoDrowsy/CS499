@@ -30,7 +30,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         cutlistdialog.h cutlistdialog.cpp cutlistdialog.ui
         htmlgendialog.cpp htmlgendialog.h htmlgendialog.ui
         modifyitemdialog.h modifyitemdialog.cpp modifyitemdialog.ui
-
+        photodialog.h photodialog.cpp photodialog.ui
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET CS499 APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
