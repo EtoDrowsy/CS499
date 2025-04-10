@@ -7,6 +7,8 @@
 #include "Lumber.cpp"
 #include "htmlgendialog.h"
 #include "photodialog.h"
+#include "soldinventoryviewer.h"
+#include "soldinventorydialog.h"
 
 #include "modifyitemdialog.h"
 
@@ -390,6 +392,10 @@ std::vector<Lumber*> inventory;
 QStringList potentialItems;
 std::vector<Lumber*> selectedInventory;
 
+std::vector<Lumber*>soldInventory;
+int soldIndex;
+bool soldInvExists = false;
+
 void readCSV(std::string filepath)
 {
     std::fstream inputcsv;
@@ -404,6 +410,14 @@ void readCSV(std::string filepath)
         CSVattributes.push_back(substr);
     }
 
+    for(int i = 0; i < CSVattributes.size(); i++){
+        if (CSVattributes[i] == "Sold"){
+            soldInvExists = true;
+            soldIndex = i;
+            CSVattributes.erase(CSVattributes.begin()+i);
+        }
+    }
+
     //Reads all "objects"
     while (!inputcsv.eof()) {
         std::getline(inputcsv, line);
@@ -414,8 +428,20 @@ void readCSV(std::string filepath)
             getline(ss, substr, ';');
             row.push_back(substr);
         }
-        dataArray.push_back(row);
-        inventory.push_back(new Lumber(row,CSVattributes));
+        if (soldInvExists){
+            if (row[soldIndex] == "Yes"){
+                soldInventory.push_back(new Lumber(row,CSVattributes));
+            }
+            else{
+                row.erase(row.cbegin()+soldIndex);
+                dataArray.push_back(row);
+                inventory.push_back(new Lumber(row,CSVattributes));
+            }
+        }
+        else{
+            dataArray.push_back(row);
+            inventory.push_back(new Lumber(row,CSVattributes));
+        }
     }
     inputcsv.close();
 
@@ -562,6 +588,7 @@ void InventoryWindow::writeCSV(const std::string &filePath) {
         file << CSVattributes[i];
         if (i < CSVattributes.size() - 1) file << ";";
     }
+    if (soldInvExists) {file << ";Sold";}
     file << "\n";
 
     bool isFirstRow = true;
@@ -592,8 +619,17 @@ void InventoryWindow::writeCSV(const std::string &filePath) {
             file << value;
             if (j < row.size() - 1) file << ";";
         }
+        if (soldInvExists) {file << ";";}
 
         isFirstRow = false;
+    }
+
+    if (soldInvExists){
+        file << "\n";
+        for (int i = 0; i < soldInventory.size(); i++){
+            file << soldInventory[i]->toString() << "Yes";
+            if (i != soldInventory.size() - 1) {file << "\n";}
+        }
     }
 
     file.close();
@@ -920,3 +956,19 @@ void InventoryWindow::on_photoButton_clicked()
         }
     }
 }
+
+void InventoryWindow::on_soldButton_clicked()
+{
+    soldinventoryviewer soldinvviewer(CSVattributes, soldInventory, this);
+    soldinvviewer.exec();
+}
+
+
+void InventoryWindow::on_newSaleButton_clicked()
+{
+    soldinventorydialog soldinvdialog(this);
+    if(soldinvdialog.exec() == QDialog::Accepted){
+
+    }
+}
+

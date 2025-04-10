@@ -145,7 +145,6 @@ class Lumber {
             for(int i = 0; i < attributeValues.size(); i++){
                 csvline.append(attributes[i] + ";");
             }
-            csvline.append("\n");
             return csvline;
         }
 };
