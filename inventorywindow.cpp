@@ -525,13 +525,18 @@ void InventoryWindow::on_addObjectButton_clicked()
 
         bool isComplete = true;
         for (size_t i = 0; i < newItem.size(); i++) {
+            qDebug() << ("newItem = ") << newItem[i];
             if (newItem[i].empty()) {
                 isComplete = false;
                 break;
             }
         }
 
+        qDebug() << ("isComplete = ") << isComplete;
+        qDebug() << ("newItem == CSVattributes: ") << (newItem.size() == CSVattributes.size());
+
         if (isComplete && newItem.size() == CSVattributes.size()) {
+            qDebug() << ("reaches here");
             dataArray.push_back(newItem);
             inventory.push_back(new Lumber(newItem,CSVattributes));
 
@@ -772,22 +777,35 @@ void InventoryWindow::on_modifyObjectButton_clicked()
 
 void InventoryWindow::on_sortObjectButton_clicked()
 {
-    sortitemdialog *sortDialog = new sortitemdialog(CSVattributes, this);
+    std::vector<std::string> sortableAttributes;
+    for (const std::string& attr : CSVattributes) {
+        if (attr == "ID" || attr == "Location" || attr == "Species") {
+            sortableAttributes.push_back(attr);
+        }
+    }
+
+    sortitemdialog *sortDialog = new sortitemdialog(sortableAttributes, this);
 
     if (sortDialog->exec() == QDialog::Accepted) {
         QString selectedColumn = sortDialog->getSelectedColumn();
+        std::string selectedStd = selectedColumn.toStdString();
 
-        int columnIndex = -1;
-        if (selectedColumn == "Species") {
-            columnIndex = 3;
-        } else if (selectedColumn == "Location") {
-            columnIndex = 1;
-        }
+        auto it = std::find(CSVattributes.begin(), CSVattributes.end(), selectedStd);
+        int columnIndex = (it != CSVattributes.end()) ? std::distance(CSVattributes.begin(), it) : -1;
 
         if (columnIndex != -1) {
-            std::sort(dataArray.begin(), dataArray.end(), [columnIndex](const std::vector<std::string>& a, const std::vector<std::string>& b) {
-                return a[columnIndex] < b[columnIndex];
-            });
+            std::sort(dataArray.begin(), dataArray.end(),
+                      [columnIndex, this](const std::vector<std::string>& a, const std::vector<std::string>& b) {
+                          if (CSVattributes[columnIndex] == "ID") {
+                              try {
+                                  return std::stoi(a[columnIndex]) < std::stoi(b[columnIndex]);
+                              } catch (...) {
+                                  return a[columnIndex] < b[columnIndex];
+                              }
+                          } else {
+                              return a[columnIndex] < b[columnIndex];
+                          }
+                      });
 
             ui->dataViewer->setRowCount(dataArray.size() + 1);
             for (int i = 0; i < dataArray.size(); i++) {
@@ -804,6 +822,7 @@ void InventoryWindow::on_sortObjectButton_clicked()
 
     delete sortDialog;
 }
+
 
 
 void InventoryWindow::on_HTMLGenButton_clicked()

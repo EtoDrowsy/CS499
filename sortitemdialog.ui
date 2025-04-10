@@ -48,12 +48,82 @@
    </property>
    <item>
     <property name="text">
+     <string>ID</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Location</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Quantity</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Length</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Width</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Thickness</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Grade</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Price</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
      <string>Species</string>
     </property>
    </item>
    <item>
     <property name="text">
      <string>Location</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Description</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Date</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Species</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Photo</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Notes</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string/>
     </property>
    </item>
   </widget>
