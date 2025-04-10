@@ -139,6 +139,21 @@ class Lumber {
         void setPhotoPath(std::string p){
             photoPath = p;
         }
+        void setNotes(std::string n){
+            for (int i = 0; i < attributeValues.size(); i++){
+                if (attributeValues[i] == "Notes"){
+                    attributes[i].append(n);
+                }
+            }
+        }
+        std::string getNotes(){
+            for (int i = 0; i < attributeValues.size(); i++){
+                if (attributeValues[i] == "Notes"){
+                    return attributes[i];
+                }
+            }
+            return "";
+        }
 
         std::string toString(){
             std::string csvline;

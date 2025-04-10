@@ -14,8 +14,10 @@ class soldinventorydialog : public QDialog
 public:
     explicit soldinventorydialog(QWidget *parent = nullptr);
     ~soldinventorydialog();
-
-private slots:
+    bool getQuantityCheckState();
+    int getIDValue();
+    int getQuantitySold();
+    std::string getNoteString();
 
 private:
     Ui::soldinventorydialog *ui;

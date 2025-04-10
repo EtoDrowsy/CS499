@@ -969,12 +969,68 @@ void InventoryWindow::on_soldButton_clicked()
     }
 }
 
+int getInventoryIndex(int id){
+    int index;
+    for (int i = 0; i < inventory.size(); i++){
+        if (std::stoi(inventory[i]->getID()) == id){
+            index = i;
+            break;
+        }
+    }
+    return index;
+}
+
 
 void InventoryWindow::on_newSaleButton_clicked()
 {
     soldinventorydialog soldinvdialog(this);
     if(soldinvdialog.exec() == QDialog::Accepted){
+        if (!checkInInv(soldinvdialog.getIDValue())){
+            QMessageBox::information(this, "Error", "ID not in inventory.");
+        }
+        else if (!soldinvdialog.getQuantityCheckState() && soldinvdialog.getQuantitySold() == 0){
+            QMessageBox::information(this, "Error", "No quantity specified.");
+        }
+        else if (inventory[getInventoryIndex(soldinvdialog.getIDValue())]->getQuantity() < soldinvdialog.getQuantitySold()){
+            qDebug() << "NOT ENOUGH QUANTITY";
+        }
+        else{
+            if (!soldInvExists){
+                soldInvExists = true;
+                soldIndex = CSVattributes.size();
+            }
+            int invIndex = getInventoryIndex(soldinvdialog.getIDValue());
+            int invQuantity = inventory[invIndex]->getQuantity();
+            int soldQuantity = soldinvdialog.getQuantitySold();
 
+            if (invQuantity == soldQuantity || soldinvdialog.getQuantityCheckState()){
+                deleteRowId(soldinvdialog.getIDValue());
+                soldInventory.push_back(inventory[invIndex]);
+                soldInventory.back()->setNotes(soldinvdialog.getNoteString());
+                inventory.erase(inventory.begin() + invIndex);
+                writeCSV(csvfilepath);
+            }
+            else{
+                inventory[invIndex]->setQuantity(invQuantity - soldQuantity);
+                soldInventory.push_back(inventory[invIndex]);
+
+                int quantityIndex;
+                for (int i = 0; i < CSVattributes.size(); i++){
+                    if (CSVattributes[i] == "Quantity"){
+                        quantityIndex = i;
+                        break;
+                    }
+                }
+                for (int i = 0; i < dataArray.size(); i++) {
+                    if(dataArray[i][0] == std::to_string(soldinvdialog.getIDValue())){
+                        dataArray[i][quantityIndex] = std::to_string(inventory[invIndex]->getQuantity());
+                        ui->dataViewer->setItem(i+1, quantityIndex, new QTableWidgetItem(QString::number(inventory[invIndex]->getQuantity())));
+                        break;
+                    }
+                }
+                writeCSV(csvfilepath);
+            }
+        }
     }
 }
 
