@@ -48,6 +48,8 @@ private slots:
 
     void on_newSaleButton_clicked();
 
+    void on_priceButton_clicked();
+
 private:
     Ui::InventoryWindow *ui;
 

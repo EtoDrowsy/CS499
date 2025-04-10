@@ -720,6 +720,7 @@ int InventoryWindow::getIndex(int searchid){
             return row;
         }
     }
+    return 0;
 }
 
 void InventoryWindow::on_createCSVButton_clicked()
