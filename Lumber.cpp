@@ -2,6 +2,8 @@
 #define LUMBER_CPP
 #include <string>
 #include <vector>
+#include <sstream>
+#include <iomanip>
 #include <math.h>
 
 class Lumber {
@@ -14,6 +16,7 @@ class Lumber {
         int quantity;
         std::string id;
         std::string description;
+        std::string photoPath;
         std::vector <std::string> attributes;
         std::vector <std::string> attributeValues;
         float price;
@@ -64,6 +67,10 @@ class Lumber {
                 {
                     description = a[i];
                 }
+                else if (aV[i] == "Photo")
+                {
+                    photoPath = a[i];
+                }
                 else if (aV[i] == "Price")
                 {
                     price = std::stof(a[i]);
@@ -112,10 +119,37 @@ class Lumber {
         std::string getSpecies() {return species;}
         int getGrade() {return grade;}
         int getQuantity() {return quantity;}
+        std::string getPhotoPath() {return photoPath;}
         float getPrice() {return price;}
 
         void setLength(std::string l) {
             length = l;
+        }
+        void setWidth(float w){
+            width = w;
+        }
+        void setThickness(float t){
+            thickness = t;
+        }
+        void setSpecies(std::string s){
+            species = s;
+        }
+        void setGrade(int g){
+            grade = g;
+        }
+        void setAttributes(std::vector <std::string> a){
+            attributes = a;
+        }
+        void setAttributeValues(std::vector <std::string> aV){
+            attributeValues = aV;
+        }
+        void setQuantity(int q){
+            for (int i = 0; i < attributeValues.size(); i++){
+                if (attributeValues[i] == "Quantity"){
+                    attributes[i] = std::to_string(q);
+                }
+            }
+            quantity = q;
         }
         void setLength(float l) {
             float inches = std::fmod(l, 12);
@@ -123,13 +157,51 @@ class Lumber {
             std::string lengthString = std::to_string(feet) + "'-" + std::to_string(inches) + "\"";
             length = lengthString;
         }
+        void setPhotoPath(std::string p){
+            photoPath = p;
+        }
+        void setNotes(std::string n){
+            for (int i = 0; i < attributeValues.size(); i++){
+                if (attributeValues[i] == "Notes"){
+                    attributes[i].append("\n");
+                    attributes[i].append(n);
+                }
+            }
+        }
+        std::string getNotes(){
+            for (int i = 0; i < attributeValues.size(); i++){
+                if (attributeValues[i] == "Notes"){
+                    return attributes[i];
+                }
+            }
+            return "";
+        }
+        std::string getPriceDisplay(){
+            for (int i = 0; i < attributeValues.size(); i++){
+                if (attributeValues[i] == "Price"){
+                    return attributes[i];
+                }
+            }
+            return "";
+        }
+        void setBulkPrice(float newPrice){
+            for (int i = 0; i < attributeValues.size(); i++){
+                if (attributeValues[i] == "Price"){
+                    std::stringstream ss;
+                    ss << std::fixed << std::setprecision(2) << newPrice;
+                    std::string pricestring = ss.str();
+
+                    attributes[i] = "$" + pricestring;
+                }
+            }
+            return;
+        }
 
         std::string toString(){
             std::string csvline;
             for(int i = 0; i < attributeValues.size(); i++){
                 csvline.append(attributes[i] + ";");
             }
-            csvline.append("\n");
             return csvline;
         }
 };

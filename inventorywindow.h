@@ -30,11 +30,25 @@ private slots:
 
     void on_createCSVButton_clicked();
 
+    void on_modifyObjectButton_clicked();
+
     void on_sortObjectButton_clicked();
 
     void on_HTMLGenButton_clicked();
 
     void on_cutlistButton_clicked();
+    
+    void on_photoButton_clicked();
+
+    bool checkInInv(int photoid);
+
+    int getIndex(int searchid);
+
+    void on_soldButton_clicked();
+
+    void on_newSaleButton_clicked();
+
+    void on_priceButton_clicked();
 
 private:
     Ui::InventoryWindow *ui;

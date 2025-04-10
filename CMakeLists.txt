@@ -29,6 +29,11 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         sortitemdialog.h sortitemdialog.cpp sortitemdialog.ui
         cutlistdialog.h cutlistdialog.cpp cutlistdialog.ui
         htmlgendialog.cpp htmlgendialog.h htmlgendialog.ui
+        modifyitemdialog.h modifyitemdialog.cpp modifyitemdialog.ui
+        photodialog.h photodialog.cpp photodialog.ui
+        soldinventorydialog.h soldinventorydialog.cpp soldinventorydialog.ui
+        soldinventoryviewer.h soldinventoryviewer.cpp soldinventoryviewer.ui
+        pricedialog.h pricedialog.cpp pricedialog.ui
         CutList.cpp
     )
 # Define target properties for Android with Qt 6 as:
