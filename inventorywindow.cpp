@@ -960,7 +960,13 @@ void InventoryWindow::on_photoButton_clicked()
 void InventoryWindow::on_soldButton_clicked()
 {
     soldinventoryviewer soldinvviewer(CSVattributes, soldInventory, this);
-    soldinvviewer.exec();
+    if(soldinvviewer.exec() == QDialog::Accepted){
+        // if(ui->idEdit->text().isEmpty || ui->quantityEdit->text().isEmpty()) {
+        //     QMessageBox::warning(this, "Input Error", "Please enter valid ID or quantity number.");
+        //     return;
+        // }
+        // ^^ use to see if they are empty idk if you need that
+    }
 }
 
 

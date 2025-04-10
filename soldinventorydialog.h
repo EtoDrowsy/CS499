@@ -15,6 +15,8 @@ public:
     explicit soldinventorydialog(QWidget *parent = nullptr);
     ~soldinventorydialog();
 
+private slots:
+
 private:
     Ui::soldinventorydialog *ui;
 };
