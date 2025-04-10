@@ -1,9 +1,10 @@
+#ifndef LUMBER_CPP
+#define LUMBER_CPP
 #include <string>
 #include <vector>
 #include <sstream>
 #include <iomanip>
-
-#pragma once
+#include <math.h>
 
 class Lumber {
     protected:
@@ -18,6 +19,7 @@ class Lumber {
         std::string photoPath;
         std::vector <std::string> attributes;
         std::vector <std::string> attributeValues;
+        float price;
     public:
         Lumber() {
             length = "NULL";
@@ -27,6 +29,7 @@ class Lumber {
             description = "NULL";
             grade = 0;
             quantity = 0;
+            price = 0;
         }
         Lumber(std::vector <std::string> a, std::vector <std::string> aV) : Lumber() {
             attributes = a;
@@ -67,6 +70,10 @@ class Lumber {
                 else if (aV[i] == "Photo")
                 {
                     photoPath = a[i];
+                }
+                else if (aV[i] == "Price")
+                {
+                    price = std::stof(a[i]);
                 }
             }
         }
@@ -113,8 +120,9 @@ class Lumber {
         int getGrade() {return grade;}
         int getQuantity() {return quantity;}
         std::string getPhotoPath() {return photoPath;}
+        float getPrice() {return price;}
 
-        void setLength(float l){
+        void setLength(std::string l) {
             length = l;
         }
         void setWidth(float w){
@@ -142,6 +150,12 @@ class Lumber {
                 }
             }
             quantity = q;
+        }
+        void setLength(float l) {
+            float inches = std::fmod(l, 12);
+            int feet = (l - inches) / 12;
+            std::string lengthString = std::to_string(feet) + "'-" + std::to_string(inches) + "\"";
+            length = lengthString;
         }
         void setPhotoPath(std::string p){
             photoPath = p;
@@ -257,3 +271,5 @@ class Log : public Lumber {
             date = d;
         }
 };
+
+#endif
