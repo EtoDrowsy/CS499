@@ -73,7 +73,7 @@ class Lumber {
                 }
                 else if (aV[i] == "Price")
                 {
-                    price = std::stof(a[i]);
+                    price = std::stof(a[i].erase(0,1));
                 }
             }
         }
