@@ -9,6 +9,7 @@
 #include "photodialog.h"
 #include "soldinventoryviewer.h"
 #include "soldinventorydialog.h"
+#include "pricedialog.h"
 
 #include "modifyitemdialog.h"
 
@@ -1055,5 +1056,10 @@ void InventoryWindow::on_newSaleButton_clicked()
             }
         }
     }
+}
+
+void InventoryWindow::on_priceButton_clicked()
+{
+
 }
 
