@@ -12,3 +12,11 @@ pricedialog::~pricedialog()
 {
     delete ui;
 }
+
+std::string pricedialog::getSpeciesName(){
+    return ui->speciesEdit->text().toStdString();
+}
+
+float pricedialog::getPricePerCubicInch(){
+    return ui->priceEdit->text().toFloat();
+}

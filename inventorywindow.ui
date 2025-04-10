@@ -412,7 +412,23 @@
         </property>
        </widget>
       </item>
-      <item row="0" column="11">
+      <item row="0" column="12">
+       <widget class="QPushButton" name="priceButton">
+        <property name="font">
+         <font>
+          <pointsize>16</pointsize>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color:rgb(209, 188, 164)</string>
+        </property>
+        <property name="text">
+         <string>Adjust Price</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="13">
        <widget class="QPushButton" name="createCSVButton">
         <property name="font">
          <font>

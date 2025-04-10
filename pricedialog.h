@@ -14,6 +14,8 @@ class pricedialog : public QDialog
 public:
     explicit pricedialog(QWidget *parent = nullptr);
     ~pricedialog();
+    std::string getSpeciesName();
+    float getPricePerCubicInch();
 
 private:
     Ui::pricedialog *ui;
