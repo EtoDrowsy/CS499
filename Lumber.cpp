@@ -160,6 +160,14 @@ class Lumber {
             }
             return "";
         }
+        std::string getPriceDisplay(){
+            for (int i = 0; i < attributeValues.size(); i++){
+                if (attributeValues[i] == "Price"){
+                    return attributes[i];
+                }
+            }
+            return "";
+        }
 
         std::string toString(){
             std::string csvline;

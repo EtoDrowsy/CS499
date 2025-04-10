@@ -456,23 +456,43 @@ void generateHTML(std::vector<Lumber*> woodList, std::string filename) {
         return;
     }
 
-    file << "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n";
+    file << "<!DOCTYPE html>\n";
+    file << "<html lang=\"en\">\n";
+    file << "<head>\n";
     file << "    <meta charset=\"UTF-8\">\n";
     file << "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n";
     file << "    <title>Your Wood Order</title>\n";
     file << "    <link rel=\"stylesheet\" type=\"text/css\" href=\"style.css\">\n";
-    file << "</head>\n<body>\n";
+    file << "</head>\n";
+    file << "<body>\n";
+    file << "    <div class=\"header-wrapper\">\n";
+    file << "        <h1 class=\"page-title\">Sawyer Inventory</h1>\n";
+    file << "    </div>\n";
+    file << "    <div class=\"grid-container\">\n";
 
     for (int i = 0; i < woodList.size(); i++) {
-        file << "    <div class=\"wood-item\">\n";
-        file << "        <h3>Species: " << woodList[i]->getSpecies() << "</h3>\n";
-        file << "        <p>Dimensions: " << woodList[i]->getLength() << woodList[i]->getWidth() << woodList[i]->getThickness() << " <br>\n";
-        file << "        Quantity: " << "0" << " <br>\n";
-        file << "        Price: $" << "0" << "</p>\n";
-        file << "    </div>\n";
+        file << "        <div class=\"wood-item\">\n";
+        file << "            <p class=\"item-title-description\">" << woodList[i]->getDescription() << "<br></p>\n";
+        file << "            <p class=\"item-title-species\">" << woodList[i]->getSpecies() << "<br></p>\n";
+
+        // image filename could be derived from species, lowercase if needed
+        file << "            <img src=\"/" << woodList[i]->getPhotoPath() << "\" alt=\"" << woodList[i]->getSpecies()
+             << "\" class=\"wood-image\" onerror=\"this.onerror=null;this.src='images/default.jpg';\">\n";
+
+        file << "            <p class=\"item-price\">" << woodList[i]->getPriceDisplay() << "<br></p>\n";
+        file << "            <p>"
+             << woodList[i]->getLengthDisplay() << " x "
+             << woodList[i]->getWidthDisplay() << " x "
+             << woodList[i]->getThicknessDisplay() << "<br>"
+             << woodList[i]->getQuantity() << " in stock</p>\n";
+
+        file << "        </div>\n";
     }
 
-    file << "</body>\n</html>\n";
+    file << "    </div>\n";
+    file << "</body>\n";
+    file << "</html>\n";
+
     file.close();
     std::cout << "HTML file generated successfully: " << filename << std::endl;
 }
