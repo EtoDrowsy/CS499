@@ -10,6 +10,7 @@ std::vector<std::string> split (std::string row, std::string delim){
         row.erase(row.begin());
         x = row.find(delim);
     }
+    v.push_back(row);
     return v;
 }
 

@@ -1012,7 +1012,10 @@ void InventoryWindow::on_newSaleButton_clicked()
             }
             else{
                 inventory[invIndex]->setQuantity(invQuantity - soldQuantity);
-                soldInventory.push_back(inventory[invIndex]);
+                Lumber* copy = new Lumber(inventory[invIndex]->getAttributes(), inventory[invIndex]->getAttributeValues());
+                copy->setNotes(soldinvdialog.getNoteString());
+                copy->setQuantity(soldQuantity);
+                soldInventory.push_back(copy);
 
                 int quantityIndex;
                 for (int i = 0; i < CSVattributes.size(); i++){
