@@ -1,0 +1,11 @@
+ID;Location;Quantity;Length;Width;Thickness;Grade;Price;Description;Date;Species
+2;Shed;1;1'-4";0'-5";4/4";1;3.00;Piece;N/A;Cherry
+6;Shed;3;2'-0";0'-5";4/4";1;8.00;Piece;N/A;Mahogany
+4;Yard A;3;2'-0";0'-5";4/4";1;8.00;Bulk;N/A;Cherry
+5;Yard A;16;2'-0";0'-5";4/4";1;8.00;Bulk;N/A;Oak
+7;Yard A;3;2'-0";0'-3";2/4";1;8.00;Bulk;N/A;Cherry
+1;Shed;1;2'-2";0'-5";4/4";1;5.00;Piece;N/A;Cherry
+3;Yard A;7;3'-0";0'-5";4/4";1;12.00;Bulk;N/A;Cherry
+8;Warehouse 1;25;3'-8";4'-11";3/4";4;4.00;Log;2024-01-21;Maple
+9;Yard A;14;5'-8";8'-6";5/4";1;0.00;Log;2025-03-09;Pine
+10;Depot Y;56;9'-5";8'-11";4/4";3;7.00;Bulk;N/A;Pine
