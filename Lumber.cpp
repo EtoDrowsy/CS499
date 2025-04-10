@@ -1,5 +1,7 @@
 #include <string>
 #include <vector>
+#include <sstream>
+#include <iomanip>
 
 #pragma once
 
@@ -167,6 +169,18 @@ class Lumber {
                 }
             }
             return "";
+        }
+        void setBulkPrice(float newPrice){
+            for (int i = 0; i < attributeValues.size(); i++){
+                if (attributeValues[i] == "Price"){
+                    std::stringstream ss;
+                    ss << std::fixed << std::setprecision(2) << newPrice;
+                    std::string pricestring = ss.str();
+
+                    attributes[i] = "$" + pricestring;
+                }
+            }
+            return;
         }
 
         std::string toString(){

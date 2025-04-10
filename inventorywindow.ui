@@ -10,6 +10,52 @@
     <height>720</height>
    </rect>
   </property>
+  <property name="palette">
+   <palette>
+    <active>
+     <colorrole role="Window">
+      <brush brushstyle="SolidPattern">
+       <color alpha="255">
+        <red>236</red>
+        <green>225</green>
+        <blue>210</blue>
+       </color>
+      </brush>
+     </colorrole>
+    </active>
+    <inactive>
+     <colorrole role="Window">
+      <brush brushstyle="SolidPattern">
+       <color alpha="255">
+        <red>236</red>
+        <green>225</green>
+        <blue>210</blue>
+       </color>
+      </brush>
+     </colorrole>
+    </inactive>
+    <disabled>
+     <colorrole role="Base">
+      <brush brushstyle="SolidPattern">
+       <color alpha="255">
+        <red>236</red>
+        <green>225</green>
+        <blue>210</blue>
+       </color>
+      </brush>
+     </colorrole>
+     <colorrole role="Window">
+      <brush brushstyle="SolidPattern">
+       <color alpha="255">
+        <red>236</red>
+        <green>225</green>
+        <blue>210</blue>
+       </color>
+      </brush>
+     </colorrole>
+    </disabled>
+   </palette>
+  </property>
   <property name="windowTitle">
    <string>InventoryWindow</string>
   </property>
@@ -20,85 +66,6 @@
    <layout class="QGridLayout" name="gridLayout_2">
     <item row="0" column="0">
      <layout class="QGridLayout" name="gridLayout">
-      <item row="0" column="3">
-       <widget class="QPushButton" name="modifyObjectButton">
-        <property name="font">
-         <font>
-          <pointsize>16</pointsize>
-          <bold>true</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>Modify</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="8">
-       <widget class="QPushButton" name="createCSVButton">
-        <property name="font">
-         <font>
-          <pointsize>16</pointsize>
-          <bold>true</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>Create CSV</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0">
-       <widget class="QPushButton" name="csvLoadButton">
-        <property name="font">
-         <font>
-          <family>Segoe UI</family>
-          <pointsize>16</pointsize>
-          <bold>true</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>Load CSV</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="6">
-       <widget class="QPushButton" name="cutlistButton">
-        <property name="font">
-         <font>
-          <pointsize>16</pointsize>
-          <bold>true</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>Cut List</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="2">
-       <widget class="QPushButton" name="deleteObjectButton">
-        <property name="font">
-         <font>
-          <pointsize>16</pointsize>
-          <bold>true</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>Delete Item</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="4">
-       <widget class="QPushButton" name="photoButton">
-        <property name="font">
-         <font>
-          <pointsize>16</pointsize>
-          <bold>true</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>Add Photos</string>
-        </property>
-       </widget>
-      </item>
       <item row="0" column="5">
        <widget class="QPushButton" name="sortObjectButton">
         <property name="font">
@@ -107,21 +74,135 @@
           <bold>true</bold>
          </font>
         </property>
+        <property name="styleSheet">
+         <string notr="true">background-color:rgb(209, 188, 164)</string>
+        </property>
         <property name="text">
-         <string>Sort List</string>
+         <string>Sort</string>
         </property>
        </widget>
       </item>
-      <item row="0" column="9">
-       <widget class="QPushButton" name="soldButton">
+      <item row="0" column="0">
+       <widget class="QPushButton" name="csvLoadButton">
+        <property name="palette">
+         <palette>
+          <active>
+           <colorrole role="Button">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>209</red>
+              <green>188</green>
+              <blue>164</blue>
+             </color>
+            </brush>
+           </colorrole>
+           <colorrole role="Base">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>209</red>
+              <green>188</green>
+              <blue>164</blue>
+             </color>
+            </brush>
+           </colorrole>
+           <colorrole role="Window">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>209</red>
+              <green>188</green>
+              <blue>164</blue>
+             </color>
+            </brush>
+           </colorrole>
+          </active>
+          <inactive>
+           <colorrole role="Button">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>209</red>
+              <green>188</green>
+              <blue>164</blue>
+             </color>
+            </brush>
+           </colorrole>
+           <colorrole role="Base">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>209</red>
+              <green>188</green>
+              <blue>164</blue>
+             </color>
+            </brush>
+           </colorrole>
+           <colorrole role="Window">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>209</red>
+              <green>188</green>
+              <blue>164</blue>
+             </color>
+            </brush>
+           </colorrole>
+          </inactive>
+          <disabled>
+           <colorrole role="Button">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>209</red>
+              <green>188</green>
+              <blue>164</blue>
+             </color>
+            </brush>
+           </colorrole>
+           <colorrole role="Base">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>209</red>
+              <green>188</green>
+              <blue>164</blue>
+             </color>
+            </brush>
+           </colorrole>
+           <colorrole role="Window">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>209</red>
+              <green>188</green>
+              <blue>164</blue>
+             </color>
+            </brush>
+           </colorrole>
+          </disabled>
+         </palette>
+        </property>
+        <property name="font">
+         <font>
+          <family>Segoe UI</family>
+          <pointsize>16</pointsize>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color:rgb(209, 188, 164)</string>
+        </property>
+        <property name="text">
+         <string>Load</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="10">
+       <widget class="QPushButton" name="newSaleButton">
         <property name="font">
          <font>
           <pointsize>16</pointsize>
           <bold>true</bold>
          </font>
         </property>
+        <property name="styleSheet">
+         <string notr="true">background-color:rgb(209, 188, 164)</string>
+        </property>
         <property name="text">
-         <string>View Sales</string>
+         <string>New Sale</string>
         </property>
        </widget>
       </item>
@@ -133,8 +214,59 @@
           <bold>true</bold>
          </font>
         </property>
+        <property name="styleSheet">
+         <string notr="true">background-color:rgb(209, 188, 164)</string>
+        </property>
         <property name="text">
          <string>Create Store</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="3">
+       <widget class="QPushButton" name="modifyObjectButton">
+        <property name="font">
+         <font>
+          <pointsize>16</pointsize>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color:rgb(209, 188, 164)</string>
+        </property>
+        <property name="text">
+         <string>Notes</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="4">
+       <widget class="QPushButton" name="photoButton">
+        <property name="font">
+         <font>
+          <pointsize>16</pointsize>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color:rgb(209, 188, 164)</string>
+        </property>
+        <property name="text">
+         <string>Add Photo</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <widget class="QPushButton" name="deleteObjectButton">
+        <property name="font">
+         <font>
+          <pointsize>16</pointsize>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color:rgb(209, 188, 164)</string>
+        </property>
+        <property name="text">
+         <string>Delete Item</string>
         </property>
        </widget>
       </item>
@@ -149,21 +281,166 @@
         <property name="cursor">
          <cursorShape>ArrowCursor</cursorShape>
         </property>
+        <property name="styleSheet">
+         <string notr="true">background-color:rgb(209, 188, 164)</string>
+        </property>
         <property name="text">
          <string>Add Item</string>
         </property>
        </widget>
       </item>
-      <item row="0" column="10">
-       <widget class="QPushButton" name="newSaleButton">
+      <item row="0" column="6">
+       <widget class="QPushButton" name="cutlistButton">
+        <property name="palette">
+         <palette>
+          <active>
+           <colorrole role="Button">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>209</red>
+              <green>188</green>
+              <blue>164</blue>
+             </color>
+            </brush>
+           </colorrole>
+           <colorrole role="Base">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>209</red>
+              <green>188</green>
+              <blue>164</blue>
+             </color>
+            </brush>
+           </colorrole>
+           <colorrole role="Window">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>209</red>
+              <green>188</green>
+              <blue>164</blue>
+             </color>
+            </brush>
+           </colorrole>
+          </active>
+          <inactive>
+           <colorrole role="Button">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>209</red>
+              <green>188</green>
+              <blue>164</blue>
+             </color>
+            </brush>
+           </colorrole>
+           <colorrole role="Base">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>209</red>
+              <green>188</green>
+              <blue>164</blue>
+             </color>
+            </brush>
+           </colorrole>
+           <colorrole role="Window">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>209</red>
+              <green>188</green>
+              <blue>164</blue>
+             </color>
+            </brush>
+           </colorrole>
+          </inactive>
+          <disabled>
+           <colorrole role="Button">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>209</red>
+              <green>188</green>
+              <blue>164</blue>
+             </color>
+            </brush>
+           </colorrole>
+           <colorrole role="Base">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>209</red>
+              <green>188</green>
+              <blue>164</blue>
+             </color>
+            </brush>
+           </colorrole>
+           <colorrole role="Window">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>209</red>
+              <green>188</green>
+              <blue>164</blue>
+             </color>
+            </brush>
+           </colorrole>
+          </disabled>
+         </palette>
+        </property>
         <property name="font">
          <font>
           <pointsize>16</pointsize>
           <bold>true</bold>
          </font>
         </property>
+        <property name="styleSheet">
+         <string notr="true">background-color:rgb(209, 188, 164)</string>
+        </property>
         <property name="text">
-         <string>New Sale</string>
+         <string>Cut List</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="9">
+       <widget class="QPushButton" name="soldButton">
+        <property name="font">
+         <font>
+          <pointsize>16</pointsize>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color:rgb(209, 188, 164)</string>
+        </property>
+        <property name="text">
+         <string>View Sales</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="12">
+       <widget class="QPushButton" name="priceButton">
+        <property name="font">
+         <font>
+          <pointsize>16</pointsize>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color:rgb(209, 188, 164)</string>
+        </property>
+        <property name="text">
+         <string>Adjust Price</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="13">
+       <widget class="QPushButton" name="createCSVButton">
+        <property name="font">
+         <font>
+          <pointsize>16</pointsize>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color:rgb(209, 188, 164)</string>
+        </property>
+        <property name="text">
+         <string>New File</string>
         </property>
        </widget>
       </item>
@@ -171,6 +448,61 @@
     </item>
     <item row="1" column="0">
      <widget class="QTableWidget" name="dataViewer">
+      <property name="palette">
+       <palette>
+        <active>
+         <colorrole role="Button">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>61</red>
+            <green>90</green>
+            <blue>64</blue>
+           </color>
+          </brush>
+         </colorrole>
+         <colorrole role="Base">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>255</red>
+            <green>255</green>
+            <blue>255</blue>
+           </color>
+          </brush>
+         </colorrole>
+        </active>
+        <inactive>
+         <colorrole role="Button">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>61</red>
+            <green>90</green>
+            <blue>64</blue>
+           </color>
+          </brush>
+         </colorrole>
+         <colorrole role="Base">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>255</red>
+            <green>255</green>
+            <blue>255</blue>
+           </color>
+          </brush>
+         </colorrole>
+        </inactive>
+        <disabled>
+         <colorrole role="Button">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>61</red>
+            <green>90</green>
+            <blue>64</blue>
+           </color>
+          </brush>
+         </colorrole>
+        </disabled>
+       </palette>
+      </property>
       <property name="font">
        <font>
         <pointsize>12</pointsize>
@@ -191,22 +523,6 @@
      </widget>
     </item>
    </layout>
-  </widget>
-  <widget class="QMenuBar" name="menubar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>1280</width>
-     <height>22</height>
-    </rect>
-   </property>
-   <widget class="QMenu" name="menuWood_Manager">
-    <property name="title">
-     <string>Inventory</string>
-    </property>
-   </widget>
-   <addaction name="menuWood_Manager"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>

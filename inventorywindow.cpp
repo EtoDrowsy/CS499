@@ -9,6 +9,7 @@
 #include "photodialog.h"
 #include "soldinventoryviewer.h"
 #include "soldinventorydialog.h"
+#include "pricedialog.h"
 
 #include "modifyitemdialog.h"
 
@@ -719,6 +720,7 @@ int InventoryWindow::getIndex(int searchid){
             return row;
         }
     }
+    return 0;
 }
 
 void InventoryWindow::on_createCSVButton_clicked()
@@ -1053,6 +1055,45 @@ void InventoryWindow::on_newSaleButton_clicked()
                 }
                 writeCSV(csvfilepath);
             }
+        }
+    }
+}
+
+void InventoryWindow::on_priceButton_clicked()
+{
+    pricedialog pricedialog(this);
+    if (pricedialog.exec() == QDialog::Accepted){
+        if (!pricedialog.getSpeciesName().empty() && !(pricedialog.getPricePerCubicInch() == 0)){
+            int priceIndex;
+            for (int i = 0; i < CSVattributes.size(); i++){
+                if (CSVattributes[i] == "Price"){
+                    priceIndex = i;
+                    break;
+                }
+            }
+            for (int i = 0; i < inventory.size(); i++){
+                if (inventory[i]->getSpecies() == pricedialog.getSpeciesName() && inventory[i]->getDescription() == "Bulk"){
+                    std::vector<float> dimensions = inventory[i]->getDimensions();
+                    float newPrice = 0;
+
+                    for (int j = 0; j < dimensions.size(); j++){
+                        newPrice += dimensions[j];
+                    }
+
+                    newPrice = newPrice * pricedialog.getPricePerCubicInch();
+
+                    inventory[i]->setBulkPrice(newPrice);
+
+                    for (int k = 0; k < dataArray.size(); k++) {
+                        if(dataArray[k][0] == inventory[i]->getID()){
+                            dataArray[k][priceIndex] = inventory[i]->getAttributes()[priceIndex];
+                            ui->dataViewer->setItem(k+1, priceIndex, new QTableWidgetItem(QString::fromStdString(inventory[i]->getAttributes()[priceIndex])));
+                            break;
+                        }
+                    }
+                }
+            }
+            writeCSV(csvfilepath);
         }
     }
 }
