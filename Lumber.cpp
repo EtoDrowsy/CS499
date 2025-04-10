@@ -134,10 +134,31 @@ class Lumber {
             attributeValues = aV;
         }
         void setQuantity(int q){
+            for (int i = 0; i < attributeValues.size(); i++){
+                if (attributeValues[i] == "Quantity"){
+                    attributes[i] = std::to_string(q);
+                }
+            }
             quantity = q;
         }
         void setPhotoPath(std::string p){
             photoPath = p;
+        }
+        void setNotes(std::string n){
+            for (int i = 0; i < attributeValues.size(); i++){
+                if (attributeValues[i] == "Notes"){
+                    attributes[i].append("\n");
+                    attributes[i].append(n);
+                }
+            }
+        }
+        std::string getNotes(){
+            for (int i = 0; i < attributeValues.size(); i++){
+                if (attributeValues[i] == "Notes"){
+                    return attributes[i];
+                }
+            }
+            return "";
         }
 
         std::string toString(){
@@ -145,7 +166,6 @@ class Lumber {
             for(int i = 0; i < attributeValues.size(); i++){
                 csvline.append(attributes[i] + ";");
             }
-            csvline.append("\n");
             return csvline;
         }
 };
