@@ -23,6 +23,7 @@ private slots:
 
 private:
     Ui::sortitemdialog *ui;
+    std::vector<std::string> attNames;
 };
 
 #endif // SORTITEMDIALOG_H

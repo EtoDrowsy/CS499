@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include <QString>
+#include <QMap>
 
 namespace Ui {
 class modifyitemdialog;
@@ -18,9 +19,16 @@ public:
 
     QString getEnteredID() const;
     QString getNoteText() const;
+    void setIdNoteMap(const QMap<QString, QString> &map);
+
+private slots:
+    void onIdChanged(const QString &text);
+
+
 
 private:
     Ui::modifyitemdialog *ui;
+    QMap<QString, QString> idNoteMap;
 };
 
 #endif // MODIFYITEMDIALOG_H

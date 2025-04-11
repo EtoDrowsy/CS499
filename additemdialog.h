@@ -22,6 +22,8 @@ public:
 private:
     Ui::AddItemDialog *ui;
 
+    QVector<QString> validAttributes;
+
     void resetStyles();
 };
 

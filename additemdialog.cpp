@@ -31,22 +31,18 @@ AddItemDialog::AddItemDialog(std::vector<std::string> attributes, QWidget *paren
     for (int i = 0; i < attributes.size(); i++) {
         QString att = QString::fromStdString(attributes[i]);
 
-        if(att.toLower() == "photo" || att.toLower() == "notes") {
-            continue;
-        }
-
         QTableWidgetItem *attq = new QTableWidgetItem(att);
         ui->attributetable->setItem(rowIndex, 0, attq);
 
-        // Input field widget
+
         QWidget *container = new QWidget(this);
 
         if (att.toLower() == "id" || att.toLower() == "quantity") {
             QLineEdit *lineEdit = new QLineEdit(container);
             lineEdit->setValidator(new QIntValidator(0, 9999999, this));
             lineEdit->setPlaceholderText(att);
-            lineEdit->setGeometry(0, 0, 80, 25);
-            container->setFixedSize(80, 25);
+            lineEdit->setGeometry(0, 0, 100, 25);
+            container->setFixedSize(400, 25);
             ui->inputtable->setCellWidget(rowIndex, 0, lineEdit);
         }
         else if (att.toLower() == "location") {
@@ -55,44 +51,44 @@ AddItemDialog::AddItemDialog(std::vector<std::string> attributes, QWidget *paren
             QValidator *validator = new QRegularExpressionValidator(regex, this);
             lineEdit->setValidator(validator);
             lineEdit->setPlaceholderText("Location");
-            lineEdit->setGeometry(0, 0, 100, 25);
-            container->setFixedSize(100, 25);
+            lineEdit->setGeometry(0, 0, 400, 25);
+            container->setFixedSize(400, 25);
             ui->inputtable->setCellWidget(rowIndex, 0, lineEdit);
         }
         else if (att.toLower() == "length") {
             QLineEdit *feetLineEdit = new QLineEdit(container);
             feetLineEdit->setValidator(new QIntValidator(0, 999, this));
             feetLineEdit->setPlaceholderText("Feet");
-            feetLineEdit->setGeometry(0, 0, 40, 25);
+            feetLineEdit->setGeometry(0, 0, 40, 30);
 
             QLabel *separator = new QLabel("-", container);
-            separator->setGeometry(45, 5, 10, 15);
+            separator->setGeometry(41, 5, 10, 15);
 
             QLineEdit *inchesLineEdit = new QLineEdit(container);
             inchesLineEdit->setValidator(new QIntValidator(0, 11, this));
             inchesLineEdit->setPlaceholderText("Inches");
-            inchesLineEdit->setGeometry(60, 0, 40, 25);
+            inchesLineEdit->setGeometry(49, 0, 50, 30);
 
-            container->setFixedSize(100, 25);
+            container->setFixedSize(400, 30);
             ui->inputtable->setCellWidget(rowIndex, 0, container);
         }
         else if (att.toLower() == "width") {
             QLineEdit *wholeNumberEdit = new QLineEdit(container);
             wholeNumberEdit->setValidator(new QIntValidator(0, 999, this));
             wholeNumberEdit->setPlaceholderText("Feet");
-            wholeNumberEdit->setGeometry(0, 0, 40, 25);
+            wholeNumberEdit->setGeometry(0, 0, 40, 30);
 
             QLabel *separator = new QLabel("-", container);
-            separator->setGeometry(45, 5, 10, 15);
+            separator->setGeometry(41, 5, 10, 15);
 
             QLineEdit *fractionEdit = new QLineEdit(container);
 
             QRegularExpression fractionRegex("[0-9\\s/]*");
             fractionEdit->setValidator(new QRegularExpressionValidator(fractionRegex, this));
             fractionEdit->setPlaceholderText("Inches");
-            fractionEdit->setGeometry(60, 0, 40, 25);
+            fractionEdit->setGeometry(49, 0, 50, 30);
 
-            container->setFixedSize(100, 25);
+            container->setFixedSize(400, 30);
             ui->inputtable->setCellWidget(rowIndex, 0, container);
         }
         else if (att.toLower() == "thickness") {
@@ -102,8 +98,20 @@ AddItemDialog::AddItemDialog(std::vector<std::string> attributes, QWidget *paren
             QRegularExpression thicknessRegex("\\d+/\\d+|\\d+");
             lineEdit->setValidator(new QRegularExpressionValidator(thicknessRegex,this));
 
-            lineEdit->setGeometry(0, 0, 80, 25);
-            container->setFixedSize(80, 25);
+            lineEdit->setGeometry(0, 0, 400, 25);
+            container->setFixedSize(400, 25);
+            ui->inputtable->setCellWidget(rowIndex, 0, lineEdit);
+
+        }
+        else if (att.toLower() == "grade") {
+            QLineEdit *lineEdit = new QLineEdit(container);
+            lineEdit->setPlaceholderText("Grade 1 - 4");
+
+            QRegularExpression gradeRegex("^[1-4]$");
+            lineEdit->setValidator(new QRegularExpressionValidator(gradeRegex,this));
+
+            lineEdit->setGeometry(0, 0, 400, 25);
+            container->setFixedSize(400, 25);
             ui->inputtable->setCellWidget(rowIndex, 0, lineEdit);
 
         }
@@ -121,15 +129,45 @@ AddItemDialog::AddItemDialog(std::vector<std::string> attributes, QWidget *paren
                 }
             });
 
-            lineEdit->setGeometry(0, 0, 80, 25);
-            container->setFixedSize(80, 25);
+            lineEdit->setGeometry(0, 0, 400, 25);
+            container->setFixedSize(400, 25);
             ui->inputtable->setCellWidget(rowIndex, 0, lineEdit);
+        }
+        else if (att.toLower() == "date") {
+            QLineEdit *lineEdit = new QLineEdit(container);
+            lineEdit->setPlaceholderText("YYYY-MM-DD");
+
+            QRegularExpression dateRegex("^\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])$");
+            lineEdit->setValidator(new QRegularExpressionValidator(dateRegex, this));
+
+            lineEdit->setGeometry(0, 0, 400, 25);
+            container->setFixedSize(400, 25);
+            ui->inputtable->setCellWidget(rowIndex, 0, lineEdit);
+        }
+        else if (att.toLower() == "photo") {
+            QTableWidgetItem *photoItem = new QTableWidgetItem("N/A");
+            photoItem->setFlags(photoItem->flags() & ~Qt::ItemIsEditable);
+            ui->attributetable->setItem(rowIndex, 0, new QTableWidgetItem(att));
+            ui->inputtable->setItem(rowIndex, 0, photoItem);
+            rowIndex++;
+            continue;
+        }
+        else if (att.toLower() == "notes") {
+            QTableWidgetItem *notesItem = new QTableWidgetItem("N/A");
+            notesItem->setFlags(notesItem->flags() & ~Qt::ItemIsEditable);
+            ui->inputtable->setItem(rowIndex, 0, notesItem);
+
+            QTableWidgetItem *attq = new QTableWidgetItem(att);
+            ui->attributetable->setItem(rowIndex, 0, attq);
+
+            rowIndex++;
+            continue;
         }
         else {
             QLineEdit *lineEdit = new QLineEdit(container);
             lineEdit->setPlaceholderText(att);
-            lineEdit->setGeometry(0, 0, 100, 25);
-            container->setFixedSize(100, 25);
+            lineEdit->setGeometry(0, 0, 400, 25);
+            container->setFixedSize(400, 25);
             ui->inputtable->setCellWidget(rowIndex, 0, lineEdit);
         }
 
@@ -142,25 +180,18 @@ std::vector<std::string> AddItemDialog::getNewItemData() const {
     qDebug() << "Fetching data from inputtable. Rows:" << ui->inputtable->rowCount();
 
     for (int i = 0; i < ui->inputtable->rowCount(); i++) {
-        QString attribute = ui->attributetable->item(i, 0)->text().toLower();
-        QWidget *widget = ui->inputtable->cellWidget(i, 0);
-
-        if (!widget) {
+        QTableWidgetItem* item = ui->attributetable->item(i, 0);
+        if (!item) {
+            qDebug() << "Warning: attribute table missing item at row" << i;
             newItem.push_back("");
             continue;
         }
 
-        if(attribute == "photo") {
-            newItem.push_back("EmptyString");
-            continue;
-        }
-        if(attribute == "notes") {
-            newItem.push_back("N/A");
-            continue;
-        }
+        QString attribute = item->text().toLower();
+        QWidget *widget = ui->inputtable->cellWidget(i, 0);
 
         if (attribute == "length") {
-            QList<QLineEdit *> lineEdits = widget->findChildren<QLineEdit *>();
+            QList<QLineEdit *> lineEdits = widget ? widget->findChildren<QLineEdit *>() : QList<QLineEdit *>();
             if (lineEdits.size() == 2) {
                 QString feetText = lineEdits[0]->text();
                 QString inchesText = lineEdits[1]->text();
@@ -178,7 +209,7 @@ std::vector<std::string> AddItemDialog::getNewItemData() const {
             }
         }
         else if (attribute == "width") {
-            QList<QLineEdit*> widthEdits = widget->findChildren<QLineEdit*>();
+            QList<QLineEdit*> widthEdits = widget ? widget->findChildren<QLineEdit*>() : QList<QLineEdit*>();
             if (widthEdits.size() >= 2) {
                 QString wholePart = widthEdits[0]->text();
                 QString fractionPart = widthEdits[1]->text().trimmed();
@@ -196,22 +227,59 @@ std::vector<std::string> AddItemDialog::getNewItemData() const {
                 newItem.push_back("");
             }
         }
-        else {
-            QLineEdit *lineEdit = nullptr;
+        else if (attribute == "thickness") {
+            QString value;
 
-            lineEdit = widget->findChild<QLineEdit *>();
+            if (widget) {
+                QLineEdit *lineEdit = widget->findChild<QLineEdit *>();
+                if (!lineEdit) {
+                    lineEdit = qobject_cast<QLineEdit *>(widget);
+                }
 
-            if (!lineEdit) {
-                lineEdit = qobject_cast<QLineEdit *>(widget);
+                if (lineEdit) {
+                    value = lineEdit->text().trimmed();
+                }
             }
 
-            if (lineEdit) {
-                newItem.push_back(lineEdit->text().toStdString());
+            if (!value.isEmpty()) {
+                if (!value.endsWith("\"")) {
+                    value += "\"";
+                }
             } else {
-                newItem.push_back("");
+                value = "N/A";
             }
+
+            newItem.push_back(value.toStdString());
+        }
+        else {
+            QString value;
+
+            if (widget) {
+                QLineEdit *lineEdit = widget->findChild<QLineEdit *>();
+                if (!lineEdit) {
+                    lineEdit = qobject_cast<QLineEdit *>(widget);
+                }
+
+                if (lineEdit) {
+                    value = lineEdit->text();
+                }
+            }
+
+            if (value.isEmpty()) {
+                QTableWidgetItem *cellItem = ui->inputtable->item(i, 0);
+                if (cellItem) {
+                    value = cellItem->text();
+                }
+            }
+
+            if (value.isEmpty()) {
+                value = "N/A";
+            }
+
+            newItem.push_back(value.toStdString());
         }
     }
+
 
     qDebug() << "Final newItem size:" << newItem.size();
     return newItem;
