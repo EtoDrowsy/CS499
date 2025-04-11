@@ -47,17 +47,22 @@ static std::vector <int> findMatching(CutListItem* item, std::vector <Lumber*> i
     return validItems;
 }
 
-static void printLumberList(std::vector <std::vector <int>> lumberList, std::vector <Lumber*> inventory, std::vector <CutListItem*> cutList) {
+static std::string printLumberList(std::vector <std::vector <int>> lumberList, std::vector <Lumber*> inventory, std::vector <CutListItem*> cutList) {
+    std::string returnString = "";
     for (int i = 0; i < lumberList.size(); i++) {
-        std::cout << "Cut List Item #" << i + 1 << " is fulfilled by:\n";
+        returnString.append("Cut List Item #" + std::to_string(i+1) + " is fulfilled by:\n");
+        // std::cout << "Cut List Item #" << i + 1 << " is fulfilled by:\n";
         for (int j : lumberList.at(i)) {
-            std::cout << "\tInventory ID #" << inventory.at(j)->getID() << ",\n";
+            returnString.append("\tInventory ID #" + inventory.at(j)->getID() + ",\n");
+            // std::cout << "\tInventory ID #" << inventory.at(j)->getID() << ",\n";
             float leftovers = inventory.at(j)->getLength() - SAW_KERF - cutList.at(i)->getLength();
             if (leftovers < 0)
                 leftovers = 0;
-            std::cout << "\tLeftover Material: " << leftovers << " in.\n";
+            returnString.append("\tLeftover Material: " + std::to_string(leftovers) + " in.\n");
+            // std::cout << "\tLeftover Material: " << leftovers << " in.\n";
         }
     }
+    return returnString;
 }
 
 static std::vector <std::vector <int>> cutListToLumberList(std::vector <Lumber*> inventory, std::vector <CutListItem*> cutList) {
@@ -101,6 +106,5 @@ static std::vector <std::vector <int>> cutListToLumberList(std::vector <Lumber*>
             lumberList.at(c).push_back(minIndex);
         }
     }
-    printLumberList(lumberList, inventory, cutList);
     return lumberList;
 }

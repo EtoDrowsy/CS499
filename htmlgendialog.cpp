@@ -9,6 +9,8 @@ htmlgendialog::htmlgendialog(QWidget *parent, QStringList idList)
     connect(ui->buttonBox, &QDialogButtonBox::accepted, this, qOverload<>(&QDialog::accept));
     connect(ui->buttonBox, &QDialogButtonBox::rejected, this, qOverload<>(&QDialog::reject));
 
+    ui->listWidget->clear();
+
     ui->listWidget->addItems(idList);
     QListWidgetItem* item = 0;
     for(int i = 0; i < ui->listWidget->count(); ++i){
