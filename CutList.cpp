@@ -58,7 +58,10 @@ static std::string printLumberList(std::vector <std::vector <int>> lumberList, s
             float leftovers = inventory.at(j)->getLength() - SAW_KERF - cutList.at(i)->getLength();
             if (leftovers < 0)
                 leftovers = 0;
-            returnString.append("\tLeftover Material: " + std::to_string(leftovers) + " in.\n");
+            std::stringstream ss;
+            ss << std::fixed << std::setprecision(2) << leftovers;
+            std::string precLeftovers = ss.str();
+            returnString.append("\tLeftover Material: " + precLeftovers + " in.\n");
             // std::cout << "\tLeftover Material: " << leftovers << " in.\n";
         }
     }
