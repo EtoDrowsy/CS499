@@ -51,18 +51,15 @@ static std::string printLumberList(std::vector <std::vector <int>> lumberList, s
     std::string returnString = "";
     for (int i = 0; i < lumberList.size(); i++) {
         returnString.append("Cut List Item #" + std::to_string(i+1) + " is fulfilled by:\n");
-        // std::cout << "Cut List Item #" << i + 1 << " is fulfilled by:\n";
         for (int j : lumberList.at(i)) {
             returnString.append("\tInventory ID #" + inventory.at(j)->getID() + ",\n");
-            // std::cout << "\tInventory ID #" << inventory.at(j)->getID() << ",\n";
             float leftovers = inventory.at(j)->getLength() - SAW_KERF - cutList.at(i)->getLength();
             if (leftovers < 0)
                 leftovers = 0;
             std::stringstream ss;
-            ss << std::fixed << std::setprecision(2) << leftovers;
+            ss << std::fixed << std::setprecision(3) << leftovers;
             std::string precLeftovers = ss.str();
             returnString.append("\tLeftover Material: " + precLeftovers + " in.\n");
-            // std::cout << "\tLeftover Material: " << leftovers << " in.\n";
         }
     }
     return returnString;
