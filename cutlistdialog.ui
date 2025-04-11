@@ -6,9 +6,55 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1200</width>
+    <width>1182</width>
     <height>600</height>
    </rect>
+  </property>
+  <property name="palette">
+   <palette>
+    <active>
+     <colorrole role="Window">
+      <brush brushstyle="SolidPattern">
+       <color alpha="255">
+        <red>236</red>
+        <green>225</green>
+        <blue>210</blue>
+       </color>
+      </brush>
+     </colorrole>
+    </active>
+    <inactive>
+     <colorrole role="Window">
+      <brush brushstyle="SolidPattern">
+       <color alpha="255">
+        <red>236</red>
+        <green>225</green>
+        <blue>210</blue>
+       </color>
+      </brush>
+     </colorrole>
+    </inactive>
+    <disabled>
+     <colorrole role="Base">
+      <brush brushstyle="SolidPattern">
+       <color alpha="255">
+        <red>236</red>
+        <green>225</green>
+        <blue>210</blue>
+       </color>
+      </brush>
+     </colorrole>
+     <colorrole role="Window">
+      <brush brushstyle="SolidPattern">
+       <color alpha="255">
+        <red>236</red>
+        <green>225</green>
+        <blue>210</blue>
+       </color>
+      </brush>
+     </colorrole>
+    </disabled>
+   </palette>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
@@ -16,19 +62,6 @@
   <property name="locale">
    <locale language="English" country="UnitedStates"/>
   </property>
-  <widget class="QTableWidget" name="materialtable">
-   <property name="geometry">
-    <rect>
-     <x>680</x>
-     <y>40</y>
-     <width>505</width>
-     <height>500</height>
-    </rect>
-   </property>
-   <property name="locale">
-    <locale language="English" country="UnitedStates"/>
-   </property>
-  </widget>
   <widget class="QTableWidget" name="cuttable">
    <property name="geometry">
     <rect>
@@ -103,6 +136,11 @@
      <height>31</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
    <property name="text">
     <string>Make Empty List</string>
    </property>
@@ -120,15 +158,15 @@
   <widget class="QLabel" name="inputlabel">
    <property name="geometry">
     <rect>
-     <x>506</x>
-     <y>17</y>
-     <width>191</width>
+     <x>480</x>
+     <y>10</y>
+     <width>221</width>
      <height>21</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <pointsize>10</pointsize>
+     <pointsize>12</pointsize>
     </font>
    </property>
    <property name="text">
@@ -156,7 +194,7 @@
   <widget class="QLabel" name="materiallabel">
    <property name="geometry">
     <rect>
-     <x>880</x>
+     <x>870</x>
      <y>20</y>
      <width>111</width>
      <height>16</height>
@@ -180,8 +218,23 @@
      <height>31</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
    <property name="text">
     <string>Calculate</string>
+   </property>
+  </widget>
+  <widget class="QTextBrowser" name="outputTextBrowser">
+   <property name="geometry">
+    <rect>
+     <x>670</x>
+     <y>40</y>
+     <width>505</width>
+     <height>500</height>
+    </rect>
    </property>
   </widget>
  </widget>

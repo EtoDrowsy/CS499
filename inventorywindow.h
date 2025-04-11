@@ -44,6 +44,12 @@ private slots:
 
     int getIndex(int searchid);
 
+    void on_soldButton_clicked();
+
+    void on_newSaleButton_clicked();
+
+    void on_priceButton_clicked();
+
 private:
     Ui::InventoryWindow *ui;
 

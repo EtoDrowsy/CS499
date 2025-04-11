@@ -15,6 +15,8 @@ AddItemDialog::AddItemDialog(std::vector<std::string> attributes, QWidget *paren
     ui->attributetable->setColumnCount(1);
     ui->inputtable->setRowCount(attributes.size());
     ui->inputtable->setColumnCount(1);
+    ui->inputtable->horizontalHeader()->setStretchLastSection(true);
+    ui->attributetable->horizontalHeader()->setStretchLastSection(true);
 
     connect(ui->buttonBox, &QDialogButtonBox::accepted, [this]() {
         if (validate()) {
