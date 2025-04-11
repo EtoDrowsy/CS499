@@ -28,7 +28,6 @@ std::vector<std::vector<std::string>> dataArray;
 std::string csvfilepath;
 
 std::vector<Lumber*> inventory;
-QStringList potentialItems;
 std::vector<Lumber*> selectedInventory;
 
 std::vector<Lumber*>soldInventory;
@@ -504,6 +503,7 @@ void InventoryWindow::on_sortObjectButton_clicked()
 
 void InventoryWindow::on_HTMLGenButton_clicked()
 {
+    QStringList potentialItems;
     for(int i = 0; i < inventory.size(); i++){
         potentialItems.push_back(QString::fromStdString(inventory[i]->getID()));
     }
@@ -517,62 +517,14 @@ void InventoryWindow::on_HTMLGenButton_clicked()
                 }
             }
         }
+        generateHTML(selectedInventory, "index.html");
     }
-    generateHTML(selectedInventory, "index.html");
 }
 
 void InventoryWindow::on_cutlistButton_clicked()
 {
-    std::vector <std::string> empty;
-
-    std::vector <CutListItem> cutList;
-    CutListItem item1("0'-10\"","0'-5\"","1/1","Cherry",1,empty,empty,"item1",3);
-    CutListItem item2("1'-4\"","0'-5\"","1/1","Cherry",1,empty,empty,"item2",1);
-    CutListItem item3("0'-10\"","0'-5\"","1/1","Cherry",1,empty,empty,"item3",1);
-    CutListItem item4("1'-3\"","0'-5\"","1/1","Cherry",1,empty,empty,"item4",1);
-    cutList.push_back(item1);
-    cutList.push_back(item2);
-    cutList.push_back(item3);
-    cutList.push_back(item4);
-
-    cutListToLumberList(inventory, cutList);
-
-    //std::vector <Piece*> pieceList;
-    //std::vector <Bulk*> bulkList;
-
-    /*for(int i = 0; i < inventory.size(); i++){
-        if(inventory[i]->getDescription() == "Piece"){
-            pieceList.push_back(new Piece(inventory[i]->getAttributes(), inventory[i]->getAttributeValues()));
-        }
-        else if(inventory[i]->getDescription() == "Bulk"){
-            bulkList.push_back(new Bulk(inventory[i]->getAttributes(), inventory[i]->getAttributeValues()));
-        }
-    }*/
-
-
-    // Piece piece1(26,5,1,"cherry",1,empty,empty,5);
-    // Piece piece2(16,5,1,"cherry",1,empty,empty,3);
-    // pieceList.push_back(piece1);
-    // pieceList.push_back(piece2);
-
-    // Bulk bulk1(36,5,1,"cherry",1,empty,empty,1,12);
-    // Bulk bulk2(24,5,1,"cherry",1,empty,empty,1,8);
-    // bulkList.push_back(bulk1);
-    // bulkList.push_back(bulk2);
-
-    /*lumberList returnList = cutListToLumberList(bulkList, pieceList, cutList);
-    for (int i = 0; i < returnList.pieces.size(); i++) {
-        std::cout << "Piece #" << returnList.pieces.at(i) + 1 << " fulfills:" << std::endl;
-        for (int j : returnList.pieceFulfillment.at(i))  {
-            std::cout << "\tCut List Item #" << j + 1 << std::endl;
-        }
-    }
-    for (int i = 0; i < returnList.bulks.size(); i++) {
-        std::cout << returnList.bulkQuantities.at(i) << " of Bulk #" << returnList.bulks.at(i) + 1 << " fulfills:" << std::endl;
-        for (int j : returnList.bulkFulfillment.at(i))  {
-            std::cout << "\tCut List Item #" << j + 1 << std::endl;
-        }
-    }*/
+    cutlistdialog cutlistdialog(inventory, this);
+    cutlistdialog.exec();
 }
 
 void InventoryWindow::on_photoButton_clicked()
