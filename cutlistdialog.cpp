@@ -23,8 +23,8 @@ void cutlistdialog::on_rowsetbutton_clicked()
 void cutlistdialog::on_genmaterials_clicked()
 {
     std::vector<std::vector<std::string>> tableContents;
-    std::vector<std::string> row;
     for(int i = 1; i < ui->cuttable->rowCount(); i++){
+        std::vector<std::string> row;
         for(int j = 0; j < ui->cuttable->columnCount(); j++){
             row.push_back(ui->cuttable->item(i,j)->text().toStdString());
         }
