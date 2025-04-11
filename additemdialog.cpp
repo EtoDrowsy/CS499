@@ -225,6 +225,30 @@ std::vector<std::string> AddItemDialog::getNewItemData() const {
                 newItem.push_back("");
             }
         }
+        else if (attribute == "thickness") {
+            QString value;
+
+            if (widget) {
+                QLineEdit *lineEdit = widget->findChild<QLineEdit *>();
+                if (!lineEdit) {
+                    lineEdit = qobject_cast<QLineEdit *>(widget);
+                }
+
+                if (lineEdit) {
+                    value = lineEdit->text().trimmed();
+                }
+            }
+
+            if (!value.isEmpty()) {
+                if (!value.endsWith("\"")) {
+                    value += "\"";
+                }
+            } else {
+                value = "N/A";
+            }
+
+            newItem.push_back(value.toStdString());
+        }
         else {
             QString value;
 

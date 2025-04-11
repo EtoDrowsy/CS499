@@ -524,6 +524,7 @@ void InventoryWindow::on_addObjectButton_clicked()
         std::vector<std::string> newItem = addwindow.getNewItemData();
 
         bool isComplete = true;
+
         for (size_t i = 0; i < newItem.size(); i++) {
             qDebug() << ("newItem = ") << newItem[i];
             if (newItem[i].empty()) {
@@ -532,11 +533,7 @@ void InventoryWindow::on_addObjectButton_clicked()
             }
         }
 
-        qDebug() << ("isComplete = ") << isComplete;
-        qDebug() << ("newItem == CSVattributes: ") << (newItem.size() == CSVattributes.size());
-
         if (isComplete && newItem.size() == CSVattributes.size()) {
-            qDebug() << ("reaches here");
             dataArray.push_back(newItem);
             inventory.push_back(new Lumber(newItem,CSVattributes));
 
@@ -544,8 +541,7 @@ void InventoryWindow::on_addObjectButton_clicked()
             ui->dataViewer->insertRow(newRow);
 
             for (int j = 0; j < newItem.size(); j++) {
-                QTableWidgetItem* item = new QTableWidgetItem(
-                    QString::fromStdString(newItem[j]));
+                QTableWidgetItem* item = new QTableWidgetItem(QString::fromStdString(newItem[j]));
                 ui->dataViewer->setItem(newRow, j, item);
             }
 
@@ -587,11 +583,11 @@ void InventoryWindow::writeCSV(const std::string &filePath) {
             else if (CSVattributes[j] == "Width" && !value.empty()) {
                 if (value.back() != '\"') value += "\"";
             }
+            else if (CSVattributes[j] == "Thickness" && !value.empty()) {
+                if (value.back() != '\"') value += "\"";
+            }
             else if (CSVattributes[j] == "Price" && !value.empty() && value[0] != '$') {
                 value = "$" + value;
-            }
-            else if  (CSVattributes[j] == "Notes" && !value.empty()) {
-
             }
 
             file << value;
@@ -698,7 +694,7 @@ void InventoryWindow::on_createCSVButton_clicked()
     else{
         std::fstream newcsv;
         newcsv.open(csvfilepath);
-        newcsv << "ID;Location;Quantity;Species;Description;Length;Width;Thickness;Price";
+        newcsv << "ID;Location;Quantity;Length;Width;Thickness;Grade;Price;Description;Date;Species;Photo;Notes";
         newcsv.close();
 
         readCSV(csvfilepath);
@@ -752,14 +748,13 @@ void InventoryWindow::on_modifyObjectButton_clicked()
 
         for (int i = 0; i < dataArray.size(); i++) {
             if(QString::fromStdString(dataArray[i][0]) == inputID){
+                dataArray[i][noteIndex] = newNote.toStdString();
 
-            dataArray[i][noteIndex] = newNote.toStdString();
+                QTableWidgetItem *noteItem = new QTableWidgetItem(newNote);
+                ui->dataViewer->setItem(i + 1, noteIndex, noteItem);
 
-            QTableWidgetItem *noteItem = new QTableWidgetItem(newNote);
-            ui->dataViewer->setItem(i + 1, noteIndex, noteItem);
-
-            idFound = true;
-            break;
+                idFound = true;
+                break;
 
             }
         }
@@ -779,7 +774,10 @@ void InventoryWindow::on_sortObjectButton_clicked()
 {
     std::vector<std::string> sortableAttributes;
     for (const std::string& attr : CSVattributes) {
-        if (attr == "ID" || attr == "Location" || attr == "Species") {
+        if (attr == "Photo" || attr == "Notes") {
+            qDebug() << "current attr: " << attr;
+        }
+        else {
             sortableAttributes.push_back(attr);
         }
     }
@@ -796,7 +794,8 @@ void InventoryWindow::on_sortObjectButton_clicked()
         if (columnIndex != -1) {
             std::sort(dataArray.begin(), dataArray.end(),
                       [columnIndex, this](const std::vector<std::string>& a, const std::vector<std::string>& b) {
-                          if (CSVattributes[columnIndex] == "ID") {
+                          if (CSVattributes[columnIndex] == "ID" || CSVattributes[columnIndex] == "Quantity" ||
+                                CSVattributes[columnIndex] == "Length" || CSVattributes[columnIndex] == "Width") {
                               try {
                                   return std::stoi(a[columnIndex]) < std::stoi(b[columnIndex]);
                               } catch (...) {
