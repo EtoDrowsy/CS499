@@ -59,7 +59,7 @@ static std::string printLumberList(std::vector <std::vector <int>> lumberList, s
             if (leftovers < 0)
                 leftovers = 0;
             std::stringstream ss;
-            ss << std::fixed << std::setprecision(2) << leftovers;
+            ss << std::fixed << std::setprecision(3) << leftovers;
             std::string precLeftovers = ss.str();
             returnString.append("\tLeftover Material: " + precLeftovers + " in.\n");
             // std::cout << "\tLeftover Material: " << leftovers << " in.\n";
