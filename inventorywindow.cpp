@@ -1,6 +1,5 @@
 #include "inventorywindow.h"
 #include "additemdialog.h"
-#include "deleteitemdialog.h"
 #include "cutlistdialog.h"
 #include "ui_inventorywindow.h"
 #include "Lumber.cpp"
