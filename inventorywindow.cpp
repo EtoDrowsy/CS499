@@ -1,7 +1,6 @@
 #include "inventorywindow.h"
 #include "additemdialog.h"
 #include "deleteitemdialog.h"
-#include "sortitemdialog.h"
 #include "cutlistdialog.h"
 #include "ui_inventorywindow.h"
 #include "Lumber.cpp"
@@ -298,33 +297,19 @@ void InventoryWindow::writeCSV(const std::string &filePath) {
 
 void InventoryWindow::on_deleteObjectButton_clicked()
 {
-    DeleteItemDialog *deleteDialog = new DeleteItemDialog(this);
+    if(ui->dataViewer->currentColumn() == 0){
+        int idDelete = std::stoi(ui->dataViewer->currentItem()->text().toStdString());
+        deleteRowId(idDelete);
 
-    int rowCount = ui->dataViewer->rowCount() - 1;
-    deleteDialog->updateDeleteSpinBox(rowCount);
-
-    if (deleteDialog->exec() == QDialog::Accepted) {
-        int idDelete = deleteDialog->getInputId();
-
-        if (idDelete <= -1){
-            QMessageBox::warning(this,"Invalid Input","Please enter a valid ID number.");
-        }
-        else if (!deleteRowId(idDelete)){
-            QMessageBox::warning(this,"ID Not Found","The ID number does not exist. Please select an existing ID.");
-        }
-        else {
-            writeCSV(csvfilepath);
-            for (int i = 0; i < inventory.size(); i++){
-                if (inventory[i]->getID() == std::to_string(idDelete)){
-                    delete inventory[i];
-                    inventory.erase(inventory.begin()+i);
-                }
+        writeCSV(csvfilepath);
+        for (int i = 0; i < inventory.size(); i++){
+            if (inventory[i]->getID() == std::to_string(idDelete)){
+                delete inventory[i];
+                inventory.erase(inventory.begin()+i);
             }
-            QMessageBox::information(this,"Item Deleted","The selected item has been deleted.");
         }
+        QMessageBox::information(this,"Item Deleted","The selected item has been deleted.");
     }
-
-    delete deleteDialog;
 }
 
 bool InventoryWindow::deleteRowId(int idDelete)
@@ -424,7 +409,7 @@ void InventoryWindow::on_modifyObjectButton_clicked()
 {
     bool idFound = false;
 
-    modifyitemdialog modifyDialog(this);
+    modifyitemdialog modifyDialog(inventory,this);
     if(modifyDialog.exec() == QDialog::Accepted){
         QString inputID = modifyDialog.getEnteredID();
         QString newNote = modifyDialog.getNoteText();
@@ -467,56 +452,38 @@ void InventoryWindow::on_modifyObjectButton_clicked()
 
 void InventoryWindow::on_sortObjectButton_clicked()
 {
-    std::vector<std::string> sortableAttributes;
-    for (const std::string& attr : CSVattributes) {
-        if (attr == "Photo" || attr == "Notes") {
-            qDebug() << "current attr: " << attr;
-        }
-        else {
-            sortableAttributes.push_back(attr);
-        }
-    }
+    // Getting current column and the attribute in it
+    int columnIndex = ui->dataViewer->currentColumn();
+    std::string sortattr = CSVattributes[columnIndex];
 
-    sortitemdialog *sortDialog = new sortitemdialog(sortableAttributes, this);
-
-    if (sortDialog->exec() == QDialog::Accepted) {
-        QString selectedColumn = sortDialog->getSelectedColumn();
-        std::string selectedStd = selectedColumn.toStdString();
-
-        auto it = std::find(CSVattributes.begin(), CSVattributes.end(), selectedStd);
-        int columnIndex = (it != CSVattributes.end()) ? std::distance(CSVattributes.begin(), it) : -1;
-
-        if (columnIndex != -1) {
-            std::sort(dataArray.begin(), dataArray.end(),
-                      [columnIndex, this](const std::vector<std::string>& a, const std::vector<std::string>& b) {
-                          if (CSVattributes[columnIndex] == "ID" || CSVattributes[columnIndex] == "Quantity" ||
-                                CSVattributes[columnIndex] == "Length" || CSVattributes[columnIndex] == "Width") {
-                              try {
-                                  return std::stoi(a[columnIndex]) < std::stoi(b[columnIndex]);
-                              } catch (...) {
-                                  return a[columnIndex] < b[columnIndex];
-                              }
-                          } else {
+    if (sortattr != "Photo" && sortattr != "Notes"){
+        // Sorting based on the attribute
+        std::sort(dataArray.begin(), dataArray.end(),
+                  [columnIndex, this](const std::vector<std::string>& a, const std::vector<std::string>& b) {
+                      if (CSVattributes[columnIndex] == "ID" || CSVattributes[columnIndex] == "Quantity" ||
+                          CSVattributes[columnIndex] == "Length" || CSVattributes[columnIndex] == "Width" || CSVattributes[columnIndex] == "Thickness") {
+                          try {
+                              return std::stoi(a[columnIndex]) < std::stoi(b[columnIndex]);
+                          } catch (...) {
                               return a[columnIndex] < b[columnIndex];
                           }
-                      });
+                      } else {
+                          return a[columnIndex] < b[columnIndex];
+                      }
+                  });
 
-            ui->dataViewer->setRowCount(dataArray.size() + 1);
-            for (int i = 0; i < dataArray.size(); i++) {
-                for (int j = 0; j < dataArray[i].size(); j++) {
-                    QString qstr = QString::fromStdString(dataArray[i][j]);
-                    QTableWidgetItem *newitem = new QTableWidgetItem(qstr);
-                    ui->dataViewer->setItem(i + 1, j, newitem);
-                }
+        ui->dataViewer->setRowCount(dataArray.size() + 1);
+        for (int i = 0; i < dataArray.size(); i++) {
+            for (int j = 0; j < dataArray[i].size(); j++) {
+                QString qstr = QString::fromStdString(dataArray[i][j]);
+                QTableWidgetItem *newitem = new QTableWidgetItem(qstr);
+                ui->dataViewer->setItem(i + 1, j, newitem);
             }
-
-            writeCSV(csvfilepath);
         }
+
+        writeCSV(csvfilepath);
     }
-
-    delete sortDialog;
 }
-
 
 
 void InventoryWindow::on_HTMLGenButton_clicked()

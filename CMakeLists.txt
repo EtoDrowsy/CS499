@@ -24,9 +24,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
         additemdialog.h additemdialog.cpp additemdialog.ui
-        deleteitemdialog.h deleteitemdialog.cpp deleteitemdialog.ui
         Lumber.cpp
-        sortitemdialog.h sortitemdialog.cpp sortitemdialog.ui
         cutlistdialog.h cutlistdialog.cpp cutlistdialog.ui
         htmlgendialog.cpp htmlgendialog.h htmlgendialog.ui
         modifyitemdialog.h modifyitemdialog.cpp modifyitemdialog.ui
