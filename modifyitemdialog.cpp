@@ -1,31 +1,19 @@
 #include "modifyitemdialog.h"
 #include "ui_modifyitemdialog.h"
 
-modifyitemdialog::modifyitemdialog(std::vector<Lumber*> inv, QWidget *parent)
+modifyitemdialog::modifyitemdialog(std::vector<Lumber*> inv, int id, QWidget *parent)
     : QDialog(parent)
     , ui(new Ui::modifyitemdialog)
 {
     ui->setupUi(this);
 
     inventory = inv;
+    modifyID = id;
 
-    connect(ui->idNum, &QLineEdit::textChanged, this, &modifyitemdialog::onIdChanged);
+    ui->idNum->setText(QString::number(modifyID));
+
     connect(ui->confirmInputBox, &QDialogButtonBox::accepted, this, &modifyitemdialog::accept);
     connect(ui->confirmInputBox, &QDialogButtonBox::rejected, this, &modifyitemdialog::reject);
-}
-
-void modifyitemdialog::onIdChanged(const QString &text)
-{
-    qDebug() << "Id: " << text;
-    QString trimId = text.trimmed();
-    if (idNoteMap.contains(trimId)) {
-        ui->inputTextEdit->setPlainText(idNoteMap[trimId]);
-        qDebug() << "Note: " << idNoteMap[trimId];
-    }
-    else {
-        ui->inputTextEdit->clear();
-        qDebug() << "no note";
-    }
 }
 
 void modifyitemdialog::setIdNoteMap(const QMap<QString, QString> &map)
@@ -41,11 +29,6 @@ void modifyitemdialog::setIdNoteMap(const QMap<QString, QString> &map)
 modifyitemdialog::~modifyitemdialog()
 {
     delete ui;
-}
-
-QString modifyitemdialog::getEnteredID() const
-{
-    return ui->idNum->text().trimmed();
 }
 
 QString modifyitemdialog::getNoteText() const

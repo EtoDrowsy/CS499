@@ -87,4 +87,3 @@ void soldinventoryviewer::on_sortButton_clicked()
         }
     }
 }
-

@@ -12,15 +12,15 @@ class soldinventorydialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit soldinventorydialog(QWidget *parent = nullptr);
+    explicit soldinventorydialog(QWidget *parent = nullptr, int id = NULL);
     ~soldinventorydialog();
     bool getQuantityCheckState();
-    int getIDValue();
     int getQuantitySold();
     std::string getNoteString();
 
 private:
     Ui::soldinventorydialog *ui;
+    int saleID;
 };
 
 #endif // SOLDINVENTORYDIALOG_H

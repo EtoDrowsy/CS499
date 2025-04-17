@@ -3,13 +3,15 @@
 #include <QIntValidator>
 #include <QMessageBox>
 
-soldinventorydialog::soldinventorydialog(QWidget *parent)
+soldinventorydialog::soldinventorydialog(QWidget *parent, int id)
     : QDialog(parent)
     , ui(new Ui::soldinventorydialog)
 {
     ui->setupUi(this);
 
-    ui->idEdit->setValidator(new QIntValidator(0, 999999, this));
+    saleID = id;
+
+    ui->idEdit->setText(QString::number(saleID));
     ui->quantityEdit->setValidator(new QIntValidator(0,1000000, this));
 
     connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
@@ -24,10 +26,6 @@ soldinventorydialog::~soldinventorydialog()
 
 bool soldinventorydialog::getQuantityCheckState(){
     return ui->allSoldCheckBox->isChecked();
-}
-
-int soldinventorydialog::getIDValue(){
-    return ui->idEdit->text().toInt();
 }
 
 int soldinventorydialog::getQuantitySold(){
