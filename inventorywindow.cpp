@@ -20,7 +20,12 @@
 #include <QMessageBox>
 #include <QFileDialog>
 
+enum column{
+    ID,Location,Quantity,Length,Width,Thickness,Grade,Price,Description,Date,Species,Photo,Notes,Sold,Unknown
+};
+
 std::vector<std::string> CSVattributes;
+std::vector<column> ColumnNames;
 std::vector<std::vector<std::string>> dataArray;
 
 std::string csvfilepath;
@@ -31,6 +36,52 @@ std::vector<Lumber*> selectedInventory;
 std::vector<Lumber*>soldInventory;
 int soldIndex;
 bool soldInvExists = false;
+
+column stringToColumn(std::string readIn){
+    if(readIn == "ID"){
+        return ID;
+    }
+    else if(readIn == "Location"){
+        return Location;
+    }
+    else if(readIn == "Quantity"){
+        return Quantity;
+    }
+    else if(readIn == "Length"){
+        return Length;
+    }
+    else if(readIn == "Width"){
+        return Width;
+    }
+    else if(readIn == "Thickness"){
+        return Thickness;
+    }
+    else if(readIn == "Grade"){
+        return Grade;
+    }
+    else if(readIn == "Price"){
+        return Price;
+    }
+    else if(readIn == "Description"){
+        return Description;
+    }
+    else if(readIn == "Date"){
+        return Date;
+    }
+    else if(readIn == "Species"){
+        return Species;
+    }
+    else if(readIn == "Photo"){
+        return Photo;
+    }
+    else if(readIn == "Notes"){
+        return Notes;
+    }
+    else if(readIn == "Sold"){
+        return Sold;
+    }
+    return Unknown;
+}
 
 void readCSV(std::string filepath)
 {
@@ -44,6 +95,7 @@ void readCSV(std::string filepath)
         std::string substr;
         getline(ss, substr, ';');
         CSVattributes.push_back(substr);
+        ColumnNames.push_back(stringToColumn(substr));
     }
 
     for(int i = 0; i < CSVattributes.size(); i++){
