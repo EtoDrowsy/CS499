@@ -13,6 +13,7 @@ soldinventorydialog::soldinventorydialog(QWidget *parent, int id)
 
     ui->idEdit->setText(QString::number(saleID));
     ui->quantityEdit->setValidator(new QIntValidator(0,1000000, this));
+    ui->dateEdit->setDate(QDate::currentDate());
 
     connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
     connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
