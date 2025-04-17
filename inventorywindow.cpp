@@ -35,7 +35,7 @@ std::vector<Lumber*> selectedInventory;
 
 std::vector<Lumber*>soldInventory;
 int soldIndex;
-bool soldInvExists = false;
+bool soldInvExists;
 
 column stringToColumn(std::string readIn){
     if(readIn == "ID"){
@@ -224,6 +224,8 @@ void InventoryWindow::on_csvLoadButton_clicked()
         ui->dataViewer->clear();
         CSVattributes.clear();
         dataArray.clear();
+        soldInventory.clear();
+        soldInvExists = false;
 
         readCSV(csvfilepath);
 
