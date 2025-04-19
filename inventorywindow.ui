@@ -57,7 +57,7 @@
    </palette>
   </property>
   <property name="windowTitle">
-   <string>InventoryWindow</string>
+   <string>Inventory</string>
   </property>
   <property name="locale">
    <locale language="English" country="UnitedStates"/>
@@ -1339,6 +1339,19 @@
         </property>
         <property name="text">
          <string>Adjust Price</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="10">
+       <widget class="QPushButton" name="HTMLAddButton">
+        <property name="font">
+         <font>
+          <pointsize>16</pointsize>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Add To Store</string>
         </property>
        </widget>
       </item>

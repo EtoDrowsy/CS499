@@ -50,6 +50,8 @@ private slots:
 
     void on_priceButton_clicked();
 
+    void on_HTMLAddButton_clicked();
+
 private:
     Ui::InventoryWindow *ui;
 

@@ -9,7 +9,6 @@
 #include "soldinventoryviewer.h"
 #include "soldinventorydialog.h"
 #include "pricedialog.h"
-
 #include "modifyitemdialog.h"
 
 #include <iostream>
@@ -31,7 +30,6 @@ std::vector<std::vector<std::string>> dataArray;
 std::string csvfilepath;
 
 std::vector<Lumber*> inventory;
-std::vector<Lumber*> selectedInventory;
 
 std::vector<Lumber*>soldInventory;
 int soldIndex;
@@ -136,53 +134,69 @@ void readCSV(std::string filepath)
     return;
 }
 
-void generateHTML(std::vector<Lumber*> woodList, std::string filename) {
-    std::ofstream file(filename);
-
-    if (!file) {
+void genHTML(std::string filename){
+    std::fstream newhtml;
+    newhtml.open(filename);
+    if (!newhtml) {
         std::cerr << "Error opening file for writing.\n";
         return;
     }
+    newhtml << "<!DOCTYPE html>\n";
+    newhtml << "<html lang=\"en\">\n";
+    newhtml << "<head>\n";
+    newhtml << "    <meta charset=\"UTF-8\">\n";
+    newhtml << "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n";
+    newhtml << "    <title>Your Wood Order</title>\n";
+    newhtml << "    <link rel=\"stylesheet\" type=\"text/css\" href=\"style.css\">\n";
+    newhtml << "</head>\n";
+    newhtml << "<body>\n";
+    newhtml << "    <div class=\"header-wrapper\">\n";
+    newhtml << "        <h1 class=\"page-title\">Sawyer Inventory</h1>\n";
+    newhtml << "    </div>\n";
+    newhtml << "    <div class=\"grid-container\">\n";
+    newhtml << "    </div>\n";
+    newhtml << "</body>\n";
+    newhtml << "</html>\n";
 
-    file << "<!DOCTYPE html>\n";
-    file << "<html lang=\"en\">\n";
-    file << "<head>\n";
-    file << "    <meta charset=\"UTF-8\">\n";
-    file << "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n";
-    file << "    <title>Your Wood Order</title>\n";
-    file << "    <link rel=\"stylesheet\" type=\"text/css\" href=\"style.css\">\n";
-    file << "</head>\n";
-    file << "<body>\n";
-    file << "    <div class=\"header-wrapper\">\n";
-    file << "        <h1 class=\"page-title\">Sawyer Inventory</h1>\n";
-    file << "    </div>\n";
-    file << "    <div class=\"grid-container\">\n";
+    newhtml.close();
+}
 
-    for (int i = 0; i < woodList.size(); i++) {
-        file << "        <div class=\"wood-item\">\n";
-        file << "            <p class=\"item-title-description\">" << woodList[i]->getDescription() << "<br></p>\n";
-        file << "            <p class=\"item-title-species\">" << woodList[i]->getSpecies() << "<br></p>\n";
-
-        // image filename could be derived from species, lowercase if needed
-        file << "            <img src=\"/" << woodList[i]->getPhotoPath() << "\" alt=\"" << woodList[i]->getSpecies()
-             << "\" class=\"wood-image\" onerror=\"this.onerror=null;this.src='images/default.jpg';\">\n";
-
-        file << "            <p class=\"item-price\">" << woodList[i]->getPriceDisplay() << "<br></p>\n";
-        file << "            <p>"
-             << woodList[i]->getLengthDisplay() << " x "
-             << woodList[i]->getWidthDisplay() << " x "
-             << woodList[i]->getThicknessDisplay() << "<br>"
-             << woodList[i]->getQuantity() << " in stock</p>\n";
-
-        file << "        </div>\n";
+void addToHTML(std::vector<Lumber*> woodList, std::string filename){
+    std::ifstream readhtml(filename);
+    std::vector<std::string> lines;
+    std::string line;
+    while(std::getline(readhtml, line)){
+        lines.push_back(line);
     }
+    readhtml.close();
 
-    file << "    </div>\n";
-    file << "</body>\n";
-    file << "</html>\n";
+    lines.pop_back();
+    lines.pop_back();
+    lines.pop_back();
+    for (int i = 0; i < woodList.size(); i++) {
+        lines.push_back("        <div class=\"wood-item\">");
+        lines.push_back("            <p class=\"item-title-description\">" + woodList[i]->getDescription() + "<br></p>");
+        lines.push_back("            <p class=\"item-title-species\">" + woodList[i]->getSpecies() + "<br></p>");
+        lines.push_back("            <img src=\"/" + woodList[i]->getPhotoPath() + "\" alt=\"" + woodList[i]->getSpecies() +
+                        "\" class=\"wood-image\" onerror=\"this.onerror=null;this.src='images/default.jpg';\">");
+        lines.push_back("            <p class=\"item-price\">" + woodList[i]->getPriceDisplay() + "<br></p>");
+        lines.push_back("            <p>"
+             + woodList[i]->getLengthDisplay() + " x "
+             + woodList[i]->getWidthDisplay() + " x "
+             + woodList[i]->getThicknessDisplay() + "<br>"
+             + std::to_string(woodList[i]->getQuantity()) + " in stock</p>");
+        lines.push_back("        </div>");
+    }
+    lines.push_back("    </div>");
+    lines.push_back("</body>");
+    lines.push_back("</html>");
 
-    file.close();
-    std::cout << "HTML file generated successfully: " << filename << std::endl;
+    std::ofstream writehtml(filename);
+    for(int i = 0; i < lines.size(); i++){
+        writehtml << lines[i] + "\n";
+    }
+    lines.clear();
+    return;
 }
 
 InventoryWindow::InventoryWindow(QWidget *parent)
@@ -536,21 +550,25 @@ void InventoryWindow::on_sortObjectButton_clicked()
 
 void InventoryWindow::on_HTMLGenButton_clicked()
 {
-    QStringList potentialItems;
-    for(int i = 0; i < inventory.size(); i++){
-        potentialItems.push_back(QString::fromStdString(inventory[i]->getID()));
+    QString htmlfilepath = QFileDialog::getSaveFileName(this, tr("Save File"),"",tr("HTML Files (*.html)"));
+
+    QFile htmlfile(htmlfilepath);
+    htmlfile.open(QIODevice::WriteOnly);
+    htmlfile.close();
+
+    std::string newhtmlpath = htmlfilepath.toStdString();
+
+    if(newhtmlpath.empty()){
+        QMessageBox::information(this, "File Name Empty", "File must have a name.");
+        return;
     }
-    htmlgendialog htmlwindow(this, potentialItems);
-    if (htmlwindow.exec() == QDialog::Accepted){
-        std::vector<std::string> selectedItems = htmlwindow.getCheckedItems();
-        for(int i = 0; i < selectedItems.size(); i++){
-            for(int j = 0; j < inventory.size(); j++){
-                if(inventory[j]->getID() == selectedItems[i]){
-                    selectedInventory.push_back(inventory[j]);
-                }
-            }
-        }
-        generateHTML(selectedInventory, "index.html");
+    else if(newhtmlpath.find(".html") == std::string::npos){
+        QMessageBox::information(this, "Wrong File Type", "Incorrect file type, must be .html.");
+        return;
+    }
+    else{
+        genHTML(newhtmlpath);
+        return;
     }
 }
 
@@ -722,5 +740,35 @@ void InventoryWindow::on_priceButton_clicked()
             writeCSV(csvfilepath);
         }
     }
+}
+
+
+void InventoryWindow::on_HTMLAddButton_clicked()
+{
+    std::vector<Lumber*> newStoreItems;
+    QList<QTableWidgetItem*> selectedItems = ui->dataViewer->selectedItems();
+    for(int i = 0; i < selectedItems.size(); i++){
+        if(selectedItems[i]->column() == 0){
+            newStoreItems.push_back(inventory[getInventoryIndex(std::stoi(selectedItems[i]->text().toStdString()))]);
+        }
+    }
+    if(newStoreItems.size() > 0){
+        std::string htmlfilepath = (QFileDialog::getOpenFileName(nullptr, "Select a file", "", "HTML Files (*.html)")).toStdString();
+
+        if(htmlfilepath.empty()){
+            QMessageBox::information(this, "No File Selected", "Please select a file.");
+            return;
+        }
+        else if(htmlfilepath.find(".html") == std::string::npos){
+            QMessageBox::information(this, "Wrong File Type", "Please select a .html file.");
+            return;
+        }
+        else{
+            addToHTML(newStoreItems, htmlfilepath);
+        }
+    }
+    newStoreItems.clear();
+    selectedItems.clear();
+    return;
 }
 
