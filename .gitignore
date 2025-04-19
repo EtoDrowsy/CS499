@@ -1,2 +1,6 @@
 
 .vscode/settings.json
+.vscode/c_cpp_properties.json
+build/
+CMakeLists.txt.user.cc4e4ff
+CMakeLists.txt.user
