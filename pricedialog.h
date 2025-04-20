@@ -12,7 +12,7 @@ class pricedialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit pricedialog(QWidget *parent = nullptr);
+    explicit pricedialog(std::vector<std::string> speciesList, QWidget *parent = nullptr);
     ~pricedialog();
     std::string getSpeciesName();
     float getPricePerCubicInch();

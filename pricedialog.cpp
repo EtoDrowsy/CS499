@@ -1,11 +1,15 @@
 #include "pricedialog.h"
 #include "ui_pricedialog.h"
 
-pricedialog::pricedialog(QWidget *parent)
+pricedialog::pricedialog(std::vector<std::string> speciesList, QWidget *parent)
     : QDialog(parent)
     , ui(new Ui::pricedialog)
 {
     ui->setupUi(this);
+    ui->speciesComboBox->clear();
+    for(int i = 0; i < speciesList.size(); i++){
+        ui->speciesComboBox->addItem(QString::fromStdString(speciesList[i]));
+    }
 }
 
 pricedialog::~pricedialog()
@@ -14,7 +18,7 @@ pricedialog::~pricedialog()
 }
 
 std::string pricedialog::getSpeciesName(){
-    return ui->speciesEdit->text().toStdString();
+    return ui->speciesComboBox->currentText().toStdString();
 }
 
 float pricedialog::getPricePerCubicInch(){

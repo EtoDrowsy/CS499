@@ -26,7 +26,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         additemdialog.h additemdialog.cpp additemdialog.ui
         Lumber.cpp
         cutlistdialog.h cutlistdialog.cpp cutlistdialog.ui
-        htmlgendialog.cpp htmlgendialog.h htmlgendialog.ui
+
         modifyitemdialog.h modifyitemdialog.cpp modifyitemdialog.ui
         photodialog.h photodialog.cpp photodialog.ui
         soldinventorydialog.h soldinventorydialog.cpp soldinventorydialog.ui

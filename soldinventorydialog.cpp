@@ -34,5 +34,6 @@ int soldinventorydialog::getQuantitySold(){
 }
 
 std::string soldinventorydialog::getNoteString(){
-    return ui->notesEdit->toPlainText().toStdString();
+    std::string retString = ui->notesEdit->toPlainText().toStdString();
+    return retString;
 }

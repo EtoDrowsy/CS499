@@ -163,7 +163,6 @@ class Lumber {
         void setNotes(std::string n){
             for (int i = 0; i < attributeValues.size(); i++){
                 if (attributeValues[i] == "Notes"){
-                    attributes[i].append("\n");
                     attributes[i].append(n);
                 }
             }

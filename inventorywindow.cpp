@@ -4,7 +4,6 @@
 #include "ui_inventorywindow.h"
 #include "Lumber.cpp"
 #include "CutList.cpp"
-#include "htmlgendialog.h"
 #include "photodialog.h"
 #include "soldinventoryviewer.h"
 #include "soldinventorydialog.h"
@@ -224,6 +223,8 @@ void InventoryWindow::on_csvLoadButton_clicked()
         }
     }
 
+    ui->searchComboBox->clear();
+
     csvfilepath = (QFileDialog::getOpenFileName(nullptr, "Select a file", "", "CSV Files (*.csv)")).toStdString();
 
     if(csvfilepath.empty()){
@@ -252,6 +253,9 @@ void InventoryWindow::on_csvLoadButton_clicked()
             QString att = QString::fromStdString(CSVattributes[k]);
             QTableWidgetItem *attq = new QTableWidgetItem(att);
             ui->dataViewer->setItem(0, k, attq);
+            if(att != "Notes" && att != "Photo"){
+                ui->searchComboBox->addItem(att);
+            }
         }
 
         for (int i = 0; i < dataArray.size(); i++) {
@@ -516,34 +520,36 @@ void InventoryWindow::on_sortObjectButton_clicked()
 {
     // Getting current column and the attribute in it
     int columnIndex = ui->dataViewer->currentColumn();
-    std::string sortattr = CSVattributes[columnIndex];
+    if (columnIndex != -1){
+        std::string sortattr = CSVattributes[columnIndex];
 
-    if (sortattr != "Photo" && sortattr != "Notes"){
-        // Sorting based on the attribute
-        std::sort(dataArray.begin(), dataArray.end(),
-                  [columnIndex, this](const std::vector<std::string>& a, const std::vector<std::string>& b) {
-                      if (CSVattributes[columnIndex] == "ID" || CSVattributes[columnIndex] == "Quantity" ||
-                          CSVattributes[columnIndex] == "Length" || CSVattributes[columnIndex] == "Width" || CSVattributes[columnIndex] == "Thickness") {
-                          try {
-                              return std::stoi(a[columnIndex]) < std::stoi(b[columnIndex]);
-                          } catch (...) {
+        if (sortattr != "Photo" && sortattr != "Notes"){
+            // Sorting based on the attribute
+            std::sort(dataArray.begin(), dataArray.end(),
+                      [columnIndex, this](const std::vector<std::string>& a, const std::vector<std::string>& b) {
+                          if (CSVattributes[columnIndex] == "ID" || CSVattributes[columnIndex] == "Quantity" ||
+                              CSVattributes[columnIndex] == "Length" || CSVattributes[columnIndex] == "Width" || CSVattributes[columnIndex] == "Thickness") {
+                              try {
+                                  return std::stoi(a[columnIndex]) < std::stoi(b[columnIndex]);
+                              } catch (...) {
+                                  return a[columnIndex] < b[columnIndex];
+                              }
+                          } else {
                               return a[columnIndex] < b[columnIndex];
                           }
-                      } else {
-                          return a[columnIndex] < b[columnIndex];
-                      }
-                  });
+                      });
 
-        ui->dataViewer->setRowCount(dataArray.size() + 1);
-        for (int i = 0; i < dataArray.size(); i++) {
-            for (int j = 0; j < dataArray[i].size(); j++) {
-                QString qstr = QString::fromStdString(dataArray[i][j]);
-                QTableWidgetItem *newitem = new QTableWidgetItem(qstr);
-                ui->dataViewer->setItem(i + 1, j, newitem);
+            ui->dataViewer->setRowCount(dataArray.size() + 1);
+            for (int i = 0; i < dataArray.size(); i++) {
+                for (int j = 0; j < dataArray[i].size(); j++) {
+                    QString qstr = QString::fromStdString(dataArray[i][j]);
+                    QTableWidgetItem *newitem = new QTableWidgetItem(qstr);
+                    ui->dataViewer->setItem(i + 1, j, newitem);
+                }
             }
-        }
 
-        writeCSV(csvfilepath);
+            writeCSV(csvfilepath);
+        }
     }
 }
 
@@ -624,13 +630,7 @@ void InventoryWindow::on_photoButton_clicked()
 void InventoryWindow::on_soldButton_clicked()
 {
     soldinventoryviewer soldinvviewer(CSVattributes, soldInventory, this);
-    if(soldinvviewer.exec() == QDialog::Accepted){
-        // if(ui->idEdit->text().isEmpty || ui->quantityEdit->text().isEmpty()) {
-        //     QMessageBox::warning(this, "Input Error", "Please enter valid ID or quantity number.");
-        //     return;
-        // }
-        // ^^ use to see if they are empty idk if you need that
-    }
+    soldinvviewer.exec();
 }
 
 int getInventoryIndex(int id){
@@ -647,7 +647,6 @@ int getInventoryIndex(int id){
 
 void InventoryWindow::on_newSaleButton_clicked()
 {
-
     if(ui->dataViewer->currentColumn() == 0){
         int saleID = std::stoi(ui->dataViewer->currentItem()->text().toStdString());
 
@@ -705,7 +704,14 @@ void InventoryWindow::on_newSaleButton_clicked()
 
 void InventoryWindow::on_priceButton_clicked()
 {
-    pricedialog pricedialog(this);
+    std::vector<std::string> uniqueSpecies;
+    for(int i = 0; i < inventory.size(); i++){
+        auto newSpecies = std::find(uniqueSpecies.begin(), uniqueSpecies.end(), inventory[i]->getSpecies());
+        if(newSpecies == uniqueSpecies.end()){
+            uniqueSpecies.push_back(inventory[i]->getSpecies());
+        }
+    }
+    pricedialog pricedialog(uniqueSpecies, this);
     if (pricedialog.exec() == QDialog::Accepted){
         if (!pricedialog.getSpeciesName().empty() && !(pricedialog.getPricePerCubicInch() == 0)){
             int priceIndex;
@@ -739,6 +745,7 @@ void InventoryWindow::on_priceButton_clicked()
             }
             writeCSV(csvfilepath);
         }
+        uniqueSpecies.clear();
     }
 }
 
