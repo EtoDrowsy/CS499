@@ -108,3 +108,24 @@ static std::vector <std::vector <int>> cutListToLumberList(std::vector <Lumber*>
     }
     return lumberList;
 }
+
+static std::vector <Lumber*> confirmLumberList(std::vector <Lumber*> inventory, std::vector <CutListItem*> cutList, std::vector <std::vector <int>> lumberList) {
+    std::vector <Lumber*> newInventory = inventory;
+    for (int i = 0; i < lumberList.size(); i++) {
+        for (int j : lumberList.at(i)) {
+            float leftovers = inventory.at(j)->getLength() - SAW_KERF - cutList.at(i)->getLength();
+            if (leftovers < 0)
+                continue;
+            leftovers = int(std::floor(leftovers));
+            newInventory.at(j)->setQuantity(newInventory.at(j)->getQuantity() - 1);
+            Lumber* newLumber = new Lumber(inventory.at(j)->getAttributes(), inventory.at(j)->getAttributeValues());
+            newLumber->setLength(leftovers);
+            newLumber->setDescription("Piece");
+            newLumber->setQuantity(1);
+            float fPrice = std::floor((leftovers / inventory.at(j)->getLength() * inventory.at(j)->getPrice()) * 100) / 100;
+            newLumber->setPrice(fPrice);
+            newInventory.push_back(newLumber);
+        }
+    }
+    return newInventory;
+}
