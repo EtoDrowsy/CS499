@@ -151,6 +151,22 @@ class Lumber {
             }
             quantity = q;
         }
+        void setPrice(float p) {
+            for (int i = 0; i < attributeValues.size(); i++){
+                if (attributeValues[i] == "Price"){
+                    attributes[i] = "$" + std::to_string(p);
+                }
+            }
+            price = p;
+        }
+        void setDescription(std::string d) {
+            for (int i = 0; i < attributeValues.size(); i++){
+                if (attributeValues[i] == "Description"){
+                    attributes[i] = d;
+                }
+            }
+            description = d;
+        }
         void setLength(float l) {
             float inches = std::fmod(l, 12);
             int feet = (l - inches) / 12;
