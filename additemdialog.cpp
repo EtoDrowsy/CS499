@@ -1,6 +1,7 @@
 #include "additemdialog.h"
 #include "ui_additemdialog.h"
 #include <QLineEdit>
+#include <QDateEdit>
 #include <QIntValidator>
 #include <QMessageBox>
 #include <QRegularExpressionValidator>
@@ -134,15 +135,14 @@ AddItemDialog::AddItemDialog(std::vector<std::string> attributes, QWidget *paren
             ui->inputtable->setCellWidget(rowIndex, 0, lineEdit);
         }
         else if (att.toLower() == "date") {
-            QLineEdit *lineEdit = new QLineEdit(container);
-            lineEdit->setPlaceholderText("YYYY-MM-DD");
+            QDateEdit *dateEdit = new QDateEdit(container);
+            dateEdit->setCalendarPopup(true);
+            dateEdit->setDisplayFormat("yyyy-MM-dd");
+            dateEdit->setDate(QDate::currentDate());
 
-            QRegularExpression dateRegex("^\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])$");
-            lineEdit->setValidator(new QRegularExpressionValidator(dateRegex, this));
-
-            lineEdit->setGeometry(0, 0, 400, 25);
+            dateEdit->setGeometry(0, 0, 400, 25);
             container->setFixedSize(400, 25);
-            ui->inputtable->setCellWidget(rowIndex, 0, lineEdit);
+            ui->inputtable->setCellWidget(rowIndex, 0, dateEdit);
         }
         else if (att.toLower() == "photo") {
             QTableWidgetItem *photoItem = new QTableWidgetItem("N/A");
@@ -250,6 +250,16 @@ std::vector<std::string> AddItemDialog::getNewItemData() const {
             }
 
             newItem.push_back(value.toStdString());
+        }
+        else if (attribute == "date") {
+            QDateEdit *dateEdit = qobject_cast<QDateEdit *>(widget);
+            if (dateEdit) {
+                QString dateStr = dateEdit->date().toString("yyyy-MM-dd");
+                newItem.push_back(dateStr.toStdString());
+            }
+            else {
+                newItem.push_back("N/A");
+            }
         }
         else {
             QString value;
