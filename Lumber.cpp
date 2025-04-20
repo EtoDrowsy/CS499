@@ -209,6 +209,7 @@ class Lumber {
                     attributes[i] = "$" + pricestring;
                 }
             }
+            price = newPrice;
             return;
         }
 
