@@ -15,7 +15,7 @@ public:
     explicit pricedialog(std::vector<std::string> speciesList, QWidget *parent = nullptr);
     ~pricedialog();
     std::string getSpeciesName();
-    float getPricePerCubicInch();
+    float getPriceChange();
 
 private:
     Ui::pricedialog *ui;

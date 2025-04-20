@@ -21,6 +21,6 @@ std::string pricedialog::getSpeciesName(){
     return ui->speciesComboBox->currentText().toStdString();
 }
 
-float pricedialog::getPricePerCubicInch(){
+float pricedialog::getPriceChange(){
     return ui->priceEdit->text().toFloat();
 }

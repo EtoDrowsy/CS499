@@ -60,28 +60,6 @@
    <string>Dialog</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="3" column="1" alignment="Qt::AlignmentFlag::AlignRight">
-    <widget class="QLineEdit" name="priceEdit">
-     <property name="maximumSize">
-      <size>
-       <width>80</width>
-       <height>16777215</height>
-      </size>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="0">
-    <widget class="QLabel" name="priceLabel">
-     <property name="font">
-      <font>
-       <pointsize>12</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>Price per cubic inch ($)</string>
-     </property>
-    </widget>
-   </item>
    <item row="2" column="0">
     <widget class="QLabel" name="speciesLabel">
      <property name="font">
@@ -94,7 +72,29 @@
      </property>
     </widget>
    </item>
-   <item row="4" column="1">
+   <item row="3" column="0">
+    <widget class="QLabel" name="priceLabel">
+     <property name="font">
+      <font>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Percentage Price Change (%)</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="1">
+    <widget class="QLineEdit" name="priceEdit">
+     <property name="maximumSize">
+      <size>
+       <width>80</width>
+       <height>16777215</height>
+      </size>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="1">
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="font">
       <font>

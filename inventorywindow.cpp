@@ -280,7 +280,6 @@ void InventoryWindow::on_addObjectButton_clicked()
         bool isComplete = true;
 
         for (size_t i = 0; i < newItem.size(); i++) {
-            qDebug() << ("newItem = ") << newItem[i];
             if (newItem[i].empty()) {
                 isComplete = false;
                 break;
@@ -305,8 +304,6 @@ void InventoryWindow::on_addObjectButton_clicked()
 }
 
 void InventoryWindow::writeCSV(const std::string &filePath) {
-    qDebug() << "Saving to CSV file:" << QString::fromStdString(filePath);
-
     std::ofstream file(filePath, std::ios::out | std::ios::trunc);
     if (!file.is_open()) {
         QMessageBox::warning(this, "File Error", "Could not open CSV file for writing: " + QString::fromStdString(filePath));
@@ -330,7 +327,6 @@ void InventoryWindow::writeCSV(const std::string &filePath) {
 
         for (size_t j = 0; j < row.size(); j++) {
             std::string value = row[j];
-            qDebug() << "Processing field:" << CSVattributes[j] << "Value:" << QString::fromStdString(value);
 
             if (CSVattributes[j] == "Length" && !value.empty()) {
                 if (value.back() != '\"') value += "\"";
@@ -362,7 +358,6 @@ void InventoryWindow::writeCSV(const std::string &filePath) {
     }
 
     file.close();
-    qDebug() << "CSV file saved successfully.";
 }
 
 
@@ -656,7 +651,7 @@ void InventoryWindow::on_newSaleButton_clicked()
                 QMessageBox::information(this, "Error", "No quantity specified.");
             }
             else if (inventory[getInventoryIndex(saleID)]->getQuantity() < soldinvdialog.getQuantitySold()){
-                qDebug() << "NOT ENOUGH QUANTITY";
+                QMessageBox::information(this, "Error", "Not enough quantity.");
             }
             else{
                 if (!soldInvExists){
@@ -713,7 +708,7 @@ void InventoryWindow::on_priceButton_clicked()
     }
     pricedialog pricedialog(uniqueSpecies, this);
     if (pricedialog.exec() == QDialog::Accepted){
-        if (!pricedialog.getSpeciesName().empty() && !(pricedialog.getPricePerCubicInch() == 0)){
+        if (!pricedialog.getSpeciesName().empty() && !(pricedialog.getPriceChange() == 0) && pricedialog.getPriceChange() > -100){
             int priceIndex;
             for (int i = 0; i < CSVattributes.size(); i++){
                 if (CSVattributes[i] == "Price"){
@@ -723,14 +718,11 @@ void InventoryWindow::on_priceButton_clicked()
             }
             for (int i = 0; i < inventory.size(); i++){
                 if (inventory[i]->getSpecies() == pricedialog.getSpeciesName() && inventory[i]->getDescription() == "Bulk"){
-                    std::vector<float> dimensions = inventory[i]->getDimensions();
                     float newPrice = 0;
 
-                    for (int j = 0; j < dimensions.size(); j++){
-                        newPrice += dimensions[j];
-                    }
+                    newPrice = inventory[i]->getPrice();
 
-                    newPrice = newPrice * pricedialog.getPricePerCubicInch();
+                    newPrice = newPrice * (1 + (pricedialog.getPriceChange()/100));
 
                     inventory[i]->setBulkPrice(newPrice);
 
@@ -744,6 +736,9 @@ void InventoryWindow::on_priceButton_clicked()
                 }
             }
             writeCSV(csvfilepath);
+        }
+        else{
+            QMessageBox::information(this, "Error", "Invalid Price.");
         }
         uniqueSpecies.clear();
     }
