@@ -779,3 +779,72 @@ void InventoryWindow::on_HTMLAddButton_clicked()
     return;
 }
 
+
+void InventoryWindow::on_searchButton_clicked()
+{
+    if(csvLoaded){
+        int attributeIndex = 0;
+        for (int i = 0; i < CSVattributes.size(); i++){
+            if (CSVattributes[i] == ui->searchComboBox->currentText().toStdString()){
+                attributeIndex = i;
+                break;
+            }
+        }
+        std::vector<std::vector<std::string>> searchedDataArray;
+        ui->dataViewer->clear();
+
+        ui->dataViewer->setEditTriggers(QAbstractItemView::NoEditTriggers);
+
+        for (int j = 0; j < dataArray.size(); j++){
+            if (dataArray[j][attributeIndex] == ui->searchField->text().toStdString()){
+                searchedDataArray.push_back(dataArray[j]);
+            }
+        }
+
+        ui->dataViewer->setColumnCount(CSVattributes.size());
+        ui->dataViewer->setRowCount(searchedDataArray.size() + 1);
+
+        for (int k = 0; k < CSVattributes.size(); k++) {
+            QString att = QString::fromStdString(CSVattributes[k]);
+            QTableWidgetItem *attq = new QTableWidgetItem(att);
+            ui->dataViewer->setItem(0, k, attq);
+        }
+
+        for (int i = 0; i < searchedDataArray.size(); i++) {
+            for (int j = 0; j < searchedDataArray[i].size(); j++) {
+                QString qstr = QString::fromStdString(searchedDataArray[i][j]);
+                QTableWidgetItem *newitem = new QTableWidgetItem(qstr);
+                ui->dataViewer->setItem(i + 1, j, newitem);
+            }
+        }
+        searchedDataArray.clear();
+    }
+}
+
+
+void InventoryWindow::on_clearSearchButton_clicked()
+{
+    if(csvLoaded){
+        ui->searchField->setText("");
+        ui->dataViewer->clear();
+        ui->dataViewer->setEditTriggers(QAbstractItemView::NoEditTriggers);
+
+        ui->dataViewer->setColumnCount(CSVattributes.size());
+        ui->dataViewer->setRowCount(dataArray.size() + 1);
+
+        for (int k = 0; k < CSVattributes.size(); k++) {
+            QString att = QString::fromStdString(CSVattributes[k]);
+            QTableWidgetItem *attq = new QTableWidgetItem(att);
+            ui->dataViewer->setItem(0, k, attq);
+        }
+
+        for (int i = 0; i < dataArray.size(); i++) {
+            for (int j = 0; j < dataArray[i].size(); j++) {
+                QString qstr = QString::fromStdString(dataArray[i][j]);
+                QTableWidgetItem *newitem = new QTableWidgetItem(qstr);
+                ui->dataViewer->setItem(i + 1, j, newitem);
+            }
+        }
+    }
+}
+

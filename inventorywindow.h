@@ -52,6 +52,10 @@ private slots:
 
     void on_HTMLAddButton_clicked();
 
+    void on_searchButton_clicked();
+
+    void on_clearSearchButton_clicked();
+
 private:
     Ui::InventoryWindow *ui;
 
