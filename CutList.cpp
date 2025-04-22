@@ -48,6 +48,8 @@ static std::vector <int> findMatching(CutListItem* item, std::vector <Lumber*> i
 }
 
 static std::string printLumberList(std::vector <std::vector <int>> lumberList, std::vector <Lumber*> inventory, std::vector <CutListItem*> cutList) {
+    if (lumberList.size() == 0)
+        return "Cut List can not be fulfilled.";
     std::string returnString = "";
     for (int i = 0; i < lumberList.size(); i++) {
         returnString.append("Cut List Item #" + std::to_string(i+1) + " is fulfilled by:\n");
@@ -71,6 +73,10 @@ static std::vector <std::vector <int>> cutListToLumberList(std::vector <Lumber*>
         std::vector <int> empty;
         lumberList.push_back(empty);
         std::vector <int> validItems = findMatching(cutList.at(c), inventory);
+        if (validItems.size() == 0) {
+            std::vector <std::vector <int>> returnEmpty;
+            return returnEmpty;
+        }
         for (int j = 0; j < cutList.at(c)->getQuantity(); j++) {
             int minIndex = validItems.front();
             bool invalidStart = false;
