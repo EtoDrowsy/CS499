@@ -69,16 +69,15 @@ static std::string printLumberList(std::vector <std::vector <int>> lumberList, s
 
 static std::vector <std::vector <int>> cutListToLumberList(std::vector <Lumber*> inventory, std::vector <CutListItem*> cutList) {
     std::vector <std::vector <int>> lumberList;
+    std::vector <std::vector <int>> returnEmpty;
     for (int c = 0; c < cutList.size(); c++) {
         std::vector <int> empty;
         lumberList.push_back(empty);
         std::vector <int> validItems = findMatching(cutList.at(c), inventory);
-        if (validItems.size() == 0) {
-            std::vector <std::vector <int>> returnEmpty;
+        if (validItems.size() == 0)
             return returnEmpty;
-        }
         for (int j = 0; j < cutList.at(c)->getQuantity(); j++) {
-            int minIndex = validItems.front();
+            int minIndex = -1;
             bool invalidStart = false;
             for (int i : validItems) {
                 int taken = 0;
@@ -88,10 +87,6 @@ static std::vector <std::vector <int>> cutListToLumberList(std::vector <Lumber*>
                             taken++;
                         }
                 }
-                if (i == minIndex && taken >= inventory.at(minIndex)->getQuantity()) {
-                    invalidStart = true;
-                    continue;
-                }
                 float iCutRatio;
                 if (cutList.at(c)->getLength() + SAW_KERF < inventory.at(i)->getLength())
                     iCutRatio = (cutList.at(c)->getLength() + SAW_KERF) / inventory.at(i)->getLength();
@@ -99,16 +94,18 @@ static std::vector <std::vector <int>> cutListToLumberList(std::vector <Lumber*>
                     iCutRatio = 1.0;
 
                 float minCutRatio;
-                if (cutList.at(c)->getLength() + SAW_KERF < inventory.at(minIndex)->getLength())
+                if (minIndex != -1 && cutList.at(c)->getLength() + SAW_KERF < inventory.at(minIndex)->getLength())
                     minCutRatio = (cutList.at(c)->getLength() + SAW_KERF) / inventory.at(minIndex)->getLength();
                 else
                     minCutRatio = 1.0;
 
-                if (invalidStart && taken < inventory.at(i)->getQuantity()|| (inventory.at(i)->getPrice() * iCutRatio < inventory.at(minIndex)->getPrice() * minCutRatio && taken < inventory.at(i)->getQuantity())) {
+                if (minIndex == -1 && taken < inventory.at(i)->getQuantity())
                     minIndex = i;
-                    invalidStart = false;
-                }
+                if (taken < inventory.at(i)->getQuantity() && inventory.at(i)->getPrice() * iCutRatio < inventory.at(minIndex)->getPrice() * minCutRatio)
+                    minIndex = i;
             }
+            if (minIndex == -1)
+                return returnEmpty;
             lumberList.at(c).push_back(minIndex);
         }
     }
