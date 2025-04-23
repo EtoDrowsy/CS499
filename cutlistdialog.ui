@@ -57,7 +57,7 @@
    </palette>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Cut List</string>
   </property>
   <property name="locale">
    <locale language="English" country="UnitedStates"/>
