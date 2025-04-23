@@ -156,7 +156,11 @@ class Lumber {
         void setPrice(float p) {
             for (int i = 0; i < attributeValues.size(); i++){
                 if (attributeValues[i] == "Price"){
-                    attributes[i] = "$" + std::to_string(p);
+                    std::stringstream ss;
+                    ss << std::fixed << std::setprecision(2) << p;
+                    std::string pricestring = ss.str();
+
+                    attributes[i] = "$" + pricestring;
                 }
             }
             price = p;
@@ -172,7 +176,12 @@ class Lumber {
         void setLength(float l) {
             float inches = std::fmod(l, 12);
             int feet = (l - inches) / 12;
-            std::string lengthString = std::to_string(feet) + "'-" + std::to_string(inches) + "\"";
+            std::string lengthString = std::to_string(feet) + "'-" + std::to_string(int(inches)) + "\"";
+            for (int i = 0; i < attributeValues.size(); i++){
+                if (attributeValues[i] == "Length"){
+                    attributes[i] = lengthString;
+                }
+            }
             length = lengthString;
         }
         void setPhotoPath(std::string p){
