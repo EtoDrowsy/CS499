@@ -188,8 +188,13 @@
           <height>24</height>
          </rect>
         </property>
+        <property name="font">
+         <font>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
         <property name="styleSheet">
-         <string notr="true">background-color:rgb(209, 188, 164)</string>
+         <string notr="true">background-color:rgb(209, 188, 164);color:rgb(0, 0, 0)</string>
         </property>
         <property name="standardButtons">
          <set>QDialogButtonBox::StandardButton::Cancel|QDialogButtonBox::StandardButton::Ok</set>
