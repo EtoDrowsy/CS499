@@ -1,6 +1,7 @@
 #include "cutlistdialog.h"
 #include "ui_cutlistdialog.h"
 #include "CutList.cpp"
+#include "additemdialog.h"
 
 cutlistdialog::cutlistdialog(std::vector<Lumber*> invvec, QWidget *parent)
     : QDialog(parent)
@@ -13,11 +14,6 @@ cutlistdialog::cutlistdialog(std::vector<Lumber*> invvec, QWidget *parent)
 cutlistdialog::~cutlistdialog()
 {
     delete ui;
-}
-
-void cutlistdialog::on_rowsetbutton_clicked()
-{
-    ui->cuttable->setRowCount(ui->numberCutList->text().toInt() + 1);
 }
 
 void cutlistdialog::on_genmaterials_clicked()
@@ -60,3 +56,32 @@ std::vector<std::vector<int>> cutlistdialog::getReturnVector(){
 void cutlistdialog::setReturnVector(std::vector<std::vector<int>> retVec){
     returnVector = retVec;
 }
+
+void cutlistdialog::on_addbutton_clicked()
+{
+    std::vector<std::string> cutlistAttributes = {"Species", "Length", "Width", "Thickness", "Quantity"};
+    AddItemDialog addwindow(cutlistAttributes, this);
+    if (addwindow.exec() == QDialog::Accepted) {
+        std::vector<std::string> newItem = addwindow.getNewItemData();
+
+        bool isComplete = true;
+
+        for (size_t i = 0; i < newItem.size(); i++) {
+            if (newItem[i].empty()) {
+                isComplete = false;
+                break;
+            }
+        }
+
+        if (isComplete && newItem.size() == cutlistAttributes.size()) {
+            int newRow = ui->cuttable->rowCount();
+            ui->cuttable->insertRow(newRow);
+
+            for (int j = 0; j < newItem.size(); j++) {
+                QTableWidgetItem* item = new QTableWidgetItem(QString::fromStdString(newItem[j]));
+                ui->cuttable->setItem(newRow, j, item);
+            }
+        }
+    }
+}
+

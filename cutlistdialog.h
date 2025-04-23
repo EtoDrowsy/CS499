@@ -17,8 +17,6 @@ public:
     ~cutlistdialog();
 
 private slots:
-    void on_rowsetbutton_clicked();
-
     void on_genmaterials_clicked();
 
     std::vector<Lumber*> getInventory();
@@ -26,6 +24,8 @@ private slots:
     std::vector<std::vector<int>> getReturnVector();
 
     void setReturnVector(std::vector<std::vector<int>> retVec);
+
+    void on_addbutton_clicked();
 
 private:
     Ui::cutlistdialog *ui;

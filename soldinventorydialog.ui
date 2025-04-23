@@ -129,6 +129,11 @@
           <height>22</height>
          </rect>
         </property>
+        <property name="font">
+         <font>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
         <property name="readOnly">
          <bool>true</bool>
         </property>
@@ -155,7 +160,7 @@
         <property name="geometry">
          <rect>
           <x>60</x>
-          <y>130</y>
+          <y>140</y>
           <width>91</width>
           <height>22</height>
          </rect>

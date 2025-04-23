@@ -110,6 +110,11 @@ li.checked::marker { content: &quot;\2612&quot;; }
           <height>30</height>
          </size>
         </property>
+        <property name="font">
+         <font>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
        </widget>
       </item>
       <item row="3" column="0">
