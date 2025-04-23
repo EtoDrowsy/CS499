@@ -37,3 +37,13 @@ std::string soldinventorydialog::getNoteString(){
     std::string retString = ui->notesEdit->toPlainText().toStdString();
     return retString;
 }
+
+std::string soldinventorydialog::getDateSold(){
+    std::string retString = ui->dateEdit->text().toStdString();
+    return retString;
+}
+
+int soldinventorydialog::getInvoiceNumber(){
+    int retInt = ui->invoiceEdit->text().toInt();
+    return retInt;
+}

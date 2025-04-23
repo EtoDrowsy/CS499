@@ -20,6 +20,8 @@ class Lumber {
         std::vector <std::string> attributes;
         std::vector <std::string> attributeValues;
         float price;
+        std::string dateSold;
+        int invoiceNumber;
     public:
         Lumber() {
             length = "NULL";
@@ -211,6 +213,18 @@ class Lumber {
             }
             price = newPrice;
             return;
+        }
+        void setDateSold(std::string d){
+            dateSold = d;
+        }
+        void setInvoiceNumber(int iN){
+            invoiceNumber = iN;
+        }
+        std::string getDateSold(){
+            return dateSold;
+        }
+        int getInvoiceNumber(){
+            return invoiceNumber;
         }
 
         std::string toString(){
