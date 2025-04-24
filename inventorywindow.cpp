@@ -274,6 +274,8 @@ void InventoryWindow::on_csvLoadButton_clicked()
         }
 
         csvLoaded = true;
+
+        ui->dataViewer->resizeColumnsToContents();
     }
     return;
 }
@@ -385,6 +387,9 @@ void InventoryWindow::on_deleteObjectButton_clicked()
                 }
             }
             QMessageBox::information(this,"Item Deleted","The selected item has been deleted.");
+        }
+        else {
+            QMessageBox::information(this, "Error", "Select an item ID in the inventory.");
         }
     }
 }
@@ -521,6 +526,9 @@ void InventoryWindow::on_modifyObjectButton_clicked()
                 writeCSV(csvfilepath);
             }
         }
+        else {
+            QMessageBox::information(this, "Error", "Select an item ID in the inventory.");
+        }
     }
 }
 
@@ -638,6 +646,9 @@ void InventoryWindow::on_photoButton_clicked()
                 }
             }
         }
+        else {
+            QMessageBox::information(this, "Error", "Select an item ID in the inventory.");
+        }
     }
 }
 
@@ -721,6 +732,9 @@ void InventoryWindow::on_newSaleButton_clicked()
                 }
             }
         }
+        else {
+            QMessageBox::information(this, "Error", "Select an item ID in the inventory.");
+        }
     }
 }
 
@@ -798,6 +812,9 @@ void InventoryWindow::on_HTMLAddButton_clicked()
             else{
                 addToHTML(newStoreItems, htmlfilepath);
             }
+        }
+        else{
+            QMessageBox::information(this, "Error", "Select an item ID in the inventory.");
         }
         newStoreItems.clear();
         selectedItems.clear();

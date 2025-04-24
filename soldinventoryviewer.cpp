@@ -21,6 +21,9 @@ soldinventoryviewer::soldinventoryviewer(std::vector<std::string> attributes, st
     ui->setupUi(this);
     ui->tableWidget->clear();
 
+    attributes.push_back("Date Sold");
+    attributes.push_back("Invoice Number");
+
     ui->tableWidget->setColumnCount(attributes.size());
     ui->tableWidget->setRowCount(soldinv.size() + 1);
 
@@ -39,6 +42,8 @@ soldinventoryviewer::soldinventoryviewer(std::vector<std::string> attributes, st
         row = soldinv[i]->toString();
         row.pop_back();
         rowvec = split(row,";");
+        rowvec.push_back(soldinv[i]->getDateSold());
+        rowvec.push_back(std::to_string(soldinv[i]->getInvoiceNumber()));
         soldarray.push_back(rowvec);
     }
 
@@ -49,6 +54,8 @@ soldinventoryviewer::soldinventoryviewer(std::vector<std::string> attributes, st
             ui->tableWidget->setItem(i + 1, j, newitem);
         }
     }
+
+    ui->tableWidget->resizeColumnsToContents();
 }
 
 soldinventoryviewer::~soldinventoryviewer()
