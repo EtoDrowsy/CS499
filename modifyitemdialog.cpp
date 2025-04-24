@@ -12,18 +12,14 @@ modifyitemdialog::modifyitemdialog(std::vector<Lumber*> inv, int id, QWidget *pa
 
     ui->idNum->setText(QString::number(modifyID));
 
+    for(int i = 0; i < inventory.size(); i++) {
+        if(inventory[i]->getID() == std::to_string(modifyID)) {
+            ui->inputTextEdit->setText(QString::fromStdString(inventory[i]->getNotes()));
+            break;
+        }
+    }
     connect(ui->confirmInputBox, &QDialogButtonBox::accepted, this, &modifyitemdialog::accept);
     connect(ui->confirmInputBox, &QDialogButtonBox::rejected, this, &modifyitemdialog::reject);
-}
-
-void modifyitemdialog::setIdNoteMap(const QMap<QString, QString> &map)
-{
-    idNoteMap = map;
-
-    for(auto item = idNoteMap.begin(); item != idNoteMap.end(); item++)
-    {
-        qDebug() << "Map key:" << item.key() << "note: " << item.value();
-    }
 }
 
 modifyitemdialog::~modifyitemdialog()
@@ -36,11 +32,3 @@ QString modifyitemdialog::getNoteText() const
     return ui->inputTextEdit->toPlainText().trimmed();
 }
 
-void modifyitemdialog::on_viewButton_clicked()
-{
-    for (int i = 0; i < inventory.size(); i++){
-        if (inventory[i]->getID() == getNoteText().toStdString()){
-            ui->inputTextEdit->setText(QString::fromStdString(inventory[i]->getNotes()));
-        }
-    }
-}

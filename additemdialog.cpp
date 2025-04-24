@@ -2,6 +2,7 @@
 #include "ui_additemdialog.h"
 #include <QLineEdit>
 #include <QDateEdit>
+#include <QPushButton>
 #include <QIntValidator>
 #include <QMessageBox>
 #include <QRegularExpressionValidator>
@@ -19,11 +20,13 @@ AddItemDialog::AddItemDialog(std::vector<std::string> attributes, QWidget *paren
     ui->inputtable->horizontalHeader()->setStretchLastSection(true);
     ui->attributetable->horizontalHeader()->setStretchLastSection(true);
 
-    connect(ui->buttonBox, &QDialogButtonBox::accepted, [this]() {
-        if (validate()) {
-            this->accept();
-        }
-    });
+    QPushButton *okButton = ui->buttonBox->button(QDialogButtonBox::Ok);
+    if (okButton) {
+        disconnect(okButton, nullptr, nullptr, nullptr); // remove any default connections
+        connect(okButton, &QPushButton::clicked, this, &AddItemDialog::handleDialogAccept);
+    }
+
+
 
     connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
 
@@ -34,7 +37,6 @@ AddItemDialog::AddItemDialog(std::vector<std::string> attributes, QWidget *paren
 
         QTableWidgetItem *attq = new QTableWidgetItem(att);
         ui->attributetable->setItem(rowIndex, 0, attq);
-
 
         QWidget *container = new QWidget(this);
 
@@ -296,32 +298,44 @@ std::vector<std::string> AddItemDialog::getNewItemData() const {
 }
 
 bool AddItemDialog::validate() {
-    for (int i = 0; i < ui->inputtable->rowCount(); i++) {
-        QWidget* widget = ui->inputtable->cellWidget(i, 0);
+    std::set<QString> seenIDs;
+
+    for (int i = 0; i < ui->inputtable->rowCount(); ++i) {
+        QWidget* widget = ui->inputtable->cellWidget(i, 0); // Column 0: ID
         if (!widget) continue;
 
         QList<QLineEdit*> edits = widget->findChildren<QLineEdit*>();
-        if (edits.size() >= 2) {
-            if (edits[0]->text().trimmed().isEmpty()) {
-                QMessageBox::warning(this, "Error", "Please fill in all fields to add a valid item");
-                return false;
-            }
-        }
-
-        else {
-            QLineEdit* lineEdit = widget->findChild<QLineEdit*>();
-            if (lineEdit) {
+        if (!edits.isEmpty()) {
+            for (QLineEdit* lineEdit : edits) {
                 QString value = lineEdit->text().trimmed();
                 bool isPrice = lineEdit->property("isPrice").toBool();
 
                 if (value.isEmpty() || (isPrice && value == "$")) {
+                    lineEdit->setStyleSheet("border: 1px solid red");
                     QMessageBox::warning(this, "Error", "Please fill in all fields to add a valid item");
                     return false;
+                } else {
+                    lineEdit->setStyleSheet("");
                 }
             }
+
+            QString idValue = edits[0]->text().trimmed();
+            if (seenIDs.find(idValue) != seenIDs.end()) {
+                edits[0]->setStyleSheet("border: 1px solid red");
+                QMessageBox::warning(this, "Error", "Duplicate ID found. Each item must have a unique ID.");
+                return false;
+            }
+            seenIDs.insert(idValue);
         }
     }
+
     return true;
+}
+
+void AddItemDialog::handleDialogAccept() {
+    if(validate()){
+        accept();
+    }
 }
 
 void AddItemDialog::resetStyles() {
