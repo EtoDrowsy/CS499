@@ -644,12 +644,34 @@ void InventoryWindow::on_cutlistButton_clicked()
                     dataArray.push_back(row);
                     inventory.push_back(updateInventory.newLumber[k]);
                 }
-                // QString qstr = QString::fromStdString(dataArray[i][j]);
-                // QTableWidgetItem *newitem = new QTableWidgetItem(qstr);
-                // ui->dataViewer->setItem(i + 1, j, newitem);
 
                 writeCSV(csvfilepath);
             }
+            ui->dataViewer->clear();
+
+            ui->dataViewer->setEditTriggers(QAbstractItemView::NoEditTriggers);
+
+            ui->dataViewer->setColumnCount(CSVattributes.size());
+            ui->dataViewer->setRowCount(dataArray.size() + 1);
+
+            for (int k = 0; k < CSVattributes.size(); k++) {
+                QString att = QString::fromStdString(CSVattributes[k]);
+                QTableWidgetItem *attq = new QTableWidgetItem(att);
+                ui->dataViewer->setItem(0, k, attq);
+                if(att != "Notes" && att != "Photo"){
+                    ui->searchComboBox->addItem(att);
+                }
+            }
+
+            for (int i = 0; i < dataArray.size(); i++) {
+                for (int j = 0; j < dataArray[i].size(); j++) {
+                    QString qstr = QString::fromStdString(dataArray[i][j]);
+                    QTableWidgetItem *newitem = new QTableWidgetItem(qstr);
+                    ui->dataViewer->setItem(i + 1, j, newitem);
+                }
+            }
+
+            ui->dataViewer->resizeColumnsToContents();
         }
     }
 }
