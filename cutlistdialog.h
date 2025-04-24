@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include "Lumber.cpp"
+#include "CutList.cpp"
 
 namespace Ui {
 class cutlistdialog;
@@ -16,21 +17,24 @@ public:
     explicit cutlistdialog(std::vector<Lumber*> invvec, QWidget *parent = nullptr);
     ~cutlistdialog();
 
+    confirmer getInventoryUpdate();
+
 private slots:
     void on_genmaterials_clicked();
 
     std::vector<Lumber*> getInventory();
 
-    std::vector<std::vector<int>> getReturnVector();
-
-    void setReturnVector(std::vector<std::vector<int>> retVec);
-
     void on_addbutton_clicked();
+
+    void on_confirmButton_clicked();
 
 private:
     Ui::cutlistdialog *ui;
     std::vector<Lumber*> inventory;
-    std::vector<std::vector<int>> returnVector;
+    std::vector<std::vector<int>> cutIDVector;
+    confirmer inventoryUpdate;
+    std::vector<CutListItem*> cutList;
+    bool confirm;
 };
 
 #endif // CUTLISTDIALOG_H
