@@ -68,6 +68,9 @@
        <bold>true</bold>
       </font>
      </property>
+     <property name="styleSheet">
+      <string notr="true">color:black</string>
+     </property>
      <property name="text">
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:16pt;&quot;&gt;Input the note you wish to attach &lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:16pt;&quot;&gt;to the inventory item:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
@@ -75,6 +78,9 @@
    </item>
    <item row="2" column="0" rowspan="3" colspan="2">
     <widget class="QTextEdit" name="inputTextEdit">
+     <property name="styleSheet">
+      <string notr="true">color:black;background-color:white</string>
+     </property>
      <property name="html">
       <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;meta charset=&quot;utf-8&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
@@ -97,6 +103,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
           <bold>true</bold>
          </font>
         </property>
+        <property name="styleSheet">
+         <string notr="true">color:black</string>
+        </property>
         <property name="text">
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:14pt;&quot;&gt;Input ID # to attach note to:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
@@ -115,12 +124,8 @@ li.checked::marker { content: &quot;\2612&quot;; }
           <pointsize>12</pointsize>
          </font>
         </property>
-       </widget>
-      </item>
-      <item row="3" column="0">
-       <widget class="QPushButton" name="viewButton">
-        <property name="text">
-         <string>View</string>
+        <property name="styleSheet">
+         <string notr="true">color:black;background-color:white</string>
         </property>
        </widget>
       </item>
@@ -136,7 +141,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
       </size>
      </property>
      <property name="styleSheet">
-      <string notr="true">background-color:rgb(209, 188, 164)</string>
+      <string notr="true">background-color:rgb(209, 188, 164);color:black</string>
      </property>
      <property name="orientation">
       <enum>Qt::Orientation::Horizontal</enum>

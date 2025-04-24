@@ -74,7 +74,7 @@
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true">color:rgb(0, 0, 0)</string>
+    <string notr="true">background-color:rgb(209, 188, 164);color:black</string>
    </property>
    <property name="orientation">
     <enum>Qt::Orientation::Horizontal</enum>
@@ -97,6 +97,9 @@
      <pointsize>12</pointsize>
     </font>
    </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:white;color:black</string>
+   </property>
    <property name="textInteractionFlags">
     <set>Qt::TextInteractionFlag::NoTextInteraction</set>
    </property>
@@ -116,7 +119,7 @@
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color:rgb(209, 188, 164);color:rgb(0, 0, 0)</string>
+    <string notr="true">background-color:rgb(209, 188, 164);color:black</string>
    </property>
    <property name="text">
     <string>Add Photo</string>
@@ -130,6 +133,9 @@
      <width>981</width>
      <height>761</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:white;color:black</string>
    </property>
   </widget>
   <widget class="QLabel" name="label">
@@ -145,6 +151,9 @@
     <font>
      <pointsize>12</pointsize>
     </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color:black</string>
    </property>
    <property name="text">
     <string>ID</string>
