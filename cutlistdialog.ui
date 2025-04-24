@@ -81,7 +81,7 @@
     <number>1</number>
    </property>
    <property name="columnCount">
-    <number>5</number>
+    <number>7</number>
    </property>
    <attribute name="horizontalHeaderVisible">
     <bool>false</bool>
@@ -93,6 +93,8 @@
     <bool>true</bool>
    </attribute>
    <row/>
+   <column/>
+   <column/>
    <column/>
    <column/>
    <column/>
@@ -124,6 +126,16 @@
    <item row="0" column="4">
     <property name="text">
      <string>Quantity</string>
+    </property>
+   </item>
+   <item row="0" column="5">
+    <property name="text">
+     <string>Grade</string>
+    </property>
+   </item>
+   <item row="0" column="6">
+    <property name="text">
+     <string>Name</string>
     </property>
    </item>
   </widget>
@@ -207,6 +219,11 @@
      <width>505</width>
      <height>500</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>12</pointsize>
+    </font>
    </property>
   </widget>
  </widget>

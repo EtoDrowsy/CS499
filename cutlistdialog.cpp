@@ -31,7 +31,7 @@ void cutlistdialog::on_genmaterials_clicked()
     std::vector <CutListItem*> cutList;
 
     for(int k = 0; k < tableContents.size(); k++){
-        CutListItem* item = new CutListItem(tableContents[k][1],tableContents[k][2],tableContents[k][3],tableContents[k][0],1,empty,empty,"",std::stoi(tableContents[k][4]));
+        CutListItem* item = new CutListItem(tableContents[k][1],tableContents[k][2],tableContents[k][3],tableContents[k][0],std::stoi(tableContents[k][5]),empty,empty,tableContents[k][6],std::stoi(tableContents[k][4]));
         cutList.push_back(item);
     }
 
@@ -59,7 +59,7 @@ void cutlistdialog::setReturnVector(std::vector<std::vector<int>> retVec){
 
 void cutlistdialog::on_addbutton_clicked()
 {
-    std::vector<std::string> cutlistAttributes = {"Species", "Length", "Width", "Thickness", "Quantity"};
+    std::vector<std::string> cutlistAttributes = {"Species", "Length", "Width", "Thickness", "Quantity", "Grade", "Name"};
     AddItemDialog addwindow(cutlistAttributes, this);
     if (addwindow.exec() == QDialog::Accepted) {
         std::vector<std::string> newItem = addwindow.getNewItemData();

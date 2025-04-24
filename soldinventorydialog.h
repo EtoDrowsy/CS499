@@ -17,6 +17,8 @@ public:
     bool getQuantityCheckState();
     int getQuantitySold();
     std::string getNoteString();
+    std::string getDateSold();
+    int getInvoiceNumber();
 
 private:
     Ui::soldinventorydialog *ui;

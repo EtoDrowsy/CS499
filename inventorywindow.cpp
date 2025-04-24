@@ -91,8 +91,10 @@ void readCSV(std::string filepath)
     while (ss.good()) {
         std::string substr;
         getline(ss, substr, ';');
-        CSVattributes.push_back(substr);
-        ColumnNames.push_back(stringToColumn(substr));
+        if (substr != "Date Sold" && substr != "Invoice Number"){
+            CSVattributes.push_back(substr);
+            ColumnNames.push_back(stringToColumn(substr));
+        }
     }
 
     for(int i = 0; i < CSVattributes.size(); i++){
@@ -115,10 +117,15 @@ void readCSV(std::string filepath)
         }
         if (soldInvExists){
             if (row[soldIndex] == "Yes"){
-                soldInventory.push_back(new Lumber(row,CSVattributes));
+                Lumber* temp = new Lumber(row,CSVattributes);
+                temp->setDateSold(*(row.end()-2));
+                temp->setInvoiceNumber(std::stoi(*(row.end()-1)));
+                soldInventory.push_back(temp);
             }
             else{
                 row.erase(row.cbegin()+soldIndex);
+                row.erase(row.end()-1);
+                row.erase(row.end()-1);
                 dataArray.push_back(row);
                 inventory.push_back(new Lumber(row,CSVattributes));
             }
@@ -267,6 +274,8 @@ void InventoryWindow::on_csvLoadButton_clicked()
         }
 
         csvLoaded = true;
+
+        ui->dataViewer->resizeColumnsToContents();
     }
     return;
 }
@@ -329,7 +338,7 @@ void InventoryWindow::writeCSV(const std::string &filePath) {
         file << CSVattributes[i];
         if (i < CSVattributes.size() - 1) file << ";";
     }
-    if (soldInvExists) {file << ";Sold";}
+    if (soldInvExists) {file << ";Sold;Date Sold;Invoice Number";}
     file << "\n";
 
     bool isFirstRow = true;
@@ -359,7 +368,7 @@ void InventoryWindow::writeCSV(const std::string &filePath) {
             file << value;
             if (j < row.size() - 1) file << ";";
         }
-        if (soldInvExists) {file << ";";}
+        if (soldInvExists) {file << ";;;";}
 
         isFirstRow = false;
     }
@@ -367,7 +376,7 @@ void InventoryWindow::writeCSV(const std::string &filePath) {
     if (soldInvExists){
         file << "\n";
         for (int i = 0; i < soldInventory.size(); i++){
-            file << soldInventory[i]->toString() << "Yes";
+            file << soldInventory[i]->toString() << "Yes;"+soldInventory[i]->getDateSold()+";"+std::to_string(soldInventory[i]->getInvoiceNumber());
             if (i != soldInventory.size() - 1) {file << "\n";}
         }
     }
@@ -391,6 +400,9 @@ void InventoryWindow::on_deleteObjectButton_clicked()
                 }
             }
             QMessageBox::information(this,"Item Deleted","The selected item has been deleted.");
+        }
+        else {
+            QMessageBox::information(this, "Error", "Select an item ID in the inventory.");
         }
     }
 }
@@ -457,7 +469,7 @@ void InventoryWindow::on_createCSVButton_clicked()
     else{
         std::fstream newcsv;
         newcsv.open(csvfilepath);
-        newcsv << "ID;Location;Quantity;Length;Width;Thickness;Grade;Price;Description;Date;Species;Photo;Notes";
+        newcsv << "ID;Location;Quantity;Length;Width;Thickness;Grade;Price;Description;Date Acquired;Date Cut;Species;Photo;Notes;Sold;Date Sold;Invoice Number";
         newcsv.close();
 
         readCSV(csvfilepath);
@@ -531,6 +543,9 @@ void InventoryWindow::on_modifyObjectButton_clicked()
                     inventory.push_back(new Lumber(item, CSVattributes));
                 }
             }
+        }
+        else {
+            QMessageBox::information(this, "Error", "Select an item ID in the inventory.");
         }
     }
 }
@@ -649,6 +664,9 @@ void InventoryWindow::on_photoButton_clicked()
                 }
             }
         }
+        else {
+            QMessageBox::information(this, "Error", "Select an item ID in the inventory.");
+        }
     }
 }
 
@@ -699,6 +717,8 @@ void InventoryWindow::on_newSaleButton_clicked()
                         deleteRowId(saleID);
                         soldInventory.push_back(inventory[invIndex]);
                         soldInventory.back()->setNotes(soldinvdialog.getNoteString());
+                        soldInventory.back()->setDateSold(soldinvdialog.getDateSold());
+                        soldInventory.back()->setInvoiceNumber(soldinvdialog.getInvoiceNumber());
                         inventory.erase(inventory.begin() + invIndex);
                         writeCSV(csvfilepath);
                     }
@@ -707,6 +727,8 @@ void InventoryWindow::on_newSaleButton_clicked()
                         Lumber* copy = new Lumber(inventory[invIndex]->getAttributes(), inventory[invIndex]->getAttributeValues());
                         copy->setNotes(soldinvdialog.getNoteString());
                         copy->setQuantity(soldQuantity);
+                        copy->setDateSold(soldinvdialog.getDateSold());
+                        copy->setInvoiceNumber(soldinvdialog.getInvoiceNumber());
                         soldInventory.push_back(copy);
 
                         int quantityIndex;
@@ -727,6 +749,9 @@ void InventoryWindow::on_newSaleButton_clicked()
                     }
                 }
             }
+        }
+        else {
+            QMessageBox::information(this, "Error", "Select an item ID in the inventory.");
         }
     }
 }
@@ -805,6 +830,9 @@ void InventoryWindow::on_HTMLAddButton_clicked()
             else{
                 addToHTML(newStoreItems, htmlfilepath);
             }
+        }
+        else{
+            QMessageBox::information(this, "Error", "Select an item ID in the inventory.");
         }
         newStoreItems.clear();
         selectedItems.clear();

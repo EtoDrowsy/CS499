@@ -27,6 +27,7 @@ public:
         quantity = q;
     }
     int getQuantity() {return quantity;}
+    std::string getName() {return name;}
 };
 
 static std::vector <int> findMatching(CutListItem* item, std::vector <Lumber*> inventory) {
@@ -52,17 +53,36 @@ static std::string printLumberList(std::vector <std::vector <int>> lumberList, s
         return "Cut List can not be fulfilled.";
     std::string returnString = "";
     for (int i = 0; i < lumberList.size(); i++) {
-        returnString.append("Cut List Item #" + std::to_string(i+1) + " is fulfilled by:\n");
+        returnString.append(std::to_string(cutList.at(i)->getQuantity()) + "x " + cutList.at(i)->getName() + " " + cutList.at(i)->getLengthDisplay() + " x " + cutList.at(i)->getWidthDisplay() + " x " + cutList.at(i)->getThicknessDisplay() + " is cut from:\n");
+        std::vector <int> indexes;
+        std::vector <int> count;
         for (int j : lumberList.at(i)) {
-            returnString.append("\tInventory ID #" + inventory.at(j)->getID() + ",\n");
-            float leftovers = inventory.at(j)->getLength() - SAW_KERF - cutList.at(i)->getLength();
-            if (leftovers < 0)
-                leftovers = 0;
-            std::stringstream ss;
-            ss << std::fixed << std::setprecision(3) << leftovers;
-            std::string precLeftovers = ss.str();
-            returnString.append("\tLeftover Material: " + precLeftovers + " in.\n");
+            bool isUnique = true;
+            for (int k = 0; k < indexes.size(); k++) {
+                if (j == indexes.at(k)) {
+                    isUnique = false;
+                    count.at(k)++;
+                }
+            }
+            if (isUnique) {
+                indexes.push_back(j);
+                count.push_back(1);
+            }
         }
+        for (int j = 0; j < indexes.size(); j++) {
+            Lumber* currentLumber = inventory.at(indexes.at(j));
+            returnString.append("    " + std::to_string(count.at(j)) + "x ID #" + currentLumber->getID() + ": " + currentLumber->getSpecies() + " " + currentLumber->getLengthDisplay() + " x " + currentLumber->getWidthDisplay() + " x " + currentLumber->getThicknessDisplay() + "\n");
+            float leftovers = currentLumber->getLength() - SAW_KERF - cutList.at(i)->getLength();
+            if (leftovers > 0) {
+                float inches = std::fmod(leftovers, 12);
+                int feet = (leftovers - inches) / 12;
+                std::string leftoversString = std::to_string(feet) + "'-" + std::to_string(int(inches)) + "\"";
+                returnString.append("        " + leftoversString + " of leftover material for each item.\n");
+            }
+            else
+                returnString.append("        No leftover material.\n");
+        }
+        returnString.append("\n");
     }
     return returnString;
 }
@@ -125,12 +145,12 @@ static confirmer confirmLumberList(std::vector <Lumber*> inventory, std::vector 
             IDs.push_back(inventory.at(j)->getID());
             if (leftovers < 0)
                 continue;
-            leftovers = int(std::floor(leftovers));
+            leftovers = std::trunc(leftovers);
             Lumber* newWood = new Lumber(inventory.at(j)->getAttributes(), inventory.at(j)->getAttributeValues());
             newWood->setLength(leftovers);
             newWood->setDescription("Piece");
             newWood->setQuantity(1);
-            float fPrice = std::floor((leftovers / inventory.at(j)->getLength() * inventory.at(j)->getPrice()) * 100) / 100;
+            float fPrice = std::trunc((leftovers / inventory.at(j)->getLength() * inventory.at(j)->getPrice()) * 100) / 100;
             newWood->setPrice(fPrice);
             newLumber.push_back(newWood);
         }

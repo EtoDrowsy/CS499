@@ -136,7 +136,17 @@ AddItemDialog::AddItemDialog(std::vector<std::string> attributes, QWidget *paren
             container->setFixedSize(400, 25);
             ui->inputtable->setCellWidget(rowIndex, 0, lineEdit);
         }
-        else if (att.toLower() == "date") {
+        else if (att.toLower() == "date acquired") {
+            QDateEdit *dateEdit = new QDateEdit(container);
+            dateEdit->setCalendarPopup(true);
+            dateEdit->setDisplayFormat("yyyy-MM-dd");
+            dateEdit->setDate(QDate::currentDate());
+
+            dateEdit->setGeometry(0, 0, 400, 25);
+            container->setFixedSize(400, 25);
+            ui->inputtable->setCellWidget(rowIndex, 0, dateEdit);
+        }
+        else if (att.toLower() == "date cut") {
             QDateEdit *dateEdit = new QDateEdit(container);
             dateEdit->setCalendarPopup(true);
             dateEdit->setDisplayFormat("yyyy-MM-dd");
@@ -164,6 +174,16 @@ AddItemDialog::AddItemDialog(std::vector<std::string> attributes, QWidget *paren
 
             rowIndex++;
             continue;
+        }
+        else if (att.toLower() == "name") {
+            QLineEdit *lineEdit = new QLineEdit(container);
+            QRegularExpression regex("[A-Za-z ]+");
+            QValidator *validator = new QRegularExpressionValidator(regex, this);
+            lineEdit->setValidator(validator);
+            lineEdit->setPlaceholderText("Name");
+            lineEdit->setGeometry(0, 0, 400, 25);
+            container->setFixedSize(400, 25);
+            ui->inputtable->setCellWidget(rowIndex, 0, lineEdit);
         }
         else {
             QLineEdit *lineEdit = new QLineEdit(container);
