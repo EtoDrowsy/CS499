@@ -1,3 +1,5 @@
+#ifndef CUTLIST_CPP
+#define CUTLIST_CPP
 #include "Lumber.cpp"
 #include <iostream>
 #include <math.h>
@@ -160,3 +162,4 @@ static confirmer confirmLumberList(std::vector <Lumber*> inventory, std::vector 
     returnee.newLumber = newLumber;
     return returnee;
 }
+#endif
