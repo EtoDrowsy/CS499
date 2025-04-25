@@ -284,6 +284,7 @@ void InventoryWindow::on_addObjectButton_clicked()
 {
     if (csvLoaded){
         AddItemDialog addwindow(CSVattributes, this);
+
         if (addwindow.exec() == QDialog::Accepted) {
             std::vector<std::string> newItem = addwindow.getNewItemData();
 
@@ -297,6 +298,18 @@ void InventoryWindow::on_addObjectButton_clicked()
             }
 
             if (isComplete && newItem.size() == CSVattributes.size()) {
+                bool isDuplicate = false;
+                for (const auto& item: dataArray) {
+                    if(item[0] == newItem[0]) {
+                        isDuplicate = true;
+                        break;
+                    }
+                }
+
+                if(isDuplicate) {
+                    QMessageBox::warning(this, "Error", "ID already being used. Please use a different ID number.");
+                    return;
+                }
                 dataArray.push_back(newItem);
                 inventory.push_back(new Lumber(newItem,CSVattributes));
 
@@ -531,10 +544,15 @@ void InventoryWindow::on_modifyObjectButton_clicked()
 
                     }
                 }
+
                 QMessageBox::warning(this, "Item Updated", "The note was added to the selected ID.");
 
 
                 writeCSV(csvfilepath);
+                inventory.clear();
+                for (const auto& item : dataArray) {
+                    inventory.push_back(new Lumber(item, CSVattributes));
+                }
             }
         }
         else {
