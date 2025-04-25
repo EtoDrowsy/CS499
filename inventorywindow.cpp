@@ -631,22 +631,21 @@ void InventoryWindow::on_cutlistButton_clicked()
                         break;
                     }
                 }
-                for (int k = 0; k < updateInventory.newLumber.size(); k++){
-                    std::string line = updateInventory.newLumber[k]->toString();
-                    std::stringstream ss(line);
-                    std::vector<std::string> row;
-                    while (ss.good()) {
-                        std::string substr;
-                        getline(ss, substr, ';');
-                        row.push_back(substr);
-                    }
-                    row.pop_back();
-                    dataArray.push_back(row);
-                    inventory.push_back(updateInventory.newLumber[k]);
-                }
-
-                writeCSV(csvfilepath);
             }
+            for (int k = 0; k < updateInventory.newLumber.size(); k++){
+                std::string line = updateInventory.newLumber[k]->toString();
+                std::stringstream ss(line);
+                std::vector<std::string> row;
+                while (ss.good()) {
+                    std::string substr;
+                    getline(ss, substr, ';');
+                    row.push_back(substr);
+                }
+                row.pop_back();
+                dataArray.push_back(row);
+                inventory.push_back(updateInventory.newLumber[k]);
+            }
+            writeCSV(csvfilepath);
             ui->dataViewer->clear();
 
             ui->dataViewer->setEditTriggers(QAbstractItemView::NoEditTriggers);
