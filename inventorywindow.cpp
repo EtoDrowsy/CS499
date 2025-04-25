@@ -382,6 +382,8 @@ void InventoryWindow::writeCSV(const std::string &filePath) {
     }
 
     file.close();
+
+    ui->dataViewer->resizeColumnsToContents();
 }
 
 

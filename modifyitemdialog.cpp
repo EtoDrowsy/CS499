@@ -14,7 +14,10 @@ modifyitemdialog::modifyitemdialog(std::vector<Lumber*> inv, int id, QWidget *pa
 
     for(int i = 0; i < inventory.size(); i++) {
         if(inventory[i]->getID() == std::to_string(modifyID)) {
-            ui->inputTextEdit->setText(QString::fromStdString(inventory[i]->getNotes()));
+            QString displayString = QString::fromStdString(inventory[i]->getNotes());
+            displayString.replace("<return>","\n");
+            displayString.replace("<semicolon>",";");
+            ui->inputTextEdit->setText(displayString);
             break;
         }
     }
@@ -29,6 +32,10 @@ modifyitemdialog::~modifyitemdialog()
 
 QString modifyitemdialog::getNoteText() const
 {
-    return ui->inputTextEdit->toPlainText().trimmed();
+    QString retString = ui->inputTextEdit->toPlainText().trimmed();
+    retString.replace(";","<semicolon>");
+    retString.replace("\n", "<return>");
+
+    return retString;
 }
 

@@ -34,8 +34,10 @@ int soldinventorydialog::getQuantitySold(){
 }
 
 std::string soldinventorydialog::getNoteString(){
-    std::string retString = ui->notesEdit->toPlainText().toStdString();
-    return retString;
+    QString retString = ui->notesEdit->toPlainText();
+    retString.replace(";","<semicolon>");
+    retString.replace("\n", "<return>");
+    return retString.toStdString();
 }
 
 std::string soldinventorydialog::getDateSold(){
