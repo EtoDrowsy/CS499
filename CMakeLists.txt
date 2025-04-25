@@ -14,25 +14,25 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 
 set(PROJECT_SOURCES
         main.cpp
-        inventorywindow.cpp
-        inventorywindow.h
-        inventorywindow.ui
+        source/inventorywindow.cpp
+        header/inventorywindow.h
+        ui/inventorywindow.ui
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(CS499
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
-        additemdialog.h additemdialog.cpp additemdialog.ui
-        Lumber.cpp
-        cutlistdialog.h cutlistdialog.cpp cutlistdialog.ui
+        header/additemdialog.h source/additemdialog.cpp ui/additemdialog.ui
+        source/Lumber.cpp
+        header/cutlistdialog.h source/cutlistdialog.cpp ui/cutlistdialog.ui
 
-        modifyitemdialog.h modifyitemdialog.cpp modifyitemdialog.ui
-        photodialog.h photodialog.cpp photodialog.ui
-        soldinventorydialog.h soldinventorydialog.cpp soldinventorydialog.ui
-        soldinventoryviewer.h soldinventoryviewer.cpp soldinventoryviewer.ui
-        pricedialog.h pricedialog.cpp pricedialog.ui
-        CutList.cpp
+        header/modifyitemdialog.h source/modifyitemdialog.cpp ui/modifyitemdialog.ui
+        header/photodialog.h source/photodialog.cpp ui/photodialog.ui
+        header/soldinventorydialog.h source/soldinventorydialog.cpp ui/soldinventorydialog.ui
+        header/soldinventoryviewer.h source/soldinventoryviewer.cpp ui/soldinventoryviewer.ui
+        header/pricedialog.h source/pricedialog.cpp ui/pricedialog.ui
+        source/CutList.cpp
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET CS499 APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR

@@ -2,7 +2,7 @@
 #define SOLDINVENTORYVIEWER_H
 
 #include <QDialog>
-#include "Lumber.cpp"
+#include "../source/Lumber.cpp"
 
 namespace Ui {
 class soldinventoryviewer;

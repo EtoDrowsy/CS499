@@ -1,6 +1,6 @@
-#include "cutlistdialog.h"
-#include "ui_cutlistdialog.h"
-#include "additemdialog.h"
+#include "../header/cutlistdialog.h"
+#include "../ui/ui_cutlistdialog.h"
+#include "../header/additemdialog.h"
 
 cutlistdialog::cutlistdialog(std::vector<Lumber*> invvec, QWidget *parent)
     : QDialog(parent)

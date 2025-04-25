@@ -1,5 +1,5 @@
-#include "soldinventoryviewer.h"
-#include "ui_soldinventoryviewer.h"
+#include "../header/soldinventoryviewer.h"
+#include "../ui/ui_soldinventoryviewer.h"
 
 std::vector<std::string> split (std::string row, std::string delim){
     std::vector<std::string> v;

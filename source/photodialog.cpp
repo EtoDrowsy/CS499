@@ -1,5 +1,5 @@
-#include "photodialog.h"
-#include "ui_photodialog.h"
+#include "../header/photodialog.h"
+#include "../ui/ui_photodialog.h"
 
 #include <QFileDialog>
 #include <QMessageBox>

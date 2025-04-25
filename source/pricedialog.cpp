@@ -1,5 +1,5 @@
-#include "pricedialog.h"
-#include "ui_pricedialog.h"
+#include "../header/pricedialog.h"
+#include "../ui/ui_pricedialog.h"
 
 pricedialog::pricedialog(std::vector<std::string> speciesList, QWidget *parent)
     : QDialog(parent)

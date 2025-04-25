@@ -1,5 +1,5 @@
-#include "additemdialog.h"
-#include "ui_additemdialog.h"
+#include "../header/additemdialog.h"
+#include "../ui/ui_additemdialog.h"
 #include <QLineEdit>
 #include <QDateEdit>
 #include <QPushButton>

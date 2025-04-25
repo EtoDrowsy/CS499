@@ -1,5 +1,5 @@
-#include "modifyitemdialog.h"
-#include "ui_modifyitemdialog.h"
+#include "../header/modifyitemdialog.h"
+#include "../ui/ui_modifyitemdialog.h"
 
 modifyitemdialog::modifyitemdialog(std::vector<Lumber*> inv, int id, QWidget *parent)
     : QDialog(parent)

@@ -1,5 +1,5 @@
-#include "soldinventorydialog.h"
-#include "ui_soldinventorydialog.h"
+#include "../header/soldinventorydialog.h"
+#include "../ui/ui_soldinventorydialog.h"
 #include <QIntValidator>
 #include <QMessageBox>
 

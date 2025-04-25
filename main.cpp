@@ -1,4 +1,4 @@
-#include "inventorywindow.h"
+#include "header/inventorywindow.h"
 
 #include <QApplication>
 
