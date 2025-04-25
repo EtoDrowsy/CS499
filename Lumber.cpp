@@ -20,6 +20,8 @@ class Lumber {
         std::vector <std::string> attributes;
         std::vector <std::string> attributeValues;
         float price;
+        std::string dateSold;
+        int invoiceNumber;
     public:
         Lumber() {
             length = "NULL";
@@ -151,10 +153,35 @@ class Lumber {
             }
             quantity = q;
         }
+        void setPrice(float p) {
+            for (int i = 0; i < attributeValues.size(); i++){
+                if (attributeValues[i] == "Price"){
+                    std::stringstream ss;
+                    ss << std::fixed << std::setprecision(2) << p;
+                    std::string pricestring = ss.str();
+
+                    attributes[i] = "$" + pricestring;
+                }
+            }
+            price = p;
+        }
+        void setDescription(std::string d) {
+            for (int i = 0; i < attributeValues.size(); i++){
+                if (attributeValues[i] == "Description"){
+                    attributes[i] = d;
+                }
+            }
+            description = d;
+        }
         void setLength(float l) {
             float inches = std::fmod(l, 12);
             int feet = (l - inches) / 12;
-            std::string lengthString = std::to_string(feet) + "'-" + std::to_string(inches) + "\"";
+            std::string lengthString = std::to_string(feet) + "'-" + std::to_string(int(inches)) + "\"";
+            for (int i = 0; i < attributeValues.size(); i++){
+                if (attributeValues[i] == "Length"){
+                    attributes[i] = lengthString;
+                }
+            }
             length = lengthString;
         }
         void setPhotoPath(std::string p){
@@ -163,7 +190,6 @@ class Lumber {
         void setNotes(std::string n){
             for (int i = 0; i < attributeValues.size(); i++){
                 if (attributeValues[i] == "Notes"){
-                    attributes[i].append("\n");
                     attributes[i].append(n);
                 }
             }
@@ -194,7 +220,20 @@ class Lumber {
                     attributes[i] = "$" + pricestring;
                 }
             }
+            price = newPrice;
             return;
+        }
+        void setDateSold(std::string d){
+            dateSold = d;
+        }
+        void setInvoiceNumber(int iN){
+            invoiceNumber = iN;
+        }
+        std::string getDateSold(){
+            return dateSold;
+        }
+        int getInvoiceNumber(){
+            return invoiceNumber;
         }
 
         std::string toString(){

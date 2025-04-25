@@ -12,15 +12,15 @@ class photodialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit photodialog(QWidget *parent = nullptr);
+    explicit photodialog(QWidget *parent = nullptr, int id = NULL);
     ~photodialog();
-    int getIDValue();
     std::string getFileName();
     bool getImageUpStatus();
 
 private:
     QString upfilename;
     bool imageUploaded;
+    int photoID;
 
 private slots:
     void on_pushButton_clicked();

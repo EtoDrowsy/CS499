@@ -1,3 +1,5 @@
+#ifndef CUTLIST_CPP
+#define CUTLIST_CPP
 #include "Lumber.cpp"
 #include <iostream>
 #include <math.h>
@@ -27,6 +29,7 @@ public:
         quantity = q;
     }
     int getQuantity() {return quantity;}
+    std::string getName() {return name;}
 };
 
 static std::vector <int> findMatching(CutListItem* item, std::vector <Lumber*> inventory) {
@@ -48,31 +51,55 @@ static std::vector <int> findMatching(CutListItem* item, std::vector <Lumber*> i
 }
 
 static std::string printLumberList(std::vector <std::vector <int>> lumberList, std::vector <Lumber*> inventory, std::vector <CutListItem*> cutList) {
+    if (lumberList.size() == 0)
+        return "Cut List can not be fulfilled.";
     std::string returnString = "";
     for (int i = 0; i < lumberList.size(); i++) {
-        returnString.append("Cut List Item #" + std::to_string(i+1) + " is fulfilled by:\n");
+        returnString.append(std::to_string(cutList.at(i)->getQuantity()) + "x " + cutList.at(i)->getName() + " " + cutList.at(i)->getLengthDisplay() + " x " + cutList.at(i)->getWidthDisplay() + " x " + cutList.at(i)->getThicknessDisplay() + " is cut from:\n");
+        std::vector <int> indexes;
+        std::vector <int> count;
         for (int j : lumberList.at(i)) {
-            returnString.append("\tInventory ID #" + inventory.at(j)->getID() + ",\n");
-            float leftovers = inventory.at(j)->getLength() - SAW_KERF - cutList.at(i)->getLength();
-            if (leftovers < 0)
-                leftovers = 0;
-            std::stringstream ss;
-            ss << std::fixed << std::setprecision(3) << leftovers;
-            std::string precLeftovers = ss.str();
-            returnString.append("\tLeftover Material: " + precLeftovers + " in.\n");
+            bool isUnique = true;
+            for (int k = 0; k < indexes.size(); k++) {
+                if (j == indexes.at(k)) {
+                    isUnique = false;
+                    count.at(k)++;
+                }
+            }
+            if (isUnique) {
+                indexes.push_back(j);
+                count.push_back(1);
+            }
         }
+        for (int j = 0; j < indexes.size(); j++) {
+            Lumber* currentLumber = inventory.at(indexes.at(j));
+            returnString.append("    " + std::to_string(count.at(j)) + "x ID #" + currentLumber->getID() + ": " + currentLumber->getSpecies() + " " + currentLumber->getLengthDisplay() + " x " + currentLumber->getWidthDisplay() + " x " + currentLumber->getThicknessDisplay() + "\n");
+            float leftovers = currentLumber->getLength() - SAW_KERF - cutList.at(i)->getLength();
+            if (leftovers > 0) {
+                float inches = std::fmod(leftovers, 12);
+                int feet = (leftovers - inches) / 12;
+                std::string leftoversString = std::to_string(feet) + "'-" + std::to_string(int(inches)) + "\"";
+                returnString.append("        " + leftoversString + " of leftover material for each item.\n");
+            }
+            else
+                returnString.append("        No leftover material.\n");
+        }
+        returnString.append("\n");
     }
     return returnString;
 }
 
 static std::vector <std::vector <int>> cutListToLumberList(std::vector <Lumber*> inventory, std::vector <CutListItem*> cutList) {
     std::vector <std::vector <int>> lumberList;
+    std::vector <std::vector <int>> returnEmpty;
     for (int c = 0; c < cutList.size(); c++) {
         std::vector <int> empty;
         lumberList.push_back(empty);
         std::vector <int> validItems = findMatching(cutList.at(c), inventory);
+        if (validItems.size() == 0)
+            return returnEmpty;
         for (int j = 0; j < cutList.at(c)->getQuantity(); j++) {
-            int minIndex = validItems.front();
+            int minIndex = -1;
             bool invalidStart = false;
             for (int i : validItems) {
                 int taken = 0;
@@ -82,10 +109,6 @@ static std::vector <std::vector <int>> cutListToLumberList(std::vector <Lumber*>
                             taken++;
                         }
                 }
-                if (i == minIndex && taken >= inventory.at(minIndex)->getQuantity()) {
-                    invalidStart = true;
-                    continue;
-                }
                 float iCutRatio;
                 if (cutList.at(c)->getLength() + SAW_KERF < inventory.at(i)->getLength())
                     iCutRatio = (cutList.at(c)->getLength() + SAW_KERF) / inventory.at(i)->getLength();
@@ -93,18 +116,50 @@ static std::vector <std::vector <int>> cutListToLumberList(std::vector <Lumber*>
                     iCutRatio = 1.0;
 
                 float minCutRatio;
-                if (cutList.at(c)->getLength() + SAW_KERF < inventory.at(minIndex)->getLength())
+                if (minIndex != -1 && cutList.at(c)->getLength() + SAW_KERF < inventory.at(minIndex)->getLength())
                     minCutRatio = (cutList.at(c)->getLength() + SAW_KERF) / inventory.at(minIndex)->getLength();
                 else
                     minCutRatio = 1.0;
 
-                if (invalidStart && taken < inventory.at(i)->getQuantity()|| (inventory.at(i)->getPrice() * iCutRatio < inventory.at(minIndex)->getPrice() * minCutRatio && taken < inventory.at(i)->getQuantity())) {
+                if (minIndex == -1 && taken < inventory.at(i)->getQuantity())
                     minIndex = i;
-                    invalidStart = false;
-                }
+                if (taken < inventory.at(i)->getQuantity() && inventory.at(i)->getPrice() * iCutRatio < inventory.at(minIndex)->getPrice() * minCutRatio)
+                    minIndex = i;
             }
+            if (minIndex == -1)
+                return returnEmpty;
             lumberList.at(c).push_back(minIndex);
         }
     }
     return lumberList;
 }
+struct confirmer {
+    std::vector <std::string> IDs;
+    std::vector <Lumber*> newLumber;
+};
+
+static confirmer confirmLumberList(std::vector <Lumber*> inventory, std::vector <CutListItem*> cutList, std::vector <std::vector <int>> lumberList) {
+    std::vector <std::string> IDs;
+    std::vector <Lumber*> newLumber;
+    for (int i = 0; i < lumberList.size(); i++) {
+        for (int j : lumberList.at(i)) {
+            float leftovers = inventory.at(j)->getLength() - SAW_KERF - cutList.at(i)->getLength();
+            IDs.push_back(inventory.at(j)->getID());
+            if (leftovers < 0)
+                continue;
+            leftovers = std::trunc(leftovers);
+            Lumber* newWood = new Lumber(inventory.at(j)->getAttributes(), inventory.at(j)->getAttributeValues());
+            newWood->setLength(leftovers);
+            newWood->setDescription("Piece");
+            newWood->setQuantity(1);
+            float fPrice = std::trunc((leftovers / inventory.at(j)->getLength() * inventory.at(j)->getPrice()) * 100) / 100;
+            newWood->setPrice(fPrice);
+            newLumber.push_back(newWood);
+        }
+    }
+    confirmer returnee;
+    returnee.IDs = IDs;
+    returnee.newLumber = newLumber;
+    return returnee;
+}
+#endif
