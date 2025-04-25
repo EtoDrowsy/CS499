@@ -2,6 +2,7 @@
 #define ADDITEMDIALOG_H
 
 #include <QDialog>
+#include <set>
 
 namespace Ui {
 class AddItemDialog;
@@ -19,10 +20,15 @@ public:
 
     bool validate();
 
+private slots:
+    void handleDialogAccept();
+
 private:
     Ui::AddItemDialog *ui;
 
     QVector<QString> validAttributes;
+
+    std::set<std::string> seenIDs;
 
     void resetStyles();
 };

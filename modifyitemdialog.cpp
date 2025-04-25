@@ -1,39 +1,28 @@
 #include "modifyitemdialog.h"
 #include "ui_modifyitemdialog.h"
 
-modifyitemdialog::modifyitemdialog(QWidget *parent)
+modifyitemdialog::modifyitemdialog(std::vector<Lumber*> inv, int id, QWidget *parent)
     : QDialog(parent)
     , ui(new Ui::modifyitemdialog)
 {
     ui->setupUi(this);
 
-    connect(ui->idNum, &QLineEdit::textChanged, this, &modifyitemdialog::onIdChanged);
+    inventory = inv;
+    modifyID = id;
+
+    ui->idNum->setText(QString::number(modifyID));
+
+    for(int i = 0; i < inventory.size(); i++) {
+        if(inventory[i]->getID() == std::to_string(modifyID)) {
+            QString displayString = QString::fromStdString(inventory[i]->getNotes());
+            displayString.replace("<return>","\n");
+            displayString.replace("<semicolon>",";");
+            ui->inputTextEdit->setText(displayString);
+            break;
+        }
+    }
     connect(ui->confirmInputBox, &QDialogButtonBox::accepted, this, &modifyitemdialog::accept);
     connect(ui->confirmInputBox, &QDialogButtonBox::rejected, this, &modifyitemdialog::reject);
-}
-
-void modifyitemdialog::onIdChanged(const QString &text)
-{
-    qDebug() << "Id: " << text;
-    QString trimId = text.trimmed();
-    if (idNoteMap.contains(trimId)) {
-        ui->inputTextEdit->setPlainText(idNoteMap[trimId]);
-        qDebug() << "Note: " << idNoteMap[trimId];
-    }
-    else {
-        ui->inputTextEdit->clear();
-        qDebug() << "no note";
-    }
-}
-
-void modifyitemdialog::setIdNoteMap(const QMap<QString, QString> &map)
-{
-    idNoteMap = map;
-
-    for(auto item = idNoteMap.begin(); item != idNoteMap.end(); item++)
-    {
-        qDebug() << "Map key:" << item.key() << "note: " << item.value();
-    }
 }
 
 modifyitemdialog::~modifyitemdialog()
@@ -41,12 +30,12 @@ modifyitemdialog::~modifyitemdialog()
     delete ui;
 }
 
-QString modifyitemdialog::getEnteredID() const
-{
-    return ui->idNum->text().trimmed();
-}
-
 QString modifyitemdialog::getNoteText() const
 {
-    return ui->inputTextEdit->toPlainText().trimmed();
+    QString retString = ui->inputTextEdit->toPlainText().trimmed();
+    retString.replace(";","<semicolon>");
+    retString.replace("\n", "<return>");
+
+    return retString;
 }
+

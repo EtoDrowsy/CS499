@@ -4,12 +4,14 @@
 #include <QFileDialog>
 #include <QMessageBox>
 
-photodialog::photodialog(QWidget *parent)
+photodialog::photodialog(QWidget *parent, int id)
     : QDialog(parent)
     , ui(new Ui::photodialog)
 {
     ui->setupUi(this);
     imageUploaded = false;
+    photoID = id;
+    ui->idText->setPlainText(QString::number(photoID));
 }
 
 photodialog::~photodialog()
@@ -39,18 +41,6 @@ void photodialog::on_pushButton_clicked()
         QGraphicsScene *scene = new QGraphicsScene(this);
         ui->previewBox->setScene(scene);
         ui->previewBox->scene()->addPixmap(image);
-    }
-}
-
-int photodialog::getIDValue(){
-    bool checkValid = false;
-    int value = ui->idText->toPlainText().toInt(&checkValid);
-
-    if(checkValid){
-        return value;
-    }
-    else{
-        return -1;
     }
 }
 

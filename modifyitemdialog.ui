@@ -57,11 +57,30 @@
    </palette>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Note Edit</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
+   <item row="1" column="1" alignment="Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter">
+    <widget class="QLabel" name="label">
+     <property name="font">
+      <font>
+       <pointsize>15</pointsize>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color:black</string>
+     </property>
+     <property name="text">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:16pt;&quot;&gt;Input the note you wish to attach &lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:16pt;&quot;&gt;to the inventory item:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+    </widget>
+   </item>
    <item row="2" column="0" rowspan="3" colspan="2">
     <widget class="QTextEdit" name="inputTextEdit">
+     <property name="styleSheet">
+      <string notr="true">color:black;background-color:white</string>
+     </property>
      <property name="html">
       <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;meta charset=&quot;utf-8&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
@@ -74,25 +93,6 @@ li.checked::marker { content: &quot;\2612&quot;; }
      </property>
     </widget>
    </item>
-   <item row="4" column="2" alignment="Qt::AlignmentFlag::AlignRight">
-    <widget class="QDialogButtonBox" name="confirmInputBox">
-     <property name="maximumSize">
-      <size>
-       <width>160</width>
-       <height>16777215</height>
-      </size>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color:rgb(209, 188, 164)</string>
-     </property>
-     <property name="orientation">
-      <enum>Qt::Orientation::Horizontal</enum>
-     </property>
-     <property name="standardButtons">
-      <set>QDialogButtonBox::StandardButton::Cancel|QDialogButtonBox::StandardButton::Ok</set>
-     </property>
-    </widget>
-   </item>
    <item row="2" column="2">
     <widget class="QWidget" name="widget" native="true">
      <layout class="QGridLayout" name="gridLayout">
@@ -102,6 +102,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <font>
           <bold>true</bold>
          </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color:black</string>
         </property>
         <property name="text">
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:14pt;&quot;&gt;Input ID # to attach note to:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -116,21 +119,35 @@ li.checked::marker { content: &quot;\2612&quot;; }
           <height>30</height>
          </size>
         </property>
+        <property name="font">
+         <font>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color:black;background-color:white</string>
+        </property>
        </widget>
       </item>
      </layout>
     </widget>
    </item>
-   <item row="1" column="1" alignment="Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter">
-    <widget class="QLabel" name="label">
-     <property name="font">
-      <font>
-       <pointsize>15</pointsize>
-       <bold>true</bold>
-      </font>
+   <item row="4" column="2" alignment="Qt::AlignmentFlag::AlignRight">
+    <widget class="QDialogButtonBox" name="confirmInputBox">
+     <property name="maximumSize">
+      <size>
+       <width>160</width>
+       <height>16777215</height>
+      </size>
      </property>
-     <property name="text">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:16pt;&quot;&gt;Input the note you wish to attach &lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:16pt;&quot;&gt;to the inventory item:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     <property name="styleSheet">
+      <string notr="true">background-color:rgb(209, 188, 164);color:black</string>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Orientation::Horizontal</enum>
+     </property>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::StandardButton::Cancel|QDialogButtonBox::StandardButton::Ok</set>
      </property>
     </widget>
    </item>

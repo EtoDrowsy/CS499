@@ -1,6 +1,8 @@
 #include "additemdialog.h"
 #include "ui_additemdialog.h"
 #include <QLineEdit>
+#include <QDateEdit>
+#include <QPushButton>
 #include <QIntValidator>
 #include <QMessageBox>
 #include <QRegularExpressionValidator>
@@ -18,11 +20,13 @@ AddItemDialog::AddItemDialog(std::vector<std::string> attributes, QWidget *paren
     ui->inputtable->horizontalHeader()->setStretchLastSection(true);
     ui->attributetable->horizontalHeader()->setStretchLastSection(true);
 
-    connect(ui->buttonBox, &QDialogButtonBox::accepted, [this]() {
-        if (validate()) {
-            this->accept();
-        }
-    });
+    QPushButton *okButton = ui->buttonBox->button(QDialogButtonBox::Ok);
+    if (okButton) {
+        disconnect(okButton, nullptr, nullptr, nullptr); // remove any default connections
+        connect(okButton, &QPushButton::clicked, this, &AddItemDialog::handleDialogAccept);
+    }
+
+
 
     connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
 
@@ -33,7 +37,6 @@ AddItemDialog::AddItemDialog(std::vector<std::string> attributes, QWidget *paren
 
         QTableWidgetItem *attq = new QTableWidgetItem(att);
         ui->attributetable->setItem(rowIndex, 0, attq);
-
 
         QWidget *container = new QWidget(this);
 
@@ -133,16 +136,25 @@ AddItemDialog::AddItemDialog(std::vector<std::string> attributes, QWidget *paren
             container->setFixedSize(400, 25);
             ui->inputtable->setCellWidget(rowIndex, 0, lineEdit);
         }
-        else if (att.toLower() == "date") {
-            QLineEdit *lineEdit = new QLineEdit(container);
-            lineEdit->setPlaceholderText("YYYY-MM-DD");
+        else if (att.toLower() == "date acquired") {
+            QDateEdit *dateEdit = new QDateEdit(container);
+            dateEdit->setCalendarPopup(true);
+            dateEdit->setDisplayFormat("yyyy-MM-dd");
+            dateEdit->setDate(QDate::currentDate());
 
-            QRegularExpression dateRegex("^\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])$");
-            lineEdit->setValidator(new QRegularExpressionValidator(dateRegex, this));
-
-            lineEdit->setGeometry(0, 0, 400, 25);
+            dateEdit->setGeometry(0, 0, 400, 25);
             container->setFixedSize(400, 25);
-            ui->inputtable->setCellWidget(rowIndex, 0, lineEdit);
+            ui->inputtable->setCellWidget(rowIndex, 0, dateEdit);
+        }
+        else if (att.toLower() == "date cut") {
+            QDateEdit *dateEdit = new QDateEdit(container);
+            dateEdit->setCalendarPopup(true);
+            dateEdit->setDisplayFormat("yyyy-MM-dd");
+            dateEdit->setDate(QDate::currentDate());
+
+            dateEdit->setGeometry(0, 0, 400, 25);
+            container->setFixedSize(400, 25);
+            ui->inputtable->setCellWidget(rowIndex, 0, dateEdit);
         }
         else if (att.toLower() == "photo") {
             QTableWidgetItem *photoItem = new QTableWidgetItem("N/A");
@@ -162,6 +174,16 @@ AddItemDialog::AddItemDialog(std::vector<std::string> attributes, QWidget *paren
 
             rowIndex++;
             continue;
+        }
+        else if (att.toLower() == "name") {
+            QLineEdit *lineEdit = new QLineEdit(container);
+            QRegularExpression regex("[A-Za-z ]+");
+            QValidator *validator = new QRegularExpressionValidator(regex, this);
+            lineEdit->setValidator(validator);
+            lineEdit->setPlaceholderText("Name");
+            lineEdit->setGeometry(0, 0, 400, 25);
+            container->setFixedSize(400, 25);
+            ui->inputtable->setCellWidget(rowIndex, 0, lineEdit);
         }
         else {
             QLineEdit *lineEdit = new QLineEdit(container);
@@ -251,6 +273,16 @@ std::vector<std::string> AddItemDialog::getNewItemData() const {
 
             newItem.push_back(value.toStdString());
         }
+        else if (attribute == "date") {
+            QDateEdit *dateEdit = qobject_cast<QDateEdit *>(widget);
+            if (dateEdit) {
+                QString dateStr = dateEdit->date().toString("yyyy-MM-dd");
+                newItem.push_back(dateStr.toStdString());
+            }
+            else {
+                newItem.push_back("N/A");
+            }
+        }
         else {
             QString value;
 
@@ -286,32 +318,44 @@ std::vector<std::string> AddItemDialog::getNewItemData() const {
 }
 
 bool AddItemDialog::validate() {
-    for (int i = 0; i < ui->inputtable->rowCount(); i++) {
-        QWidget* widget = ui->inputtable->cellWidget(i, 0);
+    std::set<QString> seenIDs;
+
+    for (int i = 0; i < ui->inputtable->rowCount(); ++i) {
+        QWidget* widget = ui->inputtable->cellWidget(i, 0); // Column 0: ID
         if (!widget) continue;
 
         QList<QLineEdit*> edits = widget->findChildren<QLineEdit*>();
-        if (edits.size() >= 2) {
-            if (edits[0]->text().trimmed().isEmpty()) {
-                QMessageBox::warning(this, "Error", "Please fill in all fields to add a valid item");
-                return false;
-            }
-        }
-
-        else {
-            QLineEdit* lineEdit = widget->findChild<QLineEdit*>();
-            if (lineEdit) {
+        if (!edits.isEmpty()) {
+            for (QLineEdit* lineEdit : edits) {
                 QString value = lineEdit->text().trimmed();
                 bool isPrice = lineEdit->property("isPrice").toBool();
 
                 if (value.isEmpty() || (isPrice && value == "$")) {
+                    lineEdit->setStyleSheet("border: 1px solid red");
                     QMessageBox::warning(this, "Error", "Please fill in all fields to add a valid item");
                     return false;
+                } else {
+                    lineEdit->setStyleSheet("");
                 }
             }
+
+            QString idValue = edits[0]->text().trimmed();
+            if (seenIDs.find(idValue) != seenIDs.end()) {
+                edits[0]->setStyleSheet("border: 1px solid red");
+                QMessageBox::warning(this, "Error", "Duplicate ID found. Each item must have a unique ID.");
+                return false;
+            }
+            seenIDs.insert(idValue);
         }
     }
+
     return true;
+}
+
+void AddItemDialog::handleDialogAccept() {
+    if(validate()){
+        accept();
+    }
 }
 
 void AddItemDialog::resetStyles() {
