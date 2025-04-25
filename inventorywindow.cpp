@@ -373,7 +373,7 @@ void InventoryWindow::writeCSV(const std::string &filePath) {
         isFirstRow = false;
     }
 
-    if (soldInvExists){
+    if (soldInvExists && soldInventory.size() > 0){
         file << "\n";
         for (int i = 0; i < soldInventory.size(); i++){
             file << soldInventory[i]->toString() << "Yes;"+soldInventory[i]->getDateSold()+";"+std::to_string(soldInventory[i]->getInvoiceNumber());
@@ -500,6 +500,17 @@ void InventoryWindow::on_createCSVButton_clicked()
     }
 }
 
+int getInventoryIndex(int id){
+    int index;
+    for (int i = 0; i < inventory.size(); i++){
+        if (std::stoi(inventory[i]->getID()) == id){
+            index = i;
+            break;
+        }
+    }
+    return index;
+}
+
 void InventoryWindow::on_modifyObjectButton_clicked()
 {
     if(csvLoaded){
@@ -618,7 +629,68 @@ void InventoryWindow::on_cutlistButton_clicked()
 {
     if(csvLoaded){
         cutlistdialog cutlistdialog(inventory, this);
-        cutlistdialog.exec();
+        if (cutlistdialog.exec() == QDialog::Accepted){
+            confirmer updateInventory = cutlistdialog.getInventoryUpdate();
+            int quantityIndex;
+            for (int i = 0; i < CSVattributes.size(); i++){
+                if (CSVattributes[i] == "Quantity"){
+                    quantityIndex = i;
+                    break;
+                }
+            }
+            for (int i = 0; i < updateInventory.IDs.size(); i++){
+                int invIndex = getInventoryIndex(stoi(updateInventory.IDs[i]));
+                int invQuantity = inventory[invIndex]->getQuantity();
+                inventory[invIndex]->setQuantity(invQuantity - 1);
+                for (int j = 0; j < dataArray.size(); j++) {
+                    if(dataArray[j][0] == updateInventory.IDs[i]){
+                        dataArray[j][quantityIndex] = std::to_string(inventory[invIndex]->getQuantity());
+                        ui->dataViewer->setItem(i+1, quantityIndex, new QTableWidgetItem(QString::number(inventory[invIndex]->getQuantity())));
+                        break;
+                    }
+                }
+                for (int k = 0; k < updateInventory.newLumber.size(); k++){
+                    std::string line = updateInventory.newLumber[k]->toString();
+                    std::stringstream ss(line);
+                    std::vector<std::string> row;
+                    while (ss.good()) {
+                        std::string substr;
+                        getline(ss, substr, ';');
+                        row.push_back(substr);
+                    }
+                    row.pop_back();
+                    dataArray.push_back(row);
+                    inventory.push_back(updateInventory.newLumber[k]);
+                }
+
+                writeCSV(csvfilepath);
+            }
+            ui->dataViewer->clear();
+
+            ui->dataViewer->setEditTriggers(QAbstractItemView::NoEditTriggers);
+
+            ui->dataViewer->setColumnCount(CSVattributes.size());
+            ui->dataViewer->setRowCount(dataArray.size() + 1);
+
+            for (int k = 0; k < CSVattributes.size(); k++) {
+                QString att = QString::fromStdString(CSVattributes[k]);
+                QTableWidgetItem *attq = new QTableWidgetItem(att);
+                ui->dataViewer->setItem(0, k, attq);
+                if(att != "Notes" && att != "Photo"){
+                    ui->searchComboBox->addItem(att);
+                }
+            }
+
+            for (int i = 0; i < dataArray.size(); i++) {
+                for (int j = 0; j < dataArray[i].size(); j++) {
+                    QString qstr = QString::fromStdString(dataArray[i][j]);
+                    QTableWidgetItem *newitem = new QTableWidgetItem(qstr);
+                    ui->dataViewer->setItem(i + 1, j, newitem);
+                }
+            }
+
+            ui->dataViewer->resizeColumnsToContents();
+        }
     }
 }
 
@@ -677,18 +749,6 @@ void InventoryWindow::on_soldButton_clicked()
         soldinvviewer.exec();
     }
 }
-
-int getInventoryIndex(int id){
-    int index;
-    for (int i = 0; i < inventory.size(); i++){
-        if (std::stoi(inventory[i]->getID()) == id){
-            index = i;
-            break;
-        }
-    }
-    return index;
-}
-
 
 void InventoryWindow::on_newSaleButton_clicked()
 {

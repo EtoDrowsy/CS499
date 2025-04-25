@@ -82,6 +82,9 @@
         <pointsize>16</pointsize>
        </font>
       </property>
+      <property name="styleSheet">
+       <string notr="true">color:black</string>
+      </property>
       <property name="text">
        <string>Sale Notes</string>
       </property>
@@ -94,6 +97,9 @@
         <width>591</width>
         <height>521</height>
        </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color:white;color:black</string>
       </property>
      </widget>
     </widget>
@@ -116,6 +122,9 @@
           <pointsize>12</pointsize>
          </font>
         </property>
+        <property name="styleSheet">
+         <string notr="true">color:black</string>
+        </property>
         <property name="text">
          <string>ID</string>
         </property>
@@ -133,6 +142,9 @@
          <font>
           <pointsize>12</pointsize>
          </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color:white;color:black</string>
         </property>
         <property name="readOnly">
          <bool>true</bool>
@@ -152,6 +164,9 @@
           <pointsize>12</pointsize>
          </font>
         </property>
+        <property name="styleSheet">
+         <string notr="true">color:black</string>
+        </property>
         <property name="text">
          <string>Quantity Sold</string>
         </property>
@@ -165,6 +180,9 @@
           <height>22</height>
          </rect>
         </property>
+        <property name="styleSheet">
+         <string notr="true">background-color:white;color:black</string>
+        </property>
        </widget>
        <widget class="QCheckBox" name="allSoldCheckBox">
         <property name="geometry">
@@ -174,6 +192,9 @@
           <width>121</width>
           <height>20</height>
          </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color:black</string>
         </property>
         <property name="text">
          <string>All Quantity Sold?</string>
@@ -209,6 +230,9 @@
           <height>22</height>
          </rect>
         </property>
+        <property name="styleSheet">
+         <string notr="true">background-color:white;color:black</string>
+        </property>
         <property name="locale">
          <locale language="English" country="UnitedStates"/>
         </property>
@@ -240,6 +264,9 @@
           <pointsize>12</pointsize>
          </font>
         </property>
+        <property name="styleSheet">
+         <string notr="true">color:black</string>
+        </property>
         <property name="text">
          <string>Date Sold</string>
         </property>
@@ -258,6 +285,9 @@
           <pointsize>12</pointsize>
          </font>
         </property>
+        <property name="styleSheet">
+         <string notr="true">color:black</string>
+        </property>
         <property name="text">
          <string>Invoice Number</string>
         </property>
@@ -270,6 +300,9 @@
           <width>113</width>
           <height>22</height>
          </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color:white;color:black</string>
         </property>
        </widget>
       </widget>
