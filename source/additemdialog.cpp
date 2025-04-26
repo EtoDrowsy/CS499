@@ -40,7 +40,16 @@ AddItemDialog::AddItemDialog(std::vector<std::string> attributes, QWidget *paren
 
         QWidget *container = new QWidget(this);
 
-        if (att.toLower() == "id" || att.toLower() == "quantity") {
+        if (att.toLower() == "id") {
+            QLineEdit *lineEdit = new QLineEdit(container);
+            lineEdit->setValidator(new QIntValidator(0, 9999999, this));
+            lineEdit->setPlaceholderText(att);
+            lineEdit->setGeometry(0, 0, 100, 25);
+            lineEdit->setProperty("isID", true);
+            container->setFixedSize(400, 25);
+            ui->inputtable->setCellWidget(rowIndex, 0, lineEdit);
+        }
+        else if (att.toLower() == "quantity") {
             QLineEdit *lineEdit = new QLineEdit(container);
             lineEdit->setValidator(new QIntValidator(0, 9999999, this));
             lineEdit->setPlaceholderText(att);
@@ -326,9 +335,12 @@ bool AddItemDialog::validate() {
 
         QList<QLineEdit*> edits = widget->findChildren<QLineEdit*>();
         if (!edits.isEmpty()) {
+            QString idValue = edits[0]->text().trimmed();
+
             for (QLineEdit* lineEdit : edits) {
                 QString value = lineEdit->text().trimmed();
                 bool isPrice = lineEdit->property("isPrice").toBool();
+                bool isID = lineEdit->property("isID").toBool();
 
                 if (value.isEmpty() || (isPrice && value == "$")) {
                     lineEdit->setStyleSheet("border: 1px solid red");
@@ -337,15 +349,16 @@ bool AddItemDialog::validate() {
                 } else {
                     lineEdit->setStyleSheet("");
                 }
-            }
 
-            QString idValue = edits[0]->text().trimmed();
-            if (seenIDs.find(idValue) != seenIDs.end()) {
-                edits[0]->setStyleSheet("border: 1px solid red");
-                QMessageBox::warning(this, "Error", "Duplicate ID found. Each item must have a unique ID.");
-                return false;
+                if (isID) {
+                    if (seenIDs.find(idValue) != seenIDs.end()) {
+                        edits[0]->setStyleSheet("border: 1px solid red");
+                        QMessageBox::warning(this, "Error", "Duplicate ID found. Each item must have a unique ID.");
+                        return false;
+                    }
+                    seenIDs.insert(idValue);
+                }
             }
-            seenIDs.insert(idValue);
         }
     }
 

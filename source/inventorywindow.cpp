@@ -162,6 +162,7 @@ InventoryWindow::InventoryWindow(QWidget *parent)
     , ui(new Ui::InventoryWindow)
 {
     ui->setupUi(this);
+    ui->searchField->setPlaceholderText("Search");
 }
 
 InventoryWindow::~InventoryWindow()
@@ -398,8 +399,13 @@ int InventoryWindow::getIndex(int searchid){
 void InventoryWindow::on_createCSVButton_clicked()
 {
     if(csvLoaded){
-        QMessageBox::information(this, "CSV Loaded", "The CSV has already been loaded.");
-        return;
+        QMessageBox::StandardButton reply;
+        reply = QMessageBox::question(this, "CSV Loaded",
+                                      "You are about to create a new CSV. Do you wish to create one? (Created CSV will not replace the current one.)",
+                                      QMessageBox::Yes | QMessageBox::No);
+        if(reply == QMessageBox::No){
+            return;
+        }
     }
 
     QString tempcsvfilepath = QFileDialog::getSaveFileName(this, tr("Save File"),"",tr("CSV Files (*.csv)"));
