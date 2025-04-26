@@ -101,7 +101,7 @@
     <string notr="true">background-color:rgb(209, 188, 164);color:black</string>
    </property>
    <property name="text">
-    <string>Add Photo</string>
+    <string>Select Photo</string>
    </property>
   </widget>
   <widget class="QGraphicsView" name="previewBox">

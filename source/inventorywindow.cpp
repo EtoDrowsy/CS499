@@ -162,6 +162,7 @@ InventoryWindow::InventoryWindow(QWidget *parent)
     , ui(new Ui::InventoryWindow)
 {
     ui->setupUi(this);
+    ui->searchField->setPlaceholderText("Search");
 }
 
 InventoryWindow::~InventoryWindow()
