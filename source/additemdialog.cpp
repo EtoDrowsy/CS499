@@ -12,6 +12,7 @@ AddItemDialog::AddItemDialog(std::vector<std::string> attributes, QWidget *paren
     : QDialog(parent)
     , ui(new Ui::AddItemDialog)
 {
+    // setting up the UI for the add window
     ui->setupUi(this);
     ui->attributetable->setRowCount(attributes.size());
     ui->attributetable->setColumnCount(1);
@@ -20,6 +21,7 @@ AddItemDialog::AddItemDialog(std::vector<std::string> attributes, QWidget *paren
     ui->inputtable->horizontalHeader()->setStretchLastSection(true);
     ui->attributetable->horizontalHeader()->setStretchLastSection(true);
 
+    // does not close window immediately incase there are some errors with input
     QPushButton *okButton = ui->buttonBox->button(QDialogButtonBox::Ok);
     if (okButton) {
         disconnect(okButton, nullptr, nullptr, nullptr); // remove any default connections
@@ -27,11 +29,12 @@ AddItemDialog::AddItemDialog(std::vector<std::string> attributes, QWidget *paren
     }
 
 
-
+    // closes window on press of Canel button
     connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
 
     int rowIndex = 0;
 
+    // sets up the input boxes based on the attributes in the CSV
     for (int i = 0; i < attributes.size(); i++) {
         QString att = QString::fromStdString(attributes[i]);
 
@@ -40,6 +43,7 @@ AddItemDialog::AddItemDialog(std::vector<std::string> attributes, QWidget *paren
 
         QWidget *container = new QWidget(this);
 
+        // used to help in rejecting invalid keyboard inputs other input box settings
         if (att.toLower() == "id") {
             QLineEdit *lineEdit = new QLineEdit(container);
             lineEdit->setValidator(new QIntValidator(0, 9999999, this));
@@ -206,11 +210,12 @@ AddItemDialog::AddItemDialog(std::vector<std::string> attributes, QWidget *paren
     }
 }
 
+// grabs the inputted values that were given by user to format and return to add the item
 std::vector<std::string> AddItemDialog::getNewItemData() const {
     std::vector<std::string> newItem;
-    qDebug() << "Fetching data from inputtable. Rows:" << ui->inputtable->rowCount();
 
     for (int i = 0; i < ui->inputtable->rowCount(); i++) {
+        // pulls the attributetable column and sets up the items in it
         QTableWidgetItem* item = ui->attributetable->item(i, 0);
         if (!item) {
             qDebug() << "Warning: attribute table missing item at row" << i;
@@ -221,6 +226,7 @@ std::vector<std::string> AddItemDialog::getNewItemData() const {
         QString attribute = item->text().toLower();
         QWidget *widget = ui->inputtable->cellWidget(i, 0);
 
+        // checks the widget of the attribute to set up the specific formatting needed
         if (attribute == "length") {
             QList<QLineEdit *> lineEdits = widget ? widget->findChildren<QLineEdit *>() : QList<QLineEdit *>();
             if (lineEdits.size() == 2) {
@@ -293,6 +299,7 @@ std::vector<std::string> AddItemDialog::getNewItemData() const {
             }
         }
         else {
+            // for all other attributes they are here
             QString value;
 
             if (widget) {
@@ -321,16 +328,15 @@ std::vector<std::string> AddItemDialog::getNewItemData() const {
         }
     }
 
-
-    qDebug() << "Final newItem size:" << newItem.size();
     return newItem;
 }
 
+// check to see if inputs have a value & ID is not already in CSV
 bool AddItemDialog::validate() {
     std::set<QString> seenIDs;
 
     for (int i = 0; i < ui->inputtable->rowCount(); ++i) {
-        QWidget* widget = ui->inputtable->cellWidget(i, 0); // Column 0: ID
+        QWidget* widget = ui->inputtable->cellWidget(i, 0);
         if (!widget) continue;
 
         QList<QLineEdit*> edits = widget->findChildren<QLineEdit*>();
@@ -342,6 +348,7 @@ bool AddItemDialog::validate() {
                 bool isPrice = lineEdit->property("isPrice").toBool();
                 bool isID = lineEdit->property("isID").toBool();
 
+                // to show the input boxes that do not have values with red outline
                 if (value.isEmpty() || (isPrice && value == "$")) {
                     lineEdit->setStyleSheet("border: 1px solid red");
                     QMessageBox::warning(this, "Error", "Please fill in all fields to add a valid item");
@@ -350,6 +357,7 @@ bool AddItemDialog::validate() {
                     lineEdit->setStyleSheet("");
                 }
 
+                // if duplicate ID found, display error
                 if (isID) {
                     if (seenIDs.find(idValue) != seenIDs.end()) {
                         edits[0]->setStyleSheet("border: 1px solid red");
@@ -368,15 +376,6 @@ bool AddItemDialog::validate() {
 void AddItemDialog::handleDialogAccept() {
     if(validate()){
         accept();
-    }
-}
-
-void AddItemDialog::resetStyles() {
-    for (int i = 0; i < ui->attributetable->rowCount(); i++) {
-        ui->attributetable->item(i, 0)->setBackground(Qt::white);
-        if (auto widget = ui->inputtable->cellWidget(i, 0)) {
-            widget->setStyleSheet("");
-        }
     }
 }
 
