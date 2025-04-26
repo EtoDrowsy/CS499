@@ -36,49 +36,41 @@ class Lumber {
         Lumber(std::vector <std::string> a, std::vector <std::string> aV) : Lumber() {
             attributes = a;
             attributeValues = aV;
+
             for(int i = 0; i < aV.size(); i++){
-                if (aV[i] == "Length")
-                {
+                if (aV[i] == "Length"){
                     length = a[i];
                 }
-                else if (aV[i] == "Width")
-                {
+                else if (aV[i] == "Width"){
                     width = a[i];
                 }
-                else if (aV[i] == "Thickness")
-                {
+                else if (aV[i] == "Thickness"){
                     thickness = a[i];
                 }
-                else if (aV[i] == "Species")
-                {
+                else if (aV[i] == "Species"){
                     species = a[i];
                 }
-                else if (aV[i] == "Grade")
-                {
+                else if (aV[i] == "Grade"){
                     grade = std::stoi(a[i]);
                 }
-                else if (aV[i] == "Quantity")
-                {
+                else if (aV[i] == "Quantity"){
                     quantity = std::stoi(a[i]);
                 }
-                else if (aV[i] == "ID")
-                {
+                else if (aV[i] == "ID"){
                     id = a[i];
                 }
-                else if (aV[i] == "Description")
-                {
+                else if (aV[i] == "Description"){
                     description = a[i];
                 }
-                else if (aV[i] == "Photo")
-                {
+                else if (aV[i] == "Photo"){
                     photoPath = a[i];
                 }
-                else if (aV[i] == "Price")
-                {
+                else if (aV[i] == "Price"){
                     price = std::stof(a[i].erase(0,1));
                 }
             }
         }
+
         std::vector <float> getDimensions() {
             std::vector <float> dimensions;
             dimensions.push_back(getLength());
@@ -101,28 +93,23 @@ class Lumber {
 
             return thicknessnum;
         }
-        std::string getLengthDisplay(){
-            return length;
-        }
-        std::string getWidthDisplay(){
-            return width;
-        }
-        std::string getThicknessDisplay(){
-            return thickness;
-        }
-        std::string getID(){
-            return id;
-        }
-        std::string getDescription(){
-            return description;
-        }
+
+        std::string getLengthDisplay(){return length;}
+        std::string getWidthDisplay(){return width;}
+        std::string getThicknessDisplay(){return thickness;}
+
         std::vector <std::string> getAttributes() {return attributes;}
         std::vector <std::string> getAttributeValues() {return attributeValues;}
+
+        std::string getID(){return id;}
+        std::string getDescription(){ return description;}
         std::string getSpecies() {return species;}
         int getGrade() {return grade;}
         int getQuantity() {return quantity;}
         std::string getPhotoPath() {return photoPath;}
         float getPrice() {return price;}
+        std::string getDateSold(){return dateSold;}
+        int getInvoiceNumber(){return invoiceNumber;}
 
         void setLength(std::string l) {
             length = l;
@@ -133,17 +120,25 @@ class Lumber {
         void setThickness(float t){
             thickness = t;
         }
+
+        void setAttributes(std::vector <std::string> a){
+            attributes = a;
+        }
+        void setAttributeValues(std::vector <std::string> aV){
+            attributeValues = aV;
+        }
+
         void setSpecies(std::string s){
             species = s;
         }
         void setGrade(int g){
             grade = g;
         }
-        void setAttributes(std::vector <std::string> a){
-            attributes = a;
+        void setDateSold(std::string d){
+            dateSold = d;
         }
-        void setAttributeValues(std::vector <std::string> aV){
-            attributeValues = aV;
+        void setInvoiceNumber(int iN){
+            invoiceNumber = iN;
         }
         void setQuantity(int q){
             for (int i = 0; i < attributeValues.size(); i++){
@@ -223,18 +218,6 @@ class Lumber {
             price = newPrice;
             return;
         }
-        void setDateSold(std::string d){
-            dateSold = d;
-        }
-        void setInvoiceNumber(int iN){
-            invoiceNumber = iN;
-        }
-        std::string getDateSold(){
-            return dateSold;
-        }
-        int getInvoiceNumber(){
-            return invoiceNumber;
-        }
 
         std::string toString(){
             std::string csvline;
@@ -242,72 +225,6 @@ class Lumber {
                 csvline.append(attributes[i] + ";");
             }
             return csvline;
-        }
-};
-
-class Piece : public Lumber {
-    private:
-        float price;
-    public:
-        Piece() 
-        : Lumber() {}
-        Piece(std::vector <std::string> a, std::vector <std::string> aV) : Lumber(a, aV){
-            attributes = a;
-            attributeValues = aV;
-            for(int i = 0; i < aV.size(); i++){
-                if (aV[i] == "Price")
-                {
-                    price = std::stof(a[i]);
-                }
-            }
-        }
-        float getPrice() {return price;}
-};
-
-class Bulk : public Lumber {
-    private:
-        float price;
-    public:
-        Bulk() 
-        : Lumber() {
-            price = 0;
-        }
-        Bulk(std::vector <std::string> a, std::vector <std::string> aV) : Lumber(a, aV) {
-            attributes = a;
-            attributeValues = aV;
-            for(int i = 0; i < aV.size(); i++){
-                if (aV[i] == "Price")
-                {
-                    price = std::stof(a[i]);
-                }
-            }
-        }
-        float getPrice() {return price;}
-
-        void setPrice(float p){
-            price = p;
-        }
-};
-
-class Log : public Lumber {
-    private:
-        std::string date;
-    public:
-        Log()
-        : Lumber() {
-            date = "NULL";
-        }
-        Log(std::vector <std::string> a, std::vector <std::string> aV) : Lumber(a, aV) {
-            for(int i = 0; i < aV.size(); i++){
-                if (aV[i] == "Date")
-                {
-                    date = a[i];
-                }
-            }
-        }
-
-        void setDate(std::string d){
-            date = d;
         }
 };
 

@@ -23,7 +23,6 @@ enum column{
 };
 
 std::vector<std::string> CSVattributes;
-std::vector<column> ColumnNames;
 std::vector<std::vector<std::string>> dataArray;
 
 std::string csvfilepath;
@@ -33,52 +32,6 @@ std::vector<Lumber*> inventory;
 std::vector<Lumber*>soldInventory;
 int soldIndex;
 bool soldInvExists;
-
-column stringToColumn(std::string readIn){
-    if(readIn == "ID"){
-        return ID;
-    }
-    else if(readIn == "Location"){
-        return Location;
-    }
-    else if(readIn == "Quantity"){
-        return Quantity;
-    }
-    else if(readIn == "Length"){
-        return Length;
-    }
-    else if(readIn == "Width"){
-        return Width;
-    }
-    else if(readIn == "Thickness"){
-        return Thickness;
-    }
-    else if(readIn == "Grade"){
-        return Grade;
-    }
-    else if(readIn == "Price"){
-        return Price;
-    }
-    else if(readIn == "Description"){
-        return Description;
-    }
-    else if(readIn == "Date"){
-        return Date;
-    }
-    else if(readIn == "Species"){
-        return Species;
-    }
-    else if(readIn == "Photo"){
-        return Photo;
-    }
-    else if(readIn == "Notes"){
-        return Notes;
-    }
-    else if(readIn == "Sold"){
-        return Sold;
-    }
-    return Unknown;
-}
 
 void readCSV(std::string filepath)
 {
@@ -93,7 +46,6 @@ void readCSV(std::string filepath)
         getline(ss, substr, ';');
         if (substr != "Date Sold" && substr != "Invoice Number"){
             CSVattributes.push_back(substr);
-            ColumnNames.push_back(stringToColumn(substr));
         }
     }
 

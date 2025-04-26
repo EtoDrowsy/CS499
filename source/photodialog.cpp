@@ -11,7 +11,7 @@ photodialog::photodialog(QWidget *parent, int id)
     ui->setupUi(this);
     imageUploaded = false;
     photoID = id;
-    ui->idText->setPlainText(QString::number(photoID));
+    ui->idText->setText(QString::number(photoID));
 }
 
 photodialog::~photodialog()

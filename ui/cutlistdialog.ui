@@ -67,7 +67,7 @@
     <rect>
      <x>10</x>
      <y>40</y>
-     <width>505</width>
+     <width>600</width>
      <height>500</height>
     </rect>
    </property>
@@ -150,7 +150,7 @@
   <widget class="QPushButton" name="addbutton">
    <property name="geometry">
     <rect>
-     <x>540</x>
+     <x>640</x>
      <y>40</y>
      <width>101</width>
      <height>31</height>
@@ -192,7 +192,7 @@
   <widget class="QLabel" name="materiallabel">
    <property name="geometry">
     <rect>
-     <x>870</x>
+     <x>920</x>
      <y>20</y>
      <width>111</width>
      <height>16</height>
@@ -213,7 +213,7 @@
   <widget class="QPushButton" name="genmaterials">
    <property name="geometry">
     <rect>
-     <x>540</x>
+     <x>640</x>
      <y>260</y>
      <width>101</width>
      <height>31</height>
@@ -234,9 +234,9 @@
   <widget class="QTextBrowser" name="outputTextBrowser">
    <property name="geometry">
     <rect>
-     <x>670</x>
+     <x>770</x>
      <y>40</y>
-     <width>505</width>
+     <width>400</width>
      <height>500</height>
     </rect>
    </property>
@@ -252,7 +252,7 @@
   <widget class="QPushButton" name="confirmButton">
    <property name="geometry">
     <rect>
-     <x>540</x>
+     <x>640</x>
      <y>510</y>
      <width>111</width>
      <height>31</height>

@@ -20,6 +20,8 @@ soldinventoryviewer::soldinventoryviewer(std::vector<std::string> attributes, st
 {
     ui->setupUi(this);
     ui->tableWidget->clear();
+    ui->searchComboBox->clear();
+    soldarray.clear();
 
     attributes.push_back("Date Sold");
     attributes.push_back("Invoice Number");
@@ -52,6 +54,13 @@ soldinventoryviewer::soldinventoryviewer(std::vector<std::string> attributes, st
             QString qstr = QString::fromStdString(soldarray[i][j]);
             QTableWidgetItem *newitem = new QTableWidgetItem(qstr);
             ui->tableWidget->setItem(i + 1, j, newitem);
+        }
+    }
+
+    for (int i = 0; i < tableAttributes.size(); i++){
+        if (tableAttributes[i] != "Notes" && tableAttributes[i] != "Photo"){
+            QString att = QString::fromStdString(tableAttributes[i]);
+            ui->searchComboBox->addItem(att);
         }
     }
 
@@ -94,3 +103,70 @@ void soldinventoryviewer::on_sortButton_clicked()
         }
     }
 }
+
+void soldinventoryviewer::on_searchButton_clicked()
+{
+    int attributeIndex = 0;
+    for (int i = 0; i < tableAttributes.size(); i++){
+        if (tableAttributes[i] == ui->searchComboBox->currentText().toStdString()){
+            attributeIndex = i;
+            break;
+        }
+    }
+    std::vector<std::vector<std::string>> searchedDataArray;
+    ui->tableWidget->clear();
+
+    ui->tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
+
+    for (int j = 0; j < soldarray.size(); j++){
+        if (soldarray[j][attributeIndex] == ui->searchField->text().toStdString()){
+            searchedDataArray.push_back(soldarray[j]);
+        }
+    }
+
+    ui->tableWidget->setColumnCount(tableAttributes.size());
+    ui->tableWidget->setRowCount(searchedDataArray.size() + 1);
+
+    for (int k = 0; k < tableAttributes.size(); k++) {
+        QString att = QString::fromStdString(tableAttributes[k]);
+        QTableWidgetItem *attq = new QTableWidgetItem(att);
+        ui->tableWidget->setItem(0, k, attq);
+    }
+
+    for (int i = 0; i < searchedDataArray.size(); i++) {
+        for (int j = 0; j < searchedDataArray[i].size(); j++) {
+            QString qstr = QString::fromStdString(searchedDataArray[i][j]);
+            QTableWidgetItem *newitem = new QTableWidgetItem(qstr);
+            ui->tableWidget->setItem(i + 1, j, newitem);
+        }
+    }
+    ui->tableWidget->resizeColumnsToContents();
+    searchedDataArray.clear();
+}
+
+
+void soldinventoryviewer::on_clearSearchButton_clicked()
+{
+    ui->searchField->setText("");
+    ui->tableWidget->clear();
+    ui->tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
+
+    ui->tableWidget->setColumnCount(tableAttributes.size());
+    ui->tableWidget->setRowCount(soldarray.size() + 1);
+
+    for (int k = 0; k < tableAttributes.size(); k++) {
+        QString att = QString::fromStdString(tableAttributes[k]);
+        QTableWidgetItem *attq = new QTableWidgetItem(att);
+        ui->tableWidget->setItem(0, k, attq);
+    }
+
+    for (int i = 0; i < soldarray.size(); i++) {
+        for (int j = 0; j < soldarray[i].size(); j++) {
+            QString qstr = QString::fromStdString(soldarray[i][j]);
+            QTableWidgetItem *newitem = new QTableWidgetItem(qstr);
+            ui->tableWidget->setItem(i + 1, j, newitem);
+        }
+    }
+    ui->tableWidget->resizeColumnsToContents();
+}
+
