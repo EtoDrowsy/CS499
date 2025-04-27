@@ -33,6 +33,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         header/soldinventoryviewer.h source/soldinventoryviewer.cpp ui/soldinventoryviewer.ui
         header/pricedialog.h source/pricedialog.cpp ui/pricedialog.ui
         source/CutList.cpp
+        header/help.h source/help.cpp ui/help.ui
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET CS499 APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR

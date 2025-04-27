@@ -9,6 +9,7 @@
 #include "../header/soldinventorydialog.h"
 #include "../header/pricedialog.h"
 #include "../header/modifyitemdialog.h"
+#include "../header/help.h"
 
 #include <iostream>
 #include <fstream>
@@ -117,6 +118,133 @@ void genHTML(std::string filename){
     newhtml << "</html>\n";
 
     newhtml.close();
+}
+
+void genCSS(std::string csspath) {
+    // Embedded CSS content
+    const char* css = R"css(* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #ECE1D2;
+    color: #2C2C2C;
+    margin: 0;
+    padding: 0;
+}
+
+.header-wrapper {
+    text-align: center;
+    padding: 20px 20px;
+    background-color: #3D5A40;
+    border-bottom: 4px solid #6C8B5E;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    margin-bottom: 30px;
+}
+
+.page-title {
+    display: inline-block;
+    background-color: #E7D8BE;  /* light wood card */
+    color: #2F4F4F;             /* strong contrast */
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2em;
+    font-weight: bold;
+    border: 3px solid #6C8B5E;
+    padding: 18px 36px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    margin: 0 auto;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px 40px 20px;
+    justify-content: center;
+}
+
+.wood-item {
+    border: 2px solid #3D5A40;  /* matches header background */
+    background-color: #D1BCA4;
+    border-radius: 10px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.12);
+    text-align: center;
+    padding: 18px;
+    transition: all 0.2s ease-in-out;
+}
+
+.wood-item:hover {
+    box-shadow: 0 10px 16px rgba(0, 0, 0, 0.18);
+    transform: translateY(-4px);
+    border-color: #4C6A50;
+}
+
+.wood-image {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    border: 2px solid #4C6A50;
+}
+
+.item-title-description {
+    margin: 0;
+    text-align: left;
+    font-family: 'Georgia', serif;
+    color: #3B3B2D;
+    padding: 0 10px;
+    font-size: 1.6em;
+    font-weight: bold;
+    color: #2C2C2C;
+}
+
+.item-title-species {
+    margin: 0;
+    text-align: left;
+    font-family: 'Georgia', serif;
+    color: #3B3B2D;
+    padding: 0 10px;
+    font-size: 1.6em;
+    color: #2C2C2C;
+}
+
+.item-price {
+    margin: 0;
+    text-align: left;
+    font-family: 'Georgia', serif;
+    color: #3B3B2D;
+    padding: 0 10px;
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #2C2C2C;
+}
+
+p {
+    margin: 0;
+    text-align: left;
+    font-family: 'Georgia', serif;
+    color: #3B3B2D;
+    padding: 0 10px;
+    font-size: 1.25em;
+    color: #2C2C2C;
+}
+)css";
+
+    // Write to file
+    std::ofstream ofs(csspath);
+    if (!ofs) {
+        std::cerr << "Error: could not open style.css for writing\n";
+        return;
+    }
+
+    ofs << css;
+    ofs.close();
+    return;
 }
 
 void addToHTML(std::vector<Lumber*> woodList, std::string filename){
@@ -615,6 +743,7 @@ void InventoryWindow::on_HTMLGenButton_clicked()
     htmlfile.close();
 
     std::string newhtmlpath = htmlfilepath.toStdString();
+    std::string csspath = (htmlfilepath.replace(QRegularExpression("\\/[^\\/]*$"), "/style.css")).toStdString();
 
     if(newhtmlpath.empty()){
         QMessageBox::information(this, "File Name Empty", "File must have a name.");
@@ -626,6 +755,7 @@ void InventoryWindow::on_HTMLGenButton_clicked()
     }
     else{
         genHTML(newhtmlpath);
+        genCSS(csspath);
         return;
     }
 }
@@ -971,5 +1101,12 @@ void InventoryWindow::on_clearSearchButton_clicked()
             }
         }
     }
+}
+
+
+void InventoryWindow::on_pushButton_clicked()
+{
+    help* helpwindow = new help(this);
+    helpwindow->show();
 }
 
