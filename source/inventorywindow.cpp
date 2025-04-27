@@ -1,3 +1,8 @@
+/*
+Author: Thomas Pierce
+Source file for implementing main window ui
+*/
+
 #include "../header/inventorywindow.h"
 #include "../header/additemdialog.h"
 #include "../header/cutlistdialog.h"
@@ -34,6 +39,7 @@ std::vector<Lumber*>soldInventory;
 int soldIndex;
 bool soldInvExists;
 
+//Reading CSV into data array and inventory
 void readCSV(std::string filepath)
 {
     std::fstream inputcsv;
@@ -93,6 +99,7 @@ void readCSV(std::string filepath)
     return;
 }
 
+//Generating HTML store file
 void genHTML(std::string filename){
     std::fstream newhtml;
     newhtml.open(filename);
@@ -120,6 +127,7 @@ void genHTML(std::string filename){
     newhtml.close();
 }
 
+//Generating CSS file
 void genCSS(std::string csspath) {
     // Embedded CSS content
     const char* css = R"css(* {
@@ -247,6 +255,7 @@ p {
     return;
 }
 
+//Adding user-specified items to html store
 void addToHTML(std::vector<Lumber*> woodList, std::string filename){
     std::ifstream readhtml(filename);
     std::vector<std::string> lines;
@@ -299,6 +308,7 @@ InventoryWindow::~InventoryWindow()
     inventory.clear();
 }
 
+//Reading csv into table widget
 void InventoryWindow::on_csvLoadButton_clicked()
 {
     if(csvLoaded){
@@ -361,6 +371,7 @@ void InventoryWindow::on_csvLoadButton_clicked()
     return;
 }
 
+//Call to add item dialog
 void InventoryWindow::on_addObjectButton_clicked()
 {
     if (csvLoaded){
@@ -414,6 +425,7 @@ void InventoryWindow::on_addObjectButton_clicked()
     }
 }
 
+//Writing data to CSV file
 void InventoryWindow::writeCSV(const std::string &filePath) {
     std::ofstream file(filePath, std::ios::out | std::ios::trunc);
     if (!file.is_open()) {
@@ -473,7 +485,7 @@ void InventoryWindow::writeCSV(const std::string &filePath) {
     ui->dataViewer->resizeColumnsToContents();
 }
 
-
+//Deleting item from file and table widget
 void InventoryWindow::on_deleteObjectButton_clicked()
 {
     // checks to make sure that the CSV has been loaded in
@@ -549,6 +561,7 @@ int InventoryWindow::getIndex(int searchid){
     return 0;
 }
 
+//Function to create new CSV inventory file
 void InventoryWindow::on_createCSVButton_clicked()
 {
     if(csvLoaded){
@@ -644,6 +657,7 @@ int getInventoryIndex(int id){
     return index;
 }
 
+//Call to notes dialog
 void InventoryWindow::on_modifyObjectButton_clicked()
 {
     if(csvLoaded){
@@ -694,6 +708,7 @@ void InventoryWindow::on_modifyObjectButton_clicked()
     }
 }
 
+//Function to sort column in table widget
 void InventoryWindow::on_sortObjectButton_clicked()
 {
     if(csvLoaded){
@@ -733,7 +748,7 @@ void InventoryWindow::on_sortObjectButton_clicked()
     }
 }
 
-
+//Function to create new html and css files
 void InventoryWindow::on_HTMLGenButton_clicked()
 {
     QString htmlfilepath = QFileDialog::getSaveFileName(this, tr("Save File"),"",tr("HTML Files (*.html)"));
@@ -760,6 +775,8 @@ void InventoryWindow::on_HTMLGenButton_clicked()
     }
 }
 
+//Call to cut list dialog
+//Returned new inventory is added to table widget and file
 void InventoryWindow::on_cutlistButton_clicked()
 {
     if(csvLoaded){
@@ -828,6 +845,7 @@ void InventoryWindow::on_cutlistButton_clicked()
     }
 }
 
+//Call to photo dialog
 void InventoryWindow::on_photoButton_clicked()
 {
     if(csvLoaded){
@@ -876,6 +894,7 @@ void InventoryWindow::on_photoButton_clicked()
     }
 }
 
+//Call to sold inventory viewer
 void InventoryWindow::on_soldButton_clicked()
 {
     if(csvLoaded){
@@ -884,6 +903,7 @@ void InventoryWindow::on_soldButton_clicked()
     }
 }
 
+//Call to new sale dialog
 void InventoryWindow::on_newSaleButton_clicked()
 {
     if(csvLoaded){
@@ -950,6 +970,7 @@ void InventoryWindow::on_newSaleButton_clicked()
     }
 }
 
+//Call to price dialog
 void InventoryWindow::on_priceButton_clicked()
 {
     if(csvLoaded){
@@ -999,7 +1020,7 @@ void InventoryWindow::on_priceButton_clicked()
     }
 }
 
-
+//Function to add selected items to html store
 void InventoryWindow::on_HTMLAddButton_clicked()
 {
     if(csvLoaded){
@@ -1034,7 +1055,7 @@ void InventoryWindow::on_HTMLAddButton_clicked()
     }
 }
 
-
+//Search function to filter inventory
 void InventoryWindow::on_searchButton_clicked()
 {
     if(csvLoaded){
@@ -1076,7 +1097,7 @@ void InventoryWindow::on_searchButton_clicked()
     }
 }
 
-
+//Resetting search
 void InventoryWindow::on_clearSearchButton_clicked()
 {
     if(csvLoaded){
@@ -1103,7 +1124,7 @@ void InventoryWindow::on_clearSearchButton_clicked()
     }
 }
 
-
+//Call to help
 void InventoryWindow::on_pushButton_clicked()
 {
     help* helpwindow = new help(this);

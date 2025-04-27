@@ -1,3 +1,8 @@
+/*
+Author: Damian Castaneda
+Source file for add item ui
+*/
+
 #include "../header/additemdialog.h"
 #include "../ui/ui_additemdialog.h"
 #include <QLineEdit>

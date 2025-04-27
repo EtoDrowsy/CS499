@@ -1,3 +1,9 @@
+/*
+Author: Thomas Pierce
+Source file for implementing cut list ui
+*/
+
+
 #include "../header/cutlistdialog.h"
 #include "../ui/ui_cutlistdialog.h"
 #include "../header/additemdialog.h"
@@ -20,6 +26,7 @@ cutlistdialog::~cutlistdialog()
     delete ui;
 }
 
+//Running cut list algorithm to determine best materials
 void cutlistdialog::on_genmaterials_clicked()
 {
     std::vector<std::vector<std::string>> tableContents;
@@ -37,11 +44,6 @@ void cutlistdialog::on_genmaterials_clicked()
         cutList.push_back(item);
     }
 
-    // CutListItem* item1 = new CutListItem("0'-10\"","0'-5\"","1/1","Cherry",1,empty,empty,"item1",3);
-    // CutListItem* item2 = new CutListItem("1'-4\"","0'-5\"","1/1","Cherry",1,empty,empty,"item2",1);
-    // CutListItem* item3 = new CutListItem("0'-10\"","0'-5\"","1/1","Cherry",1,empty,empty,"item3",1);
-    // CutListItem* item4 = new CutListItem("1'-3\"","0'-5\"","1/1","Cherry",1,empty,empty,"item4",1);
-
     cutIDVector = cutListToLumberList(inventory, cutList);
 
     ui->outputTextBrowser->setText(QString::fromStdString(printLumberList(cutIDVector, inventory, cutList)));
@@ -51,6 +53,7 @@ std::vector<Lumber*> cutlistdialog::getInventory(){
     return inventory;
 }
 
+//Call to add item dialog
 void cutlistdialog::on_addbutton_clicked()
 {
     std::vector<std::string> cutlistAttributes = {"Species", "Length", "Width", "Thickness", "Quantity", "Grade", "Name"};
@@ -80,7 +83,7 @@ void cutlistdialog::on_addbutton_clicked()
     ui->cuttable->resizeColumnsToContents();
 }
 
-
+//Applying cut list cuts to inventory
 void cutlistdialog::on_confirmButton_clicked()
 {
     confirm = true;

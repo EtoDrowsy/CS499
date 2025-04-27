@@ -1,3 +1,9 @@
+/*
+Author: Liam Kilpatrick
+Source file for cut list algorithm
+*/
+
+
 #ifndef CUTLIST_CPP
 #define CUTLIST_CPP
 #include "Lumber.cpp"

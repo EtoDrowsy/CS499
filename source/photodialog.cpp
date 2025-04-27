@@ -1,3 +1,8 @@
+/*
+Author: Thomas Pierce
+Source file for implementing photo ui
+*/
+
 #include "../header/photodialog.h"
 #include "../ui/ui_photodialog.h"
 
@@ -8,6 +13,7 @@ photodialog::photodialog(QWidget *parent, int id)
     : QDialog(parent)
     , ui(new Ui::photodialog)
 {
+    //Setting up photo dialog
     ui->setupUi(this);
     imageUploaded = false;
     photoID = id;
@@ -21,6 +27,7 @@ photodialog::~photodialog()
 
 void photodialog::on_pushButton_clicked()
 {
+    //Getting user-selected photo and displaying a preview to the user
     upfilename = QFileDialog::getOpenFileName(this,tr("Attach Image"),"",tr("Images (*.png *.jpg)"));
     std::string nameCheck = upfilename.toStdString();
 

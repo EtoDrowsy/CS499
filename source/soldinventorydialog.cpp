@@ -1,3 +1,8 @@
+/*
+Author: Thomas Pierce
+Source file for implementing new sale ui
+*/
+
 #include "../header/soldinventorydialog.h"
 #include "../ui/ui_soldinventorydialog.h"
 #include <QIntValidator>
@@ -7,6 +12,7 @@ soldinventorydialog::soldinventorydialog(QWidget *parent, int id)
     : QDialog(parent)
     , ui(new Ui::soldinventorydialog)
 {
+    //Setting up sale dialog
     ui->setupUi(this);
 
     saleID = id;
@@ -34,6 +40,7 @@ int soldinventorydialog::getQuantitySold(){
 }
 
 std::string soldinventorydialog::getNoteString(){
+    //Returning string without new lines and semicolons
     QString retString = ui->notesEdit->toPlainText();
     retString.replace(";","<semicolon>");
     retString.replace("\n", "<return>");

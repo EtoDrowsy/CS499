@@ -1,3 +1,8 @@
+/*
+Author: Thomas Pierce
+Source file for implementing help ui
+*/
+
 #include "../header/help.h"
 #include "../ui/ui_help.h"
 

@@ -1,3 +1,8 @@
+/*
+Author: Thomas Pierce
+Source file for implementing lumber class
+*/
+
 #ifndef LUMBER_CPP
 #define LUMBER_CPP
 #include <string>
@@ -71,6 +76,7 @@ class Lumber {
             }
         }
 
+        //Returning dimensions as a vector
         std::vector <float> getDimensions() {
             std::vector <float> dimensions;
             dimensions.push_back(getLength());
@@ -94,6 +100,7 @@ class Lumber {
             return thicknessnum;
         }
 
+        //Getter functions
         std::string getLengthDisplay(){return length;}
         std::string getWidthDisplay(){return width;}
         std::string getThicknessDisplay(){return thickness;}
@@ -111,6 +118,7 @@ class Lumber {
         std::string getDateSold(){return dateSold;}
         int getInvoiceNumber(){return invoiceNumber;}
 
+        //Setter functions
         void setID(std::string i) {
             for(int j = 0; j < attributeValues.size(); j++){
                 if (attributeValues[j] == "ID"){

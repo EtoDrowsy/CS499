@@ -1,3 +1,8 @@
+/*
+Author: Thomas Pierce
+Source file for implementing sold inventory viewer ui
+*/
+
 #include "../header/soldinventoryviewer.h"
 #include "../ui/ui_soldinventoryviewer.h"
 
@@ -18,6 +23,7 @@ soldinventoryviewer::soldinventoryviewer(std::vector<std::string> attributes, st
     : QDialog(parent)
     , ui(new Ui::soldinventoryviewer)
 {
+    //Clearing leftover data and adding new sold inventory into table viewer
     ui->setupUi(this);
     ui->tableWidget->clear();
     ui->searchComboBox->clear();
@@ -74,6 +80,7 @@ soldinventoryviewer::~soldinventoryviewer()
 
 void soldinventoryviewer::on_sortButton_clicked()
 {
+    //Sorting sold inventory
     int columnIndex = ui->tableWidget->currentColumn();
     std::string sortattr = tableAttributes[columnIndex];
 
@@ -106,6 +113,7 @@ void soldinventoryviewer::on_sortButton_clicked()
 
 void soldinventoryviewer::on_searchButton_clicked()
 {
+    //Search function for table viewer
     int attributeIndex = 0;
     for (int i = 0; i < tableAttributes.size(); i++){
         if (tableAttributes[i] == ui->searchComboBox->currentText().toStdString()){
@@ -147,6 +155,7 @@ void soldinventoryviewer::on_searchButton_clicked()
 
 void soldinventoryviewer::on_clearSearchButton_clicked()
 {
+    //Resetting after search
     ui->searchField->setText("");
     ui->tableWidget->clear();
     ui->tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
