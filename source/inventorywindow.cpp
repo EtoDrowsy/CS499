@@ -708,6 +708,75 @@ void InventoryWindow::on_modifyObjectButton_clicked()
     }
 }
 
+// turn length and width into double for sorting
+double parseFeetInches(const std::string& str) {
+    int feet = 0;
+    double inches = 0.0;
+
+
+    size_t footPos = str.find('\'');
+    size_t inchPos = str.find('\"');
+
+    // find the foot in the formatted string
+    if (footPos != std::string::npos) {
+        feet = std::stoi(str.substr(0, footPos));
+    }
+
+    // find the inches in the formatted string
+    // double since it can be a fraction
+    if (inchPos != std::string::npos && footPos != std::string::npos) {
+        std::string inchPart = str.substr(footPos + 1, inchPos - footPos - 1);
+        size_t dashPos = inchPart.find('-');
+        if (dashPos != std::string::npos) {
+            inchPart = inchPart.substr(dashPos + 1);
+        }
+        try {
+            inches = std::stod(inchPart);
+        } catch (...) {
+            inches = 0.0;
+        }
+    }
+
+    // send back as inches to sort correctly
+    return feet * 12 + inches;
+}
+
+// handle sending price back for sorting
+double parsePrice(const std::string& str) {
+    try {
+        std::string cleanStr = str;
+        if (!str.empty() && str[0] == '$') {
+            cleanStr = str.substr(1);
+        }
+        return std::stod(cleanStr);
+    } catch (...) {
+        return 0.0;
+    }
+}
+
+// handle thickness for sorting
+double parseThickness(const std::string& str) {
+    try {
+        std::string cleanStr = str;
+        if (!cleanStr.empty() && cleanStr.back() == '"') {
+            cleanStr.pop_back();
+        }
+
+        size_t slashPos = cleanStr.find('/');
+        if (slashPos != std::string::npos) {
+            double numerator = std::stod(cleanStr.substr(0, slashPos));
+            double denominator = std::stod(cleanStr.substr(slashPos + 1));
+            return numerator / denominator;
+        } else {
+            // just in case it's not a fraction
+            return std::stod(cleanStr);
+        }
+    } catch (...) {
+        return 0.0;
+    }
+}
+
+
 //Function to sort column in table widget
 void InventoryWindow::on_sortObjectButton_clicked()
 {
@@ -721,13 +790,20 @@ void InventoryWindow::on_sortObjectButton_clicked()
                 // Sorting based on the attribute
                 std::sort(dataArray.begin(), dataArray.end(),
                           [columnIndex, this](const std::vector<std::string>& a, const std::vector<std::string>& b) {
-                              if (CSVattributes[columnIndex] == "ID" || CSVattributes[columnIndex] == "Quantity" ||
-                                  CSVattributes[columnIndex] == "Length" || CSVattributes[columnIndex] == "Width" || CSVattributes[columnIndex] == "Thickness") {
+                              const std::string& attr = CSVattributes[columnIndex];
+
+                              if (attr == "ID" || attr == "Quantity") {
                                   try {
                                       return std::stoi(a[columnIndex]) < std::stoi(b[columnIndex]);
                                   } catch (...) {
                                       return a[columnIndex] < b[columnIndex];
                                   }
+                              } else if (attr == "Length" || attr == "Width") {
+                                  return parseFeetInches(a[columnIndex]) < parseFeetInches(b[columnIndex]);
+                              } else if (attr == "Thickness") {
+                                  return parseThickness(a[columnIndex]) < parseThickness(b[columnIndex]);
+                              } else if (attr == "Price") {
+                                  return parsePrice(a[columnIndex]) < parsePrice(b[columnIndex]);
                               } else {
                                   return a[columnIndex] < b[columnIndex];
                               }
