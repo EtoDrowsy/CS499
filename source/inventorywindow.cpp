@@ -239,11 +239,14 @@ void InventoryWindow::on_addObjectButton_clicked()
         AddItemDialog addwindow(CSVattributes, this);
 
         if (addwindow.exec() == QDialog::Accepted) {
+            // get the values that are in the inputted blocks of the window
             std::vector<std::string> newItem = addwindow.getNewItemData();
 
             bool isComplete = true;
 
             for (size_t i = 0; i < newItem.size(); i++) {
+                // double check to make sure that all values have a value
+                // and that there are no duplicates
                 if (newItem[i].empty()) {
                     isComplete = false;
                     break;
@@ -263,9 +266,12 @@ void InventoryWindow::on_addObjectButton_clicked()
                     QMessageBox::warning(this, "Error", "ID already being used. Please use a different ID number.");
                     return;
                 }
+
+
                 dataArray.push_back(newItem);
                 inventory.push_back(new Lumber(newItem,CSVattributes));
 
+                // sets up and displays the new item to the viewer and writes back to CSV
                 int newRow = ui->dataViewer->rowCount();
                 ui->dataViewer->insertRow(newRow);
 
@@ -342,8 +348,13 @@ void InventoryWindow::writeCSV(const std::string &filePath) {
 
 void InventoryWindow::on_deleteObjectButton_clicked()
 {
+    // checks to make sure that the CSV has been loaded in
     if (csvLoaded){
-        if(ui->dataViewer->currentColumn() == 0){
+
+        // make sure that the column is not the header column and that a id has been selected
+        if(ui->dataViewer->currentColumn() == 0 && ui->dataViewer->currentItem()){
+
+            // change the selected id to int and send to deleteRowId()
             int idDelete = std::stoi(ui->dataViewer->currentItem()->text().toStdString());
             deleteRowId(idDelete);
 
@@ -352,24 +363,38 @@ void InventoryWindow::on_deleteObjectButton_clicked()
                 if (inventory[i]->getID() == std::to_string(idDelete)){
                     delete inventory[i];
                     inventory.erase(inventory.begin()+i);
+                    break;
                 }
             }
+
+            // after row deleted, output message and reset currentItem()
+            // otherwise it will allow you to keep deleting even if item not selected
             QMessageBox::information(this,"Item Deleted","The selected item has been deleted.");
+            ui->dataViewer->clearSelection();
+            ui->dataViewer->setCurrentItem(nullptr);
+
+
         }
         else {
-            QMessageBox::information(this, "Error", "Select an item ID in the inventory.");
+            QMessageBox::information(this, "ID Not Selected", "Please select an item ID in the inventory to delete item.");
         }
+    }
+    else {
+        QMessageBox::information(this, "CSV Not Loaded", "Please load in a CSV file first.");
     }
 }
 
 bool InventoryWindow::deleteRowId(int idDelete)
 {
+    // go through each row in the dataViewer til selected id has been found
     for (int row = 1; row < ui->dataViewer->rowCount(); ++row) {
         QString id = ui->dataViewer->item(row, 0)->text();
         if (id.toInt() == idDelete) {
             ui->dataViewer->removeRow(row);
 
+            // delete from dataArray to write back changed csv
             dataArray.erase(dataArray.begin() + row - 1);
+
             return true;
         }
     }
@@ -401,7 +426,7 @@ void InventoryWindow::on_createCSVButton_clicked()
     if(csvLoaded){
         QMessageBox::StandardButton reply;
         reply = QMessageBox::question(this, "CSV Loaded",
-                                      "You are about to create a new CSV. Do you wish to create one? (Created CSV will not replace the current one.)",
+                                      "You are about to create a new CSV. Do you wish to create and load it into the program?",
                                       QMessageBox::Yes | QMessageBox::No);
         if(reply == QMessageBox::No){
             return;
@@ -410,13 +435,15 @@ void InventoryWindow::on_createCSVButton_clicked()
 
     QString tempcsvfilepath = QFileDialog::getSaveFileName(this, tr("Save File"),"",tr("CSV Files (*.csv)"));
 
-    QFile file(tempcsvfilepath);
-    file.open(QIODevice::WriteOnly);
-    file.close();
+    // confirm that no new file was created
+    if(tempcsvfilepath.isEmpty()) {
+        if(tempcsvfilepath.isEmpty()) {
+            QMessageBox::information(this,"Canceled","No file created.");
+            return;
+        }
+    }
 
     csvfilepath = tempcsvfilepath.toStdString();
-
-    std::cout << csvfilepath;
 
     if(csvfilepath.empty()){
         QMessageBox::information(this, "File Name Empty", "File must have a name.");
@@ -426,39 +453,57 @@ void InventoryWindow::on_createCSVButton_clicked()
         QMessageBox::information(this, "Wrong File Type", "Incorrect file type, must be .csv.");
         return;
     }
-    else{
-        std::fstream newcsv;
-        newcsv.open(csvfilepath);
-        newcsv << "ID;Location;Quantity;Length;Width;Thickness;Grade;Price;Description;Date Acquired;Date Cut;Species;Photo;Notes;Sold;Date Sold;Invoice Number";
-        newcsv.close();
 
-        readCSV(csvfilepath);
-
-        ui->dataViewer->setEditTriggers(QAbstractItemView::NoEditTriggers);
-
-        ui->dataViewer->setColumnCount(CSVattributes.size());
-        ui->dataViewer->setRowCount(dataArray.size() + 1);
-
-        for (int k = 0; k < CSVattributes.size(); k++) {
-            QString att = QString::fromStdString(CSVattributes[k]);
-            QTableWidgetItem *attq = new QTableWidgetItem(att);
-            ui->dataViewer->setItem(0, k, attq);
-        }
-
-        for (int i = 0; i < dataArray.size(); i++) {
-            for (int j = 0; j < dataArray[i].size(); j++) {
-                QString qstr = QString::fromStdString(dataArray[i][j]);
-                QTableWidgetItem *newitem = new QTableWidgetItem(qstr);
-                ui->dataViewer->setItem(i + 1, j, newitem);
-            }
-        }
-
-        csvLoaded = true;
-
-        newcsv.close();
+    QFile file(tempcsvfilepath);
+    if(!file.open(QIODevice::WriteOnly)) {
+        QMessageBox::critical(this, "Error", "Could not create file.");
         return;
     }
+    file.close();
+
+    std::fstream newcsv;
+    newcsv.open(csvfilepath);
+    newcsv << "ID;Location;Quantity;Length;Width;Thickness;Grade;Price;Description;Date Acquired;Date Cut;Species;Photo;Notes;Sold;Date Sold;Invoice Number";
+    newcsv.close();
+
+    // clears the current data to make room for the new csv
+    CSVattributes.clear();
+    dataArray.clear();
+    inventory.clear();
+    soldInventory.clear();
+    soldInvExists = false;
+    soldIndex = 0;
+
+    readCSV(csvfilepath);
+
+    // reset viewer to load in the dataViewer
+    ui->dataViewer->clear();
+    ui->dataViewer->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    ui->dataViewer->setColumnCount(CSVattributes.size());
+    ui->dataViewer->setRowCount(dataArray.size() + 1);
+
+    // loads in the header of the column in the first row
+    for (int k = 0; k < CSVattributes.size(); k++) {
+        QString att = QString::fromStdString(CSVattributes[k]);
+        QTableWidgetItem *attq = new QTableWidgetItem(att);
+        ui->dataViewer->setItem(0, k, attq);
+    }
+
+    // loads in the data from the csv
+    for (int i = 0; i < dataArray.size(); i++) {
+        for (int j = 0; j < dataArray[i].size(); j++) {
+            QString qstr = QString::fromStdString(dataArray[i][j]);
+            QTableWidgetItem *newitem = new QTableWidgetItem(qstr);
+            ui->dataViewer->setItem(i + 1, j, newitem);
+        }
+    }
+
+    csvLoaded = true;
+
+    newcsv.close();
+    return;
 }
+
 
 int getInventoryIndex(int id){
     int index;
