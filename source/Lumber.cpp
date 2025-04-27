@@ -111,6 +111,14 @@ class Lumber {
         std::string getDateSold(){return dateSold;}
         int getInvoiceNumber(){return invoiceNumber;}
 
+        void setID(std::string i) {
+            for(int j = 0; j < attributeValues.size(); j++){
+                if (attributeValues[j] == "ID"){
+                    attributes[j] = i;
+                }
+            }
+            id = i;
+        }
         void setLength(std::string l) {
             length = l;
         }

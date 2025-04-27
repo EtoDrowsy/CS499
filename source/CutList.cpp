@@ -141,14 +141,23 @@ struct confirmer {
 static confirmer confirmLumberList(std::vector <Lumber*> inventory, std::vector <CutListItem*> cutList, std::vector <std::vector <int>> lumberList) {
     std::vector <std::string> IDs;
     std::vector <Lumber*> newLumber;
+    int maxID = 0;
     for (int i = 0; i < lumberList.size(); i++) {
         for (int j : lumberList.at(i)) {
             float leftovers = inventory.at(j)->getLength() - SAW_KERF - cutList.at(i)->getLength();
             IDs.push_back(inventory.at(j)->getID());
             if (leftovers < 0)
                 continue;
+            if (maxID == 0) {
+                for (int k = 0; k < inventory.size(); k++) {
+                    int currentID = std::stoi(inventory.at(k)->getID());
+                    if (maxID < currentID)
+                        maxID = currentID;
+                }
+            }
             leftovers = std::trunc(leftovers);
             Lumber* newWood = new Lumber(inventory.at(j)->getAttributes(), inventory.at(j)->getAttributeValues());
+            newWood->setID(std::to_string(++maxID));
             newWood->setLength(leftovers);
             newWood->setDescription("Piece");
             newWood->setQuantity(1);
