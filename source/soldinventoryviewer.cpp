@@ -1,5 +1,10 @@
-#include "soldinventoryviewer.h"
-#include "ui_soldinventoryviewer.h"
+/*
+Author: Thomas Pierce
+Source file for implementing sold inventory viewer ui
+*/
+
+#include "../header/soldinventoryviewer.h"
+#include "../ui/ui_soldinventoryviewer.h"
 
 std::vector<std::string> split (std::string row, std::string delim){
     std::vector<std::string> v;
@@ -18,8 +23,11 @@ soldinventoryviewer::soldinventoryviewer(std::vector<std::string> attributes, st
     : QDialog(parent)
     , ui(new Ui::soldinventoryviewer)
 {
+    //Clearing leftover data and adding new sold inventory into table viewer
     ui->setupUi(this);
     ui->tableWidget->clear();
+    ui->searchComboBox->clear();
+    soldarray.clear();
 
     attributes.push_back("Date Sold");
     attributes.push_back("Invoice Number");
@@ -55,6 +63,13 @@ soldinventoryviewer::soldinventoryviewer(std::vector<std::string> attributes, st
         }
     }
 
+    for (int i = 0; i < tableAttributes.size(); i++){
+        if (tableAttributes[i] != "Notes" && tableAttributes[i] != "Photo"){
+            QString att = QString::fromStdString(tableAttributes[i]);
+            ui->searchComboBox->addItem(att);
+        }
+    }
+
     ui->tableWidget->resizeColumnsToContents();
 }
 
@@ -65,6 +80,7 @@ soldinventoryviewer::~soldinventoryviewer()
 
 void soldinventoryviewer::on_sortButton_clicked()
 {
+    //Sorting sold inventory
     int columnIndex = ui->tableWidget->currentColumn();
     std::string sortattr = tableAttributes[columnIndex];
 
@@ -94,3 +110,72 @@ void soldinventoryviewer::on_sortButton_clicked()
         }
     }
 }
+
+void soldinventoryviewer::on_searchButton_clicked()
+{
+    //Search function for table viewer
+    int attributeIndex = 0;
+    for (int i = 0; i < tableAttributes.size(); i++){
+        if (tableAttributes[i] == ui->searchComboBox->currentText().toStdString()){
+            attributeIndex = i;
+            break;
+        }
+    }
+    std::vector<std::vector<std::string>> searchedDataArray;
+    ui->tableWidget->clear();
+
+    ui->tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
+
+    for (int j = 0; j < soldarray.size(); j++){
+        if (soldarray[j][attributeIndex] == ui->searchField->text().toStdString()){
+            searchedDataArray.push_back(soldarray[j]);
+        }
+    }
+
+    ui->tableWidget->setColumnCount(tableAttributes.size());
+    ui->tableWidget->setRowCount(searchedDataArray.size() + 1);
+
+    for (int k = 0; k < tableAttributes.size(); k++) {
+        QString att = QString::fromStdString(tableAttributes[k]);
+        QTableWidgetItem *attq = new QTableWidgetItem(att);
+        ui->tableWidget->setItem(0, k, attq);
+    }
+
+    for (int i = 0; i < searchedDataArray.size(); i++) {
+        for (int j = 0; j < searchedDataArray[i].size(); j++) {
+            QString qstr = QString::fromStdString(searchedDataArray[i][j]);
+            QTableWidgetItem *newitem = new QTableWidgetItem(qstr);
+            ui->tableWidget->setItem(i + 1, j, newitem);
+        }
+    }
+    ui->tableWidget->resizeColumnsToContents();
+    searchedDataArray.clear();
+}
+
+
+void soldinventoryviewer::on_clearSearchButton_clicked()
+{
+    //Resetting after search
+    ui->searchField->setText("");
+    ui->tableWidget->clear();
+    ui->tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
+
+    ui->tableWidget->setColumnCount(tableAttributes.size());
+    ui->tableWidget->setRowCount(soldarray.size() + 1);
+
+    for (int k = 0; k < tableAttributes.size(); k++) {
+        QString att = QString::fromStdString(tableAttributes[k]);
+        QTableWidgetItem *attq = new QTableWidgetItem(att);
+        ui->tableWidget->setItem(0, k, attq);
+    }
+
+    for (int i = 0; i < soldarray.size(); i++) {
+        for (int j = 0; j < soldarray[i].size(); j++) {
+            QString qstr = QString::fromStdString(soldarray[i][j]);
+            QTableWidgetItem *newitem = new QTableWidgetItem(qstr);
+            ui->tableWidget->setItem(i + 1, j, newitem);
+        }
+    }
+    ui->tableWidget->resizeColumnsToContents();
+}
+

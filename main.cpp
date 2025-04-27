@@ -1,14 +1,11 @@
-#include "inventorywindow.h"
+#include "header/inventorywindow.h"
 
 #include <QApplication>
-
-#include <fstream>
-#include <string>
-#include <sstream>
-#include <vector>
+#include <QStyleFactory>
 
 int main(int argc, char* argv[]) {
   QApplication a(argc, argv);
+  QApplication::setStyle(QStyleFactory::create("windowsvista"));
 
   InventoryWindow w;
 
