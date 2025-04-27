@@ -140,7 +140,7 @@ AddItemDialog::AddItemDialog(std::vector<std::string> attributes, QWidget *paren
             QLineEdit *lineEdit = new QLineEdit(container);
             lineEdit->setPlaceholderText("Price $");
 
-            QRegularExpression priceRegex("(\\d+|(\\d*\\.\\d{1,2}?)?");
+            QRegularExpression priceRegex("\\d*\\.?\\d*");
             lineEdit->setValidator(new QRegularExpressionValidator(priceRegex, this));
 
             connect(lineEdit, &QLineEdit::editingFinished, [lineEdit]() {
