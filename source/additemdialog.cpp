@@ -68,7 +68,7 @@ AddItemDialog::AddItemDialog(std::vector<std::string> attributes, QWidget *paren
         }
         else if (att.toLower() == "location") {
             QLineEdit *lineEdit = new QLineEdit(container);
-            QRegularExpression regex("[A-Za-z ]+");
+            QRegularExpression regex("[A-Za-z0-9 ]+");
             QValidator *validator = new QRegularExpressionValidator(regex, this);
             lineEdit->setValidator(validator);
             lineEdit->setPlaceholderText("Location");
@@ -104,7 +104,7 @@ AddItemDialog::AddItemDialog(std::vector<std::string> attributes, QWidget *paren
 
             QLineEdit *fractionEdit = new QLineEdit(container);
 
-            QRegularExpression fractionRegex("[0-9\\s/]*");
+            QRegularExpression fractionRegex("\\d+(/\\d+)?");
             fractionEdit->setValidator(new QRegularExpressionValidator(fractionRegex, this));
             fractionEdit->setPlaceholderText("Inches");
             fractionEdit->setGeometry(49, 0, 50, 30);
@@ -116,7 +116,7 @@ AddItemDialog::AddItemDialog(std::vector<std::string> attributes, QWidget *paren
             QLineEdit *lineEdit = new QLineEdit(container);
             lineEdit->setPlaceholderText("In 1/4s");
 
-            QRegularExpression thicknessRegex("\\d+/\\d+|\\d+");
+            QRegularExpression thicknessRegex("\\d+/4$");
             lineEdit->setValidator(new QRegularExpressionValidator(thicknessRegex,this));
 
             lineEdit->setGeometry(0, 0, 400, 25);
@@ -140,7 +140,7 @@ AddItemDialog::AddItemDialog(std::vector<std::string> attributes, QWidget *paren
             QLineEdit *lineEdit = new QLineEdit(container);
             lineEdit->setPlaceholderText("Price $");
 
-            QRegularExpression priceRegex("\\d*\\.?\\d*");
+            QRegularExpression priceRegex("(\\d+|(\\d*\\.\\d{1,2}?)?");
             lineEdit->setValidator(new QRegularExpressionValidator(priceRegex, this));
 
             connect(lineEdit, &QLineEdit::editingFinished, [lineEdit]() {
