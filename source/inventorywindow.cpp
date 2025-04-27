@@ -1,14 +1,20 @@
-#include "inventorywindow.h"
-#include "additemdialog.h"
-#include "cutlistdialog.h"
-#include "ui_inventorywindow.h"
-#include "Lumber.cpp"
-#include "CutList.cpp"
-#include "photodialog.h"
-#include "soldinventoryviewer.h"
-#include "soldinventorydialog.h"
-#include "pricedialog.h"
-#include "modifyitemdialog.h"
+/*
+Author: Thomas Pierce
+Source file for implementing main window ui
+*/
+
+#include "../header/inventorywindow.h"
+#include "../header/additemdialog.h"
+#include "../header/cutlistdialog.h"
+#include "../ui/ui_inventorywindow.h"
+#include "../source/Lumber.cpp"
+#include "../source/CutList.cpp"
+#include "../header/photodialog.h"
+#include "../header/soldinventoryviewer.h"
+#include "../header/soldinventorydialog.h"
+#include "../header/pricedialog.h"
+#include "../header/modifyitemdialog.h"
+#include "../header/help.h"
 
 #include <iostream>
 #include <fstream>
@@ -23,7 +29,6 @@ enum column{
 };
 
 std::vector<std::string> CSVattributes;
-std::vector<column> ColumnNames;
 std::vector<std::vector<std::string>> dataArray;
 
 std::string csvfilepath;
@@ -34,52 +39,7 @@ std::vector<Lumber*>soldInventory;
 int soldIndex;
 bool soldInvExists;
 
-column stringToColumn(std::string readIn){
-    if(readIn == "ID"){
-        return ID;
-    }
-    else if(readIn == "Location"){
-        return Location;
-    }
-    else if(readIn == "Quantity"){
-        return Quantity;
-    }
-    else if(readIn == "Length"){
-        return Length;
-    }
-    else if(readIn == "Width"){
-        return Width;
-    }
-    else if(readIn == "Thickness"){
-        return Thickness;
-    }
-    else if(readIn == "Grade"){
-        return Grade;
-    }
-    else if(readIn == "Price"){
-        return Price;
-    }
-    else if(readIn == "Description"){
-        return Description;
-    }
-    else if(readIn == "Date"){
-        return Date;
-    }
-    else if(readIn == "Species"){
-        return Species;
-    }
-    else if(readIn == "Photo"){
-        return Photo;
-    }
-    else if(readIn == "Notes"){
-        return Notes;
-    }
-    else if(readIn == "Sold"){
-        return Sold;
-    }
-    return Unknown;
-}
-
+//Reading CSV into data array and inventory
 void readCSV(std::string filepath)
 {
     std::fstream inputcsv;
@@ -93,7 +53,6 @@ void readCSV(std::string filepath)
         getline(ss, substr, ';');
         if (substr != "Date Sold" && substr != "Invoice Number"){
             CSVattributes.push_back(substr);
-            ColumnNames.push_back(stringToColumn(substr));
         }
     }
 
@@ -140,6 +99,7 @@ void readCSV(std::string filepath)
     return;
 }
 
+//Generating HTML store file
 void genHTML(std::string filename){
     std::fstream newhtml;
     newhtml.open(filename);
@@ -167,6 +127,135 @@ void genHTML(std::string filename){
     newhtml.close();
 }
 
+//Generating CSS file
+void genCSS(std::string csspath) {
+    // Embedded CSS content
+    const char* css = R"css(* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #ECE1D2;
+    color: #2C2C2C;
+    margin: 0;
+    padding: 0;
+}
+
+.header-wrapper {
+    text-align: center;
+    padding: 20px 20px;
+    background-color: #3D5A40;
+    border-bottom: 4px solid #6C8B5E;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    margin-bottom: 30px;
+}
+
+.page-title {
+    display: inline-block;
+    background-color: #E7D8BE;  /* light wood card */
+    color: #2F4F4F;             /* strong contrast */
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2em;
+    font-weight: bold;
+    border: 3px solid #6C8B5E;
+    padding: 18px 36px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    margin: 0 auto;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px 40px 20px;
+    justify-content: center;
+}
+
+.wood-item {
+    border: 2px solid #3D5A40;  /* matches header background */
+    background-color: #D1BCA4;
+    border-radius: 10px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.12);
+    text-align: center;
+    padding: 18px;
+    transition: all 0.2s ease-in-out;
+}
+
+.wood-item:hover {
+    box-shadow: 0 10px 16px rgba(0, 0, 0, 0.18);
+    transform: translateY(-4px);
+    border-color: #4C6A50;
+}
+
+.wood-image {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    border: 2px solid #4C6A50;
+}
+
+.item-title-description {
+    margin: 0;
+    text-align: left;
+    font-family: 'Georgia', serif;
+    color: #3B3B2D;
+    padding: 0 10px;
+    font-size: 1.6em;
+    font-weight: bold;
+    color: #2C2C2C;
+}
+
+.item-title-species {
+    margin: 0;
+    text-align: left;
+    font-family: 'Georgia', serif;
+    color: #3B3B2D;
+    padding: 0 10px;
+    font-size: 1.6em;
+    color: #2C2C2C;
+}
+
+.item-price {
+    margin: 0;
+    text-align: left;
+    font-family: 'Georgia', serif;
+    color: #3B3B2D;
+    padding: 0 10px;
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #2C2C2C;
+}
+
+p {
+    margin: 0;
+    text-align: left;
+    font-family: 'Georgia', serif;
+    color: #3B3B2D;
+    padding: 0 10px;
+    font-size: 1.25em;
+    color: #2C2C2C;
+}
+)css";
+
+    // Write to file
+    std::ofstream ofs(csspath);
+    if (!ofs) {
+        std::cerr << "Error: could not open style.css for writing\n";
+        return;
+    }
+
+    ofs << css;
+    ofs.close();
+    return;
+}
+
+//Adding user-specified items to html store
 void addToHTML(std::vector<Lumber*> woodList, std::string filename){
     std::ifstream readhtml(filename);
     std::vector<std::string> lines;
@@ -210,6 +299,7 @@ InventoryWindow::InventoryWindow(QWidget *parent)
     , ui(new Ui::InventoryWindow)
 {
     ui->setupUi(this);
+    ui->searchField->setPlaceholderText("Search");
 }
 
 InventoryWindow::~InventoryWindow()
@@ -218,6 +308,7 @@ InventoryWindow::~InventoryWindow()
     inventory.clear();
 }
 
+//Reading csv into table widget
 void InventoryWindow::on_csvLoadButton_clicked()
 {
     if(csvLoaded){
@@ -280,17 +371,21 @@ void InventoryWindow::on_csvLoadButton_clicked()
     return;
 }
 
+//Call to add item dialog
 void InventoryWindow::on_addObjectButton_clicked()
 {
     if (csvLoaded){
         AddItemDialog addwindow(CSVattributes, this);
 
         if (addwindow.exec() == QDialog::Accepted) {
+            // get the values that are in the inputted blocks of the window
             std::vector<std::string> newItem = addwindow.getNewItemData();
 
             bool isComplete = true;
 
             for (size_t i = 0; i < newItem.size(); i++) {
+                // double check to make sure that all values have a value
+                // and that there are no duplicates
                 if (newItem[i].empty()) {
                     isComplete = false;
                     break;
@@ -310,9 +405,12 @@ void InventoryWindow::on_addObjectButton_clicked()
                     QMessageBox::warning(this, "Error", "ID already being used. Please use a different ID number.");
                     return;
                 }
+
+
                 dataArray.push_back(newItem);
                 inventory.push_back(new Lumber(newItem,CSVattributes));
 
+                // sets up and displays the new item to the viewer and writes back to CSV
                 int newRow = ui->dataViewer->rowCount();
                 ui->dataViewer->insertRow(newRow);
 
@@ -327,6 +425,7 @@ void InventoryWindow::on_addObjectButton_clicked()
     }
 }
 
+//Writing data to CSV file
 void InventoryWindow::writeCSV(const std::string &filePath) {
     std::ofstream file(filePath, std::ios::out | std::ios::trunc);
     if (!file.is_open()) {
@@ -386,11 +485,16 @@ void InventoryWindow::writeCSV(const std::string &filePath) {
     ui->dataViewer->resizeColumnsToContents();
 }
 
-
+//Deleting item from file and table widget
 void InventoryWindow::on_deleteObjectButton_clicked()
 {
+    // checks to make sure that the CSV has been loaded in
     if (csvLoaded){
-        if(ui->dataViewer->currentColumn() == 0){
+
+        // make sure that the column is not the header column and that a id has been selected
+        if(ui->dataViewer->currentColumn() == 0 && ui->dataViewer->currentItem()){
+
+            // change the selected id to int and send to deleteRowId()
             int idDelete = std::stoi(ui->dataViewer->currentItem()->text().toStdString());
             deleteRowId(idDelete);
 
@@ -399,24 +503,38 @@ void InventoryWindow::on_deleteObjectButton_clicked()
                 if (inventory[i]->getID() == std::to_string(idDelete)){
                     delete inventory[i];
                     inventory.erase(inventory.begin()+i);
+                    break;
                 }
             }
+
+            // after row deleted, output message and reset currentItem()
+            // otherwise it will allow you to keep deleting even if item not selected
             QMessageBox::information(this,"Item Deleted","The selected item has been deleted.");
+            ui->dataViewer->clearSelection();
+            ui->dataViewer->setCurrentItem(nullptr);
+
+
         }
         else {
-            QMessageBox::information(this, "Error", "Select an item ID in the inventory.");
+            QMessageBox::information(this, "ID Not Selected", "Please select an item ID in the inventory to delete item.");
         }
+    }
+    else {
+        QMessageBox::information(this, "CSV Not Loaded", "Please load in a CSV file first.");
     }
 }
 
 bool InventoryWindow::deleteRowId(int idDelete)
 {
+    // go through each row in the dataViewer til selected id has been found
     for (int row = 1; row < ui->dataViewer->rowCount(); ++row) {
         QString id = ui->dataViewer->item(row, 0)->text();
         if (id.toInt() == idDelete) {
             ui->dataViewer->removeRow(row);
 
+            // delete from dataArray to write back changed csv
             dataArray.erase(dataArray.begin() + row - 1);
+
             return true;
         }
     }
@@ -443,22 +561,30 @@ int InventoryWindow::getIndex(int searchid){
     return 0;
 }
 
+//Function to create new CSV inventory file
 void InventoryWindow::on_createCSVButton_clicked()
 {
     if(csvLoaded){
-        QMessageBox::information(this, "CSV Loaded", "The CSV has already been loaded.");
-        return;
+        QMessageBox::StandardButton reply;
+        reply = QMessageBox::question(this, "CSV Loaded",
+                                      "You are about to create a new CSV. Do you wish to create and load it into the program?",
+                                      QMessageBox::Yes | QMessageBox::No);
+        if(reply == QMessageBox::No){
+            return;
+        }
     }
 
     QString tempcsvfilepath = QFileDialog::getSaveFileName(this, tr("Save File"),"",tr("CSV Files (*.csv)"));
 
-    QFile file(tempcsvfilepath);
-    file.open(QIODevice::WriteOnly);
-    file.close();
+    // confirm that no new file was created
+    if(tempcsvfilepath.isEmpty()) {
+        if(tempcsvfilepath.isEmpty()) {
+            QMessageBox::information(this,"Canceled","No file created.");
+            return;
+        }
+    }
 
     csvfilepath = tempcsvfilepath.toStdString();
-
-    std::cout << csvfilepath;
 
     if(csvfilepath.empty()){
         QMessageBox::information(this, "File Name Empty", "File must have a name.");
@@ -468,39 +594,57 @@ void InventoryWindow::on_createCSVButton_clicked()
         QMessageBox::information(this, "Wrong File Type", "Incorrect file type, must be .csv.");
         return;
     }
-    else{
-        std::fstream newcsv;
-        newcsv.open(csvfilepath);
-        newcsv << "ID;Location;Quantity;Length;Width;Thickness;Grade;Price;Description;Date Acquired;Date Cut;Species;Photo;Notes;Sold;Date Sold;Invoice Number";
-        newcsv.close();
 
-        readCSV(csvfilepath);
-
-        ui->dataViewer->setEditTriggers(QAbstractItemView::NoEditTriggers);
-
-        ui->dataViewer->setColumnCount(CSVattributes.size());
-        ui->dataViewer->setRowCount(dataArray.size() + 1);
-
-        for (int k = 0; k < CSVattributes.size(); k++) {
-            QString att = QString::fromStdString(CSVattributes[k]);
-            QTableWidgetItem *attq = new QTableWidgetItem(att);
-            ui->dataViewer->setItem(0, k, attq);
-        }
-
-        for (int i = 0; i < dataArray.size(); i++) {
-            for (int j = 0; j < dataArray[i].size(); j++) {
-                QString qstr = QString::fromStdString(dataArray[i][j]);
-                QTableWidgetItem *newitem = new QTableWidgetItem(qstr);
-                ui->dataViewer->setItem(i + 1, j, newitem);
-            }
-        }
-
-        csvLoaded = true;
-
-        newcsv.close();
+    QFile file(tempcsvfilepath);
+    if(!file.open(QIODevice::WriteOnly)) {
+        QMessageBox::critical(this, "Error", "Could not create file.");
         return;
     }
+    file.close();
+
+    std::fstream newcsv;
+    newcsv.open(csvfilepath);
+    newcsv << "ID;Location;Quantity;Length;Width;Thickness;Grade;Price;Description;Date Acquired;Date Cut;Species;Photo;Notes;Sold;Date Sold;Invoice Number";
+    newcsv.close();
+
+    // clears the current data to make room for the new csv
+    CSVattributes.clear();
+    dataArray.clear();
+    inventory.clear();
+    soldInventory.clear();
+    soldInvExists = false;
+    soldIndex = 0;
+
+    readCSV(csvfilepath);
+
+    // reset viewer to load in the dataViewer
+    ui->dataViewer->clear();
+    ui->dataViewer->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    ui->dataViewer->setColumnCount(CSVattributes.size());
+    ui->dataViewer->setRowCount(dataArray.size() + 1);
+
+    // loads in the header of the column in the first row
+    for (int k = 0; k < CSVattributes.size(); k++) {
+        QString att = QString::fromStdString(CSVattributes[k]);
+        QTableWidgetItem *attq = new QTableWidgetItem(att);
+        ui->dataViewer->setItem(0, k, attq);
+    }
+
+    // loads in the data from the csv
+    for (int i = 0; i < dataArray.size(); i++) {
+        for (int j = 0; j < dataArray[i].size(); j++) {
+            QString qstr = QString::fromStdString(dataArray[i][j]);
+            QTableWidgetItem *newitem = new QTableWidgetItem(qstr);
+            ui->dataViewer->setItem(i + 1, j, newitem);
+        }
+    }
+
+    csvLoaded = true;
+
+    newcsv.close();
+    return;
 }
+
 
 int getInventoryIndex(int id){
     int index;
@@ -513,6 +657,7 @@ int getInventoryIndex(int id){
     return index;
 }
 
+//Call to notes dialog
 void InventoryWindow::on_modifyObjectButton_clicked()
 {
     if(csvLoaded){
@@ -563,6 +708,76 @@ void InventoryWindow::on_modifyObjectButton_clicked()
     }
 }
 
+// turn length and width into double for sorting
+double parseFeetInches(const std::string& str) {
+    int feet = 0;
+    double inches = 0.0;
+
+
+    size_t footPos = str.find('\'');
+    size_t inchPos = str.find('\"');
+
+    // find the foot in the formatted string
+    if (footPos != std::string::npos) {
+        feet = std::stoi(str.substr(0, footPos));
+    }
+
+    // find the inches in the formatted string
+    // double since it can be a fraction
+    if (inchPos != std::string::npos && footPos != std::string::npos) {
+        std::string inchPart = str.substr(footPos + 1, inchPos - footPos - 1);
+        size_t dashPos = inchPart.find('-');
+        if (dashPos != std::string::npos) {
+            inchPart = inchPart.substr(dashPos + 1);
+        }
+        try {
+            inches = std::stod(inchPart);
+        } catch (...) {
+            inches = 0.0;
+        }
+    }
+
+    // send back as inches to sort correctly
+    return feet * 12 + inches;
+}
+
+// handle sending price back for sorting
+double parsePrice(const std::string& str) {
+    try {
+        std::string cleanStr = str;
+        if (!str.empty() && str[0] == '$') {
+            cleanStr = str.substr(1);
+        }
+        return std::stod(cleanStr);
+    } catch (...) {
+        return 0.0;
+    }
+}
+
+// handle thickness for sorting
+double parseThickness(const std::string& str) {
+    try {
+        std::string cleanStr = str;
+        if (!cleanStr.empty() && cleanStr.back() == '"') {
+            cleanStr.pop_back();
+        }
+
+        size_t slashPos = cleanStr.find('/');
+        if (slashPos != std::string::npos) {
+            double numerator = std::stod(cleanStr.substr(0, slashPos));
+            double denominator = std::stod(cleanStr.substr(slashPos + 1));
+            return numerator / denominator;
+        } else {
+            // just in case it's not a fraction
+            return std::stod(cleanStr);
+        }
+    } catch (...) {
+        return 0.0;
+    }
+}
+
+
+//Function to sort column in table widget
 void InventoryWindow::on_sortObjectButton_clicked()
 {
     if(csvLoaded){
@@ -575,13 +790,20 @@ void InventoryWindow::on_sortObjectButton_clicked()
                 // Sorting based on the attribute
                 std::sort(dataArray.begin(), dataArray.end(),
                           [columnIndex, this](const std::vector<std::string>& a, const std::vector<std::string>& b) {
-                              if (CSVattributes[columnIndex] == "ID" || CSVattributes[columnIndex] == "Quantity" ||
-                                  CSVattributes[columnIndex] == "Length" || CSVattributes[columnIndex] == "Width" || CSVattributes[columnIndex] == "Thickness") {
+                              const std::string& attr = CSVattributes[columnIndex];
+
+                              if (attr == "ID" || attr == "Quantity") {
                                   try {
                                       return std::stoi(a[columnIndex]) < std::stoi(b[columnIndex]);
                                   } catch (...) {
                                       return a[columnIndex] < b[columnIndex];
                                   }
+                              } else if (attr == "Length" || attr == "Width") {
+                                  return parseFeetInches(a[columnIndex]) < parseFeetInches(b[columnIndex]);
+                              } else if (attr == "Thickness") {
+                                  return parseThickness(a[columnIndex]) < parseThickness(b[columnIndex]);
+                              } else if (attr == "Price") {
+                                  return parsePrice(a[columnIndex]) < parsePrice(b[columnIndex]);
                               } else {
                                   return a[columnIndex] < b[columnIndex];
                               }
@@ -602,7 +824,7 @@ void InventoryWindow::on_sortObjectButton_clicked()
     }
 }
 
-
+//Function to create new html and css files
 void InventoryWindow::on_HTMLGenButton_clicked()
 {
     QString htmlfilepath = QFileDialog::getSaveFileName(this, tr("Save File"),"",tr("HTML Files (*.html)"));
@@ -612,6 +834,7 @@ void InventoryWindow::on_HTMLGenButton_clicked()
     htmlfile.close();
 
     std::string newhtmlpath = htmlfilepath.toStdString();
+    std::string csspath = (htmlfilepath.replace(QRegularExpression("\\/[^\\/]*$"), "/style.css")).toStdString();
 
     if(newhtmlpath.empty()){
         QMessageBox::information(this, "File Name Empty", "File must have a name.");
@@ -623,10 +846,13 @@ void InventoryWindow::on_HTMLGenButton_clicked()
     }
     else{
         genHTML(newhtmlpath);
+        genCSS(csspath);
         return;
     }
 }
 
+//Call to cut list dialog
+//Returned new inventory is added to table widget and file
 void InventoryWindow::on_cutlistButton_clicked()
 {
     if(csvLoaded){
@@ -695,6 +921,7 @@ void InventoryWindow::on_cutlistButton_clicked()
     }
 }
 
+//Call to photo dialog
 void InventoryWindow::on_photoButton_clicked()
 {
     if(csvLoaded){
@@ -743,6 +970,7 @@ void InventoryWindow::on_photoButton_clicked()
     }
 }
 
+//Call to sold inventory viewer
 void InventoryWindow::on_soldButton_clicked()
 {
     if(csvLoaded){
@@ -751,6 +979,7 @@ void InventoryWindow::on_soldButton_clicked()
     }
 }
 
+//Call to new sale dialog
 void InventoryWindow::on_newSaleButton_clicked()
 {
     if(csvLoaded){
@@ -817,6 +1046,7 @@ void InventoryWindow::on_newSaleButton_clicked()
     }
 }
 
+//Call to price dialog
 void InventoryWindow::on_priceButton_clicked()
 {
     if(csvLoaded){
@@ -866,7 +1096,7 @@ void InventoryWindow::on_priceButton_clicked()
     }
 }
 
-
+//Function to add selected items to html store
 void InventoryWindow::on_HTMLAddButton_clicked()
 {
     if(csvLoaded){
@@ -901,7 +1131,7 @@ void InventoryWindow::on_HTMLAddButton_clicked()
     }
 }
 
-
+//Search function to filter inventory
 void InventoryWindow::on_searchButton_clicked()
 {
     if(csvLoaded){
@@ -943,7 +1173,7 @@ void InventoryWindow::on_searchButton_clicked()
     }
 }
 
-
+//Resetting search
 void InventoryWindow::on_clearSearchButton_clicked()
 {
     if(csvLoaded){
@@ -968,5 +1198,12 @@ void InventoryWindow::on_clearSearchButton_clicked()
             }
         }
     }
+}
+
+//Call to help
+void InventoryWindow::on_pushButton_clicked()
+{
+    help* helpwindow = new help(this);
+    helpwindow->show();
 }
 

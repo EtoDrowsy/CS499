@@ -83,27 +83,6 @@
     <set>QDialogButtonBox::StandardButton::Cancel|QDialogButtonBox::StandardButton::Ok</set>
    </property>
   </widget>
-  <widget class="QPlainTextEdit" name="idText">
-   <property name="geometry">
-    <rect>
-     <x>1060</x>
-     <y>40</y>
-     <width>61</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>12</pointsize>
-    </font>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">background-color:white;color:black</string>
-   </property>
-   <property name="textInteractionFlags">
-    <set>Qt::TextInteractionFlag::NoTextInteraction</set>
-   </property>
-  </widget>
   <widget class="QPushButton" name="pushButton">
    <property name="geometry">
     <rect>
@@ -122,7 +101,7 @@
     <string notr="true">background-color:rgb(209, 188, 164);color:black</string>
    </property>
    <property name="text">
-    <string>Add Photo</string>
+    <string>Select Photo</string>
    </property>
   </widget>
   <widget class="QGraphicsView" name="previewBox">
@@ -142,7 +121,7 @@
    <property name="geometry">
     <rect>
      <x>1080</x>
-     <y>10</y>
+     <y>20</y>
      <width>61</width>
      <height>31</height>
     </rect>
@@ -157,6 +136,19 @@
    </property>
    <property name="text">
     <string>ID</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="idText">
+   <property name="geometry">
+    <rect>
+     <x>1060</x>
+     <y>50</y>
+     <width>60</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="readOnly">
+    <bool>true</bool>
    </property>
   </widget>
  </widget>

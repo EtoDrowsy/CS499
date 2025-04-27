@@ -4,7 +4,7 @@
 #include <QDialog>
 #include <QString>
 #include <QMap>
-#include "Lumber.cpp"
+#include "../source/Lumber.cpp"
 
 namespace Ui {
 class modifyitemdialog;

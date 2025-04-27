@@ -2,8 +2,8 @@
 #define CUTLISTDIALOG_H
 
 #include <QDialog>
-#include "Lumber.cpp"
-#include "CutList.cpp"
+#include "../source/Lumber.cpp"
+#include "../source/CutList.cpp"
 
 namespace Ui {
 class cutlistdialog;

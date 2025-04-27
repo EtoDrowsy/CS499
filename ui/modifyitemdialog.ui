@@ -115,7 +115,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
        <widget class="QLineEdit" name="idNum">
         <property name="maximumSize">
          <size>
-          <width>80</width>
+          <width>60</width>
           <height>30</height>
          </size>
         </property>
@@ -126,6 +126,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
         </property>
         <property name="styleSheet">
          <string notr="true">color:black;background-color:white</string>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
         </property>
        </widget>
       </item>

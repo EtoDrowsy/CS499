@@ -1,10 +1,16 @@
-#include "modifyitemdialog.h"
-#include "ui_modifyitemdialog.h"
+/*
+Author: Damian Castaneda
+Source file for implementing price adjustment ui
+*/
+
+#include "../header/modifyitemdialog.h"
+#include "../ui/ui_modifyitemdialog.h"
 
 modifyitemdialog::modifyitemdialog(std::vector<Lumber*> inv, int id, QWidget *parent)
     : QDialog(parent)
     , ui(new Ui::modifyitemdialog)
 {
+    //Setting up notes dialog
     ui->setupUi(this);
 
     inventory = inv;
@@ -12,6 +18,7 @@ modifyitemdialog::modifyitemdialog(std::vector<Lumber*> inv, int id, QWidget *pa
 
     ui->idNum->setText(QString::number(modifyID));
 
+    //Removing new lines and semicolons from string
     for(int i = 0; i < inventory.size(); i++) {
         if(inventory[i]->getID() == std::to_string(modifyID)) {
             QString displayString = QString::fromStdString(inventory[i]->getNotes());
@@ -32,6 +39,7 @@ modifyitemdialog::~modifyitemdialog()
 
 QString modifyitemdialog::getNoteText() const
 {
+    //Removing new lines and semicolons from string
     QString retString = ui->inputTextEdit->toPlainText().trimmed();
     retString.replace(";","<semicolon>");
     retString.replace("\n", "<return>");
